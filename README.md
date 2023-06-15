@@ -1,4 +1,4 @@
-## Defeasible Entailment and Explanations - A Project of the University of Cape Town
+## DEE - Defeasible Entailment and Explanations
 
 
 ### Requirements
