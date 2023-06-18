@@ -1,20 +1,28 @@
 package za.ac.uct.cs.dee;
 
-public class TranslateLogicVariant {
+/*
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ */
+public class TranslateLogicVariant 
+{
 
-    static String translate(String formula) {
+    static String translate(String formula) 
+    {
         formula = reformatDefeasibleImplication(formula);
         formula.replaceAll("~", "!");
         formula = formula.replaceAll("&", "&&");
         // formula = formula.replaceAll("|", "||");
         formula = formula.replaceAll("<->", "<=>");
         formula = formula.replaceAll("->", "=>");
+        
         return formula;
     }
 
-    static String reformatDefeasibleImplication(String formula) {
+    static String reformatDefeasibleImplication(String formula) 
+    {
         int index = formula.indexOf("~>");
         formula = "(" + formula.substring(0, index) + ") => (" + formula.substring(index + 2, formula.length()) + ")";
+        
         return formula;
     }
 }

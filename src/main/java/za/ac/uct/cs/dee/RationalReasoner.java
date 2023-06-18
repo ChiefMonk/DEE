@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.tweetyproject.logics.pl.parser.PlParser;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 
+/*
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ */
 public class RationalReasoner 
 {
     PlBeliefSet knowledgeBase;
@@ -16,7 +19,9 @@ public class RationalReasoner
         this.knowledgeBase = kb;
         this.parser = new PlParser();
         this.formulaToCheckEntailmentFor = formula;
+        
         ArrayList<PlBeliefSet> rankedKnowledgeBase = BaseRank.rank(kb, classicalStatements);
+        
         if (entailmentCheckingAlgorithm.equals("binary")) 
         {
             PlBeliefSet[] rankedKnowledgeBaseArray = new PlBeliefSet[rankedKnowledgeBase.size()];
