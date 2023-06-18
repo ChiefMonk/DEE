@@ -16,7 +16,7 @@ public class FormularParser implements IFormularParser
 	public PlFormula parseFormula(FormularType formularType, String formula) throws ParserException, IOException 
 	{
 		if(ExtensionUtils.isEmptyOrNull(formula))		
-			throw new InvalidParameterException(Constants.ErrorMessages.SpecifyValidFormula);
+			throw new InvalidParameterException(Constants.ErrorMessages.InValidFormula);
 				
 		if(formularType == FormularType.Propositional)
 		{
@@ -34,7 +34,7 @@ public class FormularParser implements IFormularParser
 			return new PlParser().parseFormula(ExtensionUtils.materialiseDefeasibleImplication(formula));
 		}
 		
-		throw new InvalidParameterException("The FormularType specified is not supported");
+		throw new InvalidParameterException(Constants.ErrorMessages.InValidFormularType);
 	}
 	
 }

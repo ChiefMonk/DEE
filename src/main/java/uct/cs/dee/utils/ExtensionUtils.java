@@ -26,7 +26,7 @@ public class ExtensionUtils
 	{
 		if(isEmptyOrNull(inpuString))
 		{
-			throw new ParserException(Constants.ErrorMessages.SpecifyValidFormula);
+			throw new ParserException(Constants.ErrorMessages.InValidFormula);
 		}
 		
 		return true;
@@ -42,7 +42,7 @@ public class ExtensionUtils
 	{
 		if(ExtensionUtils.isEmptyOrNull(formula))
 		{
-			throw new ParserException(Constants.ErrorMessages.SpecifyValidFormula);
+			throw new ParserException(Constants.ErrorMessages.InValidFormula);
 		}
 		
 		return formula.contains(Constants.Symbols.Twiddle);		
@@ -58,7 +58,7 @@ public class ExtensionUtils
 	{
 		if(ExtensionUtils.isEmptyOrNull(defeasibleFormula))
 		{
-			throw new ParserException(Constants.ErrorMessages.SpecifyValidFormula);
+			throw new ParserException(Constants.ErrorMessages.InValidFormula);
 		}
 		
 		return defeasibleFormula.replace(Constants.Symbols.Twiddle, Constants.Symbols.PropositionalImplication);
@@ -73,7 +73,7 @@ public class ExtensionUtils
     {
     	if(formula == null)
 		{
-			throw new ParserException(Constants.ErrorMessages.SpecifyValidFormula);
+			throw new ParserException(Constants.ErrorMessages.InValidFormula);
 		}
     	
         return new Implication(new Negation(formula), new Contradiction());

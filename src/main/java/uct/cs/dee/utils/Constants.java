@@ -20,6 +20,7 @@ public class Constants
 	
 	public static class ErrorMessages 
 	{		
-		 public final static String SpecifyValidFormula = "Please specify a valid formula";		 
+		 public final static String InValidFormula = "Please specify a valid formula";		
+		 public final static String InValidFormularType = "The FormularType specified is not supported";
 	}
 }
