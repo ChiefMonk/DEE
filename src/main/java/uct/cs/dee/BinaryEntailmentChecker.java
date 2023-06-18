@@ -1,4 +1,4 @@
-package za.ac.uct.cs.dee;
+package uct.cs.dee;
 
 import org.tweetyproject.logics.pl.syntax.*;
 import java.util.Arrays;

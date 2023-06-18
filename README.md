@@ -9,4 +9,4 @@ To build the project, run:
 ```mvn package```
 
 ### Usage
-java -cp target/DEE-1.0.0-jar-with-dependencies.jar za.ac.uct.cs.dee.Main kb.txt "p ~> w"
+java -cp target/DEE-1.0.1-jar-with-dependencies.jar za.ac.uct.cs.dee.Main kb.txt "p ~> w"

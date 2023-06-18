@@ -1,4 +1,4 @@
-package za.ac.uct.cs.dee;
+package uct.cs.dee;
 
 /*
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
