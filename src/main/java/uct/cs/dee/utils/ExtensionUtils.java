@@ -59,7 +59,8 @@ public class ExtensionUtils
     	KnowledgeBaseFormulaSet collection = new KnowledgeBaseFormulaSet();    	
     	int lineNumber = 1;
     	
-    	
+    	System.out.println("\n---------------------------------------");  
+    	System.out.println("Knowledge Base File Processing:");
     	
         for(String rawFormula : formulas)
         {
@@ -81,7 +82,7 @@ public class ExtensionUtils
         	System.out.println(String.format("%s: Text: %s, Type: %s", lineNumber, rawFormula, formularType));
             
             lineNumber++;
-        }
+        }          
         
         return collection;
     }
