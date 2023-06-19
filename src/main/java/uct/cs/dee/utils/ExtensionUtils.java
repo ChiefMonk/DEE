@@ -56,20 +56,31 @@ public class ExtensionUtils
      */
     public static KnowledgeBaseFormulaSet parseFormulas(List<String> formulas) throws ParserException, IOException
     {
-    	KnowledgeBaseFormulaSet collection = new KnowledgeBaseFormulaSet();
+    	KnowledgeBaseFormulaSet collection = new KnowledgeBaseFormulaSet();    	
+    	int lineNumber = 1;
+    	
+    	
     	
         for(String rawFormula : formulas)
         {
+        	FormularType formularType = FormularType.Propositional;
+        	
             // Defeasible implication
             if(isDefeasible(rawFormula))
             {               
+            	formularType = FormularType.Defeasible;
                 collection.addFormula(FormularType.Defeasible, parseDefeasibleFormula(rawFormula));
             }
             // Propositional formula
             else
-            {               
+            {      
+            	formularType = FormularType.Propositional;
                 collection.addFormula(FormularType.Propositional, parsePropositionalFormula(rawFormula));               
             }
+            
+        	System.out.println(String.format("%s: Text: %s, Type: %s", lineNumber, rawFormula, formularType));
+            
+            lineNumber++;
         }
         
         return collection;

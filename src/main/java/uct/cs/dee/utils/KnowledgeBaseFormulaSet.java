@@ -56,8 +56,7 @@ public class KnowledgeBaseFormulaSet
 	     */
 	    public void addFormula(FormularType formularType, PlFormula formula) throws InvalidParameterException
 	    {
-	    	System.out.println(String.format("FormularType: %s, PlFormula: %s", formularType, formula));
-	    	
+	    	//System.out.println(String.format("FormularType: %s, PlFormula: %s", formularType, formula));	    	
 	    	if(formularType == FormularType.Propositional)
 	    	{	    		
 	    		_propositionalFormulas.add(formula);	    	
