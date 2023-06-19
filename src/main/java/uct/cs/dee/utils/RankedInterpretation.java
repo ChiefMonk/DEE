@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import org.tweetyproject.logics.pl.semantics.NicePossibleWorld;
 
-import uct.cs.dee.Exceptions.OutOfBoundsRankException;
+import uct.cs.dee.exceptions.OutOfBoundsRankException;
 
 public class RankedInterpretation 
 {

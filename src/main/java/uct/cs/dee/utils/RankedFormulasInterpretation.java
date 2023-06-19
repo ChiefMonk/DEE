@@ -6,7 +6,7 @@ import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 import org.tweetyproject.logics.pl.syntax.PlSignature;
 
-import uct.cs.dee.Exceptions.OutOfBoundsRankException;
+import uct.cs.dee.exceptions.OutOfBoundsRankException;
 
 /**
  * This class represents a ranked formulas interpretation, which we refer to within our respective papers. Each rank

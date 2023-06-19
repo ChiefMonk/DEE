@@ -5,7 +5,7 @@ import java.util.List;
 import org.tweetyproject.logics.pl.syntax.Implication;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
-import uct.cs.dee.Exceptions.*;
+import uct.cs.dee.exceptions.*;
 import uct.cs.dee.utils.*;
 
 /**

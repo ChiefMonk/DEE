@@ -1,7 +1,7 @@
 /**
  * 
  */
-package uct.cs.dee.Exceptions;
+package uct.cs.dee.exceptions;
 
 /**
  * Exception for for out of bounds rank in ranking

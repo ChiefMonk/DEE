@@ -9,8 +9,8 @@ import org.tweetyproject.logics.pl.reasoner.*;
 
 import uct.cs.dee.builders.*;
 import uct.cs.dee.enums.FormularType;
+import uct.cs.dee.exceptions.*;
 import uct.cs.dee.services.*;
-import uct.cs.dee.Exceptions.*;
 import uct.cs.dee.utils.*;
 
 public class RationalDirectReasoner  implements IDefeasibleReasoner 

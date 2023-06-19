@@ -1,4 +1,4 @@
-package uct.cs.dee.Exceptions;
+package uct.cs.dee.exceptions;
 
 /**
  * Exception for missing rank builder for reasoner
