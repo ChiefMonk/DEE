@@ -66,8 +66,7 @@
 		    <artifactId>manifold-ext</artifactId>
 		    <version>2023.1.10</version>
 		    <scope>provided</scope>
-		</dependency>
-
+		</dependency>	
     </dependencies>
     <build>
         <plugins>

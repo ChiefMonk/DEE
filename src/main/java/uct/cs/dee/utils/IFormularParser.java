@@ -8,7 +8,7 @@ import java.io.IOException;
 import org.tweetyproject.commons.ParserException;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
-import enums.FormularType;
+import uct.cs.dee.enums.FormularType;
 
 /**
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za) 

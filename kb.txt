@@ -1,5 +1,5 @@
 p => b
-b ~> f
-r => b
-p ~> !f
-b ~> w
+b |~ f
+r => p
+p |~ !f
+b |~ w

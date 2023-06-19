@@ -11,8 +11,8 @@ public class Constants
 {	
 	public static class Symbols 
 	{		
-		 public final static String And = "&";
-		 public final static String Or = "|";
+		 public final static String And = "&&";
+		 public final static String Or = "||";
 		 public final static String Negation = "!";
 		 public final static String Twiddle = "|~";
 		 public final static String PropositionalImplication = "=>";

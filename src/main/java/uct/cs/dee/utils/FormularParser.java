@@ -7,7 +7,7 @@ import org.tweetyproject.commons.ParserException;
 import org.tweetyproject.logics.pl.parser.PlParser;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
-import enums.FormularType;
+import uct.cs.dee.enums.FormularType;
 
 public class FormularParser implements IFormularParser
 {

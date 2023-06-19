@@ -1,4 +1,4 @@
-package enums;
+package uct.cs.dee.enums;
 
 public enum FormularType 
 {
