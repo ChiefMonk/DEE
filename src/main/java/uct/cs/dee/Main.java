@@ -66,7 +66,7 @@ public class Main
             
             reader.close();
             
-            RationalReasoner reasoner = new RationalReasoner(beliefSet, formulaWereCheckingFor, classicalSet, "regular");
+            //RationalReasoner reasoner = new RationalReasoner(beliefSet, formulaWereCheckingFor, classicalSet, "regular");
         } 
         catch (IOException e) 
         {
