@@ -1,17 +1,18 @@
+/**
+ * 
+ */
 package uct.cs.dee.Exceptions;
 
 /**
- * Exception for missing rank constructor for reasoner
+ * Exception for for out of bounds rank in ranking
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
-@SuppressWarnings("serial")
-public class MissingRankConstructorException extends RuntimeException
-{
-	 /**
+public class OutOfBoundsRankException extends RuntimeException {
+    
+    /**
      * Default constructor
      */
-    public MissingRankConstructorException()
-    {
+    public OutOfBoundsRankException() {
         super();
     }
 
@@ -20,7 +21,7 @@ public class MissingRankConstructorException extends RuntimeException
      * 
      * @param message The error message
      */
-    public MissingRankConstructorException(String message)
+    public OutOfBoundsRankException(String message)
     {
         super(message);
     }
