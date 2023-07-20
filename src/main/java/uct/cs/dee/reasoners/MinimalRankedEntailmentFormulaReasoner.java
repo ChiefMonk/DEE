@@ -5,8 +5,8 @@ import java.util.*;
 import org.tweetyproject.logics.pl.syntax.*;
 import org.tweetyproject.logics.pl.sat.Sat4jSolver;
 
+import uct.cs.dee.exceptions.*;
 import uct.cs.dee.services.*;
-import uct.cs.dee.Exceptions.*;
 import uct.cs.dee.utils.*;
 
 

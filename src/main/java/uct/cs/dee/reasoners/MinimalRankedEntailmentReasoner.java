@@ -4,7 +4,6 @@ import java.util.*;
 
 import org.tweetyproject.logics.pl.syntax.*;
 
-import uct.cs.dee.Exceptions.*;
 import uct.cs.dee.utils.*;
 
 import org.tweetyproject.logics.pl.sat.Sat4jSolver;
@@ -13,6 +12,7 @@ import org.tweetyproject.logics.pl.semantics.NicePossibleWorld;
 import org.tweetyproject.logics.pl.reasoner.*;
 
 import uct.cs.dee.builders.*;
+import uct.cs.dee.exceptions.*;
 import uct.cs.dee.services.*;
 
 
