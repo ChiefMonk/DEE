@@ -79,7 +79,7 @@ public class ExtensionUtils
                 collection.addFormula(FormularType.Propositional, parsePropositionalFormula(rawFormula));               
             }
             
-        	System.out.println(String.format("%s: Text: %s, Type: %s", lineNumber, rawFormula, formularType));
+        	System.out.println(String.format("%s: Statement: %s, Type: %s", lineNumber, rawFormula, formularType));
             
             lineNumber++;
         }          
