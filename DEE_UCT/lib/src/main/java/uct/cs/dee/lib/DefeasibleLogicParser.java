@@ -15,7 +15,7 @@ import uct.cs.dee.lib.models.*;
 
 /**
  *
- * @author ChipoH
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public class DefeasibleLogicParser {
     

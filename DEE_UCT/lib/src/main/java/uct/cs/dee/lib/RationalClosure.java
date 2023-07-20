@@ -13,7 +13,7 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 /**
  *
- * @author stevewang
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public class RationalClosure 
 {

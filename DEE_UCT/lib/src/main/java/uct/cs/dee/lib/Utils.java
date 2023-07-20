@@ -16,7 +16,7 @@ import org.tweetyproject.logics.pl.syntax.Proposition;
 
 /**
  *
- * @author stevewang
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public class Utils 
 {

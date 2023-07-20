@@ -4,7 +4,7 @@ import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 
 /**
  *
- * @author stevewang
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public class RationalClosureResults 
 {
