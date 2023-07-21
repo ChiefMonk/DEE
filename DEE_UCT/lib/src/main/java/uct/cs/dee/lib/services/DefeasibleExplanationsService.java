@@ -4,14 +4,12 @@
  */
 package uct.cs.dee.lib.services;
 
-import uct.cs.dee.lib.interfaces.IEntailmentService;
+import uct.cs.dee.lib.interfaces.IExplanationsService;
 
 /**
  *
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
-public final class DefeasibleEntailmentService implements IEntailmentService {
-       
-    // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">
-    // </editor-fold>
+public class DefeasibleExplanationsService implements IExplanationsService {
+    
 }
