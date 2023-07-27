@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  *
- * @author SteveW
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public class HittingSetTree 
 {

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package uct.cs.dee.gui;
 
 import java.awt.Frame;
@@ -24,7 +20,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 /**
  *
- * @author SteveW
+ * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public class MainFrameOriginal extends javax.swing.JFrame {
 
@@ -361,7 +357,7 @@ public class MainFrameOriginal extends javax.swing.JFrame {
     {
         List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
         
-        RationalClosureResults rationalClosure= RationalClosure.computeRationalClosure(knowledgeBase, query);
+        RationalClosureResults rationalClosure = RationalClosure.computeRationalClosure(knowledgeBase, query);
         System.out.println(rationalClosure);
         
         if (!rationalClosure.entailmentsHolds())

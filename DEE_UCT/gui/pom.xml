@@ -28,7 +28,7 @@
                         <manifest>
                           <addClasspath>true</addClasspath>
                            <classpathPrefix>lib/</classpathPrefix>
-                          <mainClass>uct.cs.dee.gui.MainFrame</mainClass>
+                          <mainClass>uct.cs.dee.gui.MainWindow</mainClass>
                         </manifest>
                       </archive>
                     <descriptorRefs>
@@ -53,7 +53,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
-        <exec.mainClass>uct.cs.dee.gui.MainFrame</exec.mainClass>
+        <exec.mainClass>uct.cs.dee.gui.MainWindow</exec.mainClass>
     </properties>
      <dependencies>       
          <dependency>
