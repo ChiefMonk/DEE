@@ -62,9 +62,9 @@
             <version>3.1.1</version>
          </dependency>
           <dependency>
-               <groupId>${project.groupId}</groupId>
-               <artifactId>uct.cs.dee.lib</artifactId>
-               <version>${project.version}</version>
-          </dependency>
+            <groupId>org.tweetyproject</groupId>
+            <artifactId>tweety-full</artifactId>
+            <version>1.24</version>
+         </dependency>
      </dependencies>
 </project>

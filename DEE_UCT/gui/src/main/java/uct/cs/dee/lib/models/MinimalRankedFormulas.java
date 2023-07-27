@@ -118,6 +118,24 @@ public class MinimalRankedFormulas
     
     public String toString()
     {
+        StringBuilder stringBuilder = new StringBuilder();        
+        
+        for (int i = 0; i < this.finitlyRankedFormulas.size(); i++)
+        {
+            stringBuilder.append("Rank ").append(i).append(" :   ")                   
+                    .append(formatFormulaList(this.finitlyRankedFormulas.get(i)))
+                    .append("\n");
+        }
+        
+        stringBuilder.append("Rank ∞").append(":   ")                       
+                .append(formatFormulaList(this.infinitlyRankedFormulas))
+                .append("\n");
+        
+        return stringBuilder.toString();
+    }
+    
+    public String toString2()
+    {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("R_{INFINITY}")
                 .append("\t|")

@@ -24,12 +24,12 @@ public class RationalClosure
         SatReasoner reasoner = new SatReasoner();
         
         MinimalRankedFormulas minimalRankedFormulas = computeMinimalRanking(knowledgeBase, reasoner);
-        //System.out.println("=====Minimal Ranked Formulas=====");
-        //System.out.println(minimalRankedFormulas);
+        System.out.println("=====Minimal Ranked Formulas=====");
+        System.out.println(minimalRankedFormulas);
         
         PlBeliefSet R = new PlBeliefSet(Utils.materialise(minimalRankedFormulas.getAllFormulas()));
-        //System.out.println("=====R=====");
-        //System.out.println(R);
+        System.out.println("=====R=====");
+        System.out.println(R);
         
         int i = 0;
         
