@@ -28,7 +28,7 @@
                         <manifest>
                           <addClasspath>true</addClasspath>
                            <classpathPrefix>lib/</classpathPrefix>
-                          <mainClass>uct.cs.dee.gui.MainWindow</mainClass>
+                          <mainClass>uct.cs.dee.gui.MainFrame</mainClass>
                         </manifest>
                       </archive>
                     <descriptorRefs>
@@ -53,7 +53,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
-        <exec.mainClass>uct.cs.dee.gui.MainWindow</exec.mainClass>
+        <exec.mainClass>uct.cs.dee.gui.MainFrame</exec.mainClass>
     </properties>
      <dependencies>       
          <dependency>
@@ -62,9 +62,9 @@
             <version>3.1.1</version>
          </dependency>
           <dependency>
-               <groupId>${project.groupId}</groupId>
-               <artifactId>uct.cs.dee.lib</artifactId>
-               <version>${project.version}</version>
-          </dependency>
+            <groupId>org.tweetyproject</groupId>
+            <artifactId>tweety-full</artifactId>
+            <version>1.24</version>
+         </dependency>
      </dependencies>
 </project>

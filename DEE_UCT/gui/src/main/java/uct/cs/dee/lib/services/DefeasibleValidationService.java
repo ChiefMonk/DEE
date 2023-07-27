@@ -6,6 +6,7 @@ package uct.cs.dee.lib.services;
 
 import org.tweetyproject.commons.ParserException;
 import org.tweetyproject.logics.pl.parser.PlParser;
+import org.tweetyproject.logics.pl.syntax.PlFormula;
 import uct.cs.dee.lib.interfaces.IValidationService;
 
 /**
@@ -74,7 +75,7 @@ public class DefeasibleValidationService implements IValidationService {
      * @return org.tweetyproject.logics.pl.parser.PlParser
      */
     private PlFormula parseDefeasibleStatement(String statement) throws ParserException, Exception {
-        
+        return null;
     }
     // </editor-fold>
     

@@ -40,8 +40,10 @@ public final class DefeasibleParsingService implements IParsingService {
      */
     @Override
     public PlFormula parseFormula(String formula) throws ParserException, Exception {        
-        if (statement == null || statement.isEmpty())
-             return false;
+        if (formula == null || formula.isEmpty())
+             return null;
+        
+        return null;
     }
     
     // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">
@@ -52,6 +54,7 @@ public final class DefeasibleParsingService implements IParsingService {
      */
     private PlFormula parseDefeasibleStatement(String statement) throws ParserException, Exception {
         
+        return null;
     }
     
     /**
@@ -60,7 +63,7 @@ public final class DefeasibleParsingService implements IParsingService {
      * @return org.tweetyproject.logics.pl.parser.PlParser
      */
     private PlFormula parseClassicalStatement(String statement) throws ParserException, Exception {
-        
+        return null;
     }
     // </editor-fold>
     
