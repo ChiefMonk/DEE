@@ -1,4 +1,4 @@
-package uct.cs.dee.lib.interfaces;
+package uct.cs.dee.services;
 
 import org.tweetyproject.commons.ParserException;
 

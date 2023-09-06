@@ -4,7 +4,7 @@
  */
 package uct.cs.dee.lib.services;
 
-import uct.cs.dee.lib.interfaces.IExplanationsService;
+import uct.cs.dee.services.IExplanationsService;
 
 /**
  *
