@@ -52,7 +52,7 @@ public class DefeasibleLogicParser {
             for (Object o = stack.pop(); !((o instanceof String) && ((String) o).equals("(")); o = stack.pop())
 		subFormula.add(0, o);
             PlFormula x = null;
-            if (subFormula.contains(DefeasibleLogicSymbol.DEFEASIBLEIMPLICATION()))
+            if (subFormula.contains(DefeasibleKnowledgeBaseService.SYMBOL_DEFEASIBLE_IMPLICATION))
                 x = parseDefeasibleImplication(subFormula);
             else
                 x = _plParser.parseFormula(constructString(subFormula));
@@ -61,7 +61,7 @@ public class DefeasibleLogicParser {
         else if (token.equals(">") && stack.lastElement().equals("~"))
         {
             stack.pop();
-            stack.push(DefeasibleLogicSymbol.DEFEASIBLEIMPLICATION());
+            stack.push(DefeasibleKnowledgeBaseService.SYMBOL_DEFEASIBLE_IMPLICATION);
         }
         else
         {
@@ -84,7 +84,7 @@ public class DefeasibleLogicParser {
         boolean isRightFormula = false;
         for (Object o : formula)
         {
-            if ((o instanceof String) && ((String)o).equals(DefeasibleLogicSymbol.DEFEASIBLEIMPLICATION()))
+            if ((o instanceof String) && ((String)o).equals(DefeasibleKnowledgeBaseService.SYMBOL_DEFEASIBLE_IMPLICATION))
                 isRightFormula = true;
             else if (isRightFormula)
                 right.add(o);

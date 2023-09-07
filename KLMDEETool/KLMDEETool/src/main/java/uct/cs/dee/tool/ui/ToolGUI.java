@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import java.io.File;
-import java.io.FileNotFoundException;
 import uct.cs.dee.tool.models.*;
 import uct.cs.dee.tool.utils.*;
 import org.tweetyproject.logics.pl.parser.PlParser;
@@ -572,20 +570,30 @@ public class ToolGUI extends javax.swing.JFrame {
         {
             ButtonClearOutputsActionPerformed(evt);           
                     
-            String inputKnowledgeBase = textAreaInputKB.getText();             
-            if (inputKnowledgeBase == null || inputKnowledgeBase.isEmpty())
-                throw new Exception("Please define a valid defeasible knowledge base."); 
+            String inputKb = textAreaInputKB.getText();             
+            if (inputKb == null || inputKb.isEmpty())
+                throw new Exception("Please define a valid defeasible knowledge base, K."); 
             
-             List<String> kbStatementList = new ArrayList<String>();             
+            List<String> kbStatementList = new ArrayList<String>();             
                        
-             for (String line : inputKnowledgeBase.split("\\n")){                 
+            for (String line : inputKb.split("\\n")){                 
                 if (line == null || line.isEmpty())
                     continue;
                 
                 kbStatementList.add(line.trim());              
              }
             
-            initKnowledgeBase(kbStatementList);                        
+              ValidationResult<List<String>> validKb = _knowledgeBaseService.validateKnowledgeBase(kbStatementList);
+            
+            if(validKb.isValid()) {
+                setOutputKB("");        
+                for (String formula : validKb.getData()) {          
+                    appendOutputKB(formula);                           
+                }    
+            }
+            else {
+                showErrorPopupMessage(ErrorInputKnowledgeBase, validKb.getMessage());
+            }
         }
         catch(Exception ex)
         {
@@ -594,24 +602,11 @@ public class ToolGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonVerifyKBActionPerformed
 
     private void ButtonVerifyQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyQueryActionPerformed
-       try
-        {            
-            _queryFormula = null;
-            
-            String inputQueryString = textFieldInputQuery.getText();
-             
-            if (inputQueryString == null || inputQueryString.isEmpty())
-                throw new Exception("Please enter a valid defeasible input query.\nIt must contain a defeasible implication connective (~>)");     
-                       
-            if (!inputQueryString.contains("~>"))             
-                throw new Exception("The specified input query is not a defeasible statement.\nPlease correct and try again");    
-             
-            initQuery(inputQueryString);             
-        }
-        catch(Exception ex)
-        {
-            showErrorPopupMessage(ErrorInputQuery, ex);
-        }
+       
+        ValidationResult<String> validQuery = _knowledgeBaseService.validateQuery( textFieldInputQuery.getText());
+        
+        if(!validQuery.isValid())
+            showErrorPopupMessage(ErrorInputQuery, validQuery.getMessage());
     }//GEN-LAST:event_ButtonVerifyQueryActionPerformed
 
     private void ButtonVerifyAndComputeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyAndComputeAllActionPerformed
@@ -621,12 +616,12 @@ public class ToolGUI extends javax.swing.JFrame {
         ButtonVerifyKBActionPerformed(evt);
         ButtonVerifyQueryActionPerformed(evt);
         
-        if(_knowledgeBaseSet == null || _queryFormula == null)
+        if(_knowledgeBaseService.getKnowledgeBase() == null || _knowledgeBaseService.getQuery() == null)
             return;
         
         try 
         {
-            computeDefeasibleExplanation(_knowledgeBaseSet, _queryFormula);
+            computeDefeasibleExplanation(_knowledgeBaseService.getKnowledgeBase(), _knowledgeBaseService.getQuery());
         } 
         catch (Exception ex) 
         {
@@ -773,9 +768,9 @@ public class ToolGUI extends javax.swing.JFrame {
         _knowledgeBaseService = new DefeasibleKnowledgeBaseService();        
     }
     
-    private void initKnowledgeBase(List<String> kbStatementList) throws ParserException, Exception
+    private void initKnowledgeBase2(List<String> kbStatementList) throws ParserException, Exception
     {
-        _knowledgeBaseSet = new PlBeliefSet();
+       // _knowledgeBaseSet = new PlBeliefSet();
         PlParser cp = new PlParser();
         DefeasibleLogicParser dp = new DefeasibleLogicParser(cp);       
                     
@@ -787,31 +782,31 @@ public class ToolGUI extends javax.swing.JFrame {
             kbLine = _knowledgeBaseService.translateFormula(kbLine);
             
            if (kbLine.contains("~>"))
-                _knowledgeBaseSet.add(dp.parseFormula(kbLine));
+               ; //_knowledgeBaseSet.add(dp.parseFormula(kbLine));
             else
-                _knowledgeBaseSet.add(cp.parseFormula(kbLine));                      
+               ; //_knowledgeBaseSet.add(cp.parseFormula(kbLine));                      
         }
         
         setOutputKB("");        
         int lineNumber = 1;
-        for (PlFormula plFormula : _knowledgeBaseSet)
-        {          
-            appendOutputKB(String.format("%s: %s",lineNumber, plFormula));               
-            lineNumber++;            
-        }                         
+//        for (PlFormula plFormula : _knowledgeBaseSet)
+//        {          
+//            appendOutputKB(String.format("%s: %s",lineNumber, plFormula));               
+//            lineNumber++;            
+//        }                         
     }       
     
-    private void initQuery(String queryString) throws ParserException, Exception
-    {        
-        PlParser classicalParser = new PlParser();
-        DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(classicalParser);
-        _queryFormula = defeasibleParser.parseFormula(_knowledgeBaseService.translateFormula(queryString));        
-    }
+//    private void initQuery(String queryString) throws ParserException, Exception
+//    {        
+//        PlParser classicalParser = new PlParser();
+//        DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(classicalParser);
+//        _queryFormula = defeasibleParser.parseFormula(_knowledgeBaseService.translateFormula(queryString));        
+//    }
     
     private void computeDefeasibleExplanation(PlBeliefSet knowledgeBase, PlFormula query) throws Exception
     {
-        appendOutputExplanation("Knowledge Base, K = " + _knowledgeBaseSet.toString());
-        appendOutputExplanation("Query, α = " +  _queryFormula.toString()); 
+        appendOutputExplanation("Knowledge Base, K = " + knowledgeBase.toString());
+        appendOutputExplanation("Query, α = " +  query.toString()); 
         
         List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
         
@@ -828,7 +823,7 @@ public class ToolGUI extends javax.swing.JFrame {
             return;
         }
         
-        textAreaOutputEntailment.append("Yes, the input query, " +  _queryFormula.toString() + ", is entailed by the knowledge base.");
+        textAreaOutputEntailment.append("Yes, the input query, " +  query.toString() + ", is entailed by the knowledge base.");
         
         int ranksRemoved = rationalClosure.getRanksRemoved();
         

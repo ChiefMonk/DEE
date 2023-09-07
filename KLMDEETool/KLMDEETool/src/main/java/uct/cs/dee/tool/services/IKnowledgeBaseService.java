@@ -5,6 +5,9 @@
 package uct.cs.dee.tool.services;
 
 import java.util.List;
+import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
+import org.tweetyproject.logics.pl.syntax.PlFormula;
+import uct.cs.dee.tool.models.ValidationResult;
 
 /**
  *
@@ -22,15 +25,25 @@ public interface IKnowledgeBaseService  {
      * 
      * @param inputQuery
      * @return 
-     * @throws java.lang.Exception 
      */
-    public String validateQuery(String inputQuery) throws Exception;
+    public ValidationResult<String> validateQuery(String inputQuery);
     
     /**
      * 
      * @param kbStatementList
      * @return 
-     * @throws java.lang.Exception 
      */
-    public List<String> validateKnowledgeBase(List<String> kbStatementList) throws Exception;
+    public ValidationResult<List<String>> validateKnowledgeBase(List<String> kbStatementList);
+    
+     /**
+     * 
+     * @return 
+    */
+    public PlBeliefSet getKnowledgeBase();
+    
+    /**
+     * 
+     * @return 
+    */
+    public PlFormula getQuery();
 }
