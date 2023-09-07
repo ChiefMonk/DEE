@@ -10,6 +10,7 @@ import org.tweetyproject.logics.pl.syntax.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import uct.cs.dee.tool.impl.DefeasibleKnowledgeBaseService;
 import uct.cs.dee.tool.models.*;
 
 
@@ -107,8 +108,9 @@ public class DefeasibleLogicParser {
     
     private boolean hasDefeasibleImplication(List<Object> list)
     {
-        if (list.contains(DefeasibleLogicSymbol.DEFEASIBLEIMPLICATION()))
+        if (list.contains(DefeasibleKnowledgeBaseService.SYMBOL_DEFEASIBLE_IMPLICATION))
             return true;
+        
         for (Object o : list)
         {
             if (o instanceof DefeasibleImplication)

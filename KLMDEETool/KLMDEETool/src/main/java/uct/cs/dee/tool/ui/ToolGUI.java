@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.io.File;
+import java.io.FileNotFoundException;
 import uct.cs.dee.tool.models.*;
 import uct.cs.dee.tool.utils.*;
 import org.tweetyproject.logics.pl.parser.PlParser;
@@ -16,8 +18,14 @@ import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 import com.formdev.flatlaf.FlatLightLaf;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import javax.swing.JFileChooser;
 import javax.swing.text.BadLocationException;
 import org.tweetyproject.commons.ParserException;
+import uct.cs.dee.tool.impl.DefeasibleKnowledgeBaseService;
+import uct.cs.dee.tool.services.*;
 
 /**
  *
@@ -25,15 +33,16 @@ import org.tweetyproject.commons.ParserException;
  */
 public class ToolGUI extends javax.swing.JFrame {
     
-    private PlFormula _queryFormula;
-    private PlBeliefSet _knowledgeBaseSet;  
+    private PlFormula _queryFormula1;
+    private PlBeliefSet _knowledgeBaseSet1;  
+    private IKnowledgeBaseService _knowledgeBaseService;
     
     /**
      * Creates new form ToolGUI
      */
     public ToolGUI() {
         initComponents();
-          this.setResizable(true);
+        this.setResizable(true);
           
            this.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -41,6 +50,8 @@ public class ToolGUI extends javax.swing.JFrame {
         public void windowClosing(java.awt.event.WindowEvent windowEvent) {
             ButtonExitApplicationActionPerformed(null);
         }});
+        
+        initialiseServices();
     }
 
     /**
@@ -112,12 +123,14 @@ public class ToolGUI extends javax.swing.JFrame {
         PanelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         PanelHeader.setAlignmentX(1.0F);
         PanelHeader.setAlignmentY(1.0F);
-        PanelHeader.setPreferredSize(new java.awt.Dimension(700, 48));
+        PanelHeader.setPreferredSize(new java.awt.Dimension(700, 54));
 
+        LabelHeaderDee.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         LabelHeaderDee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelHeaderDee.setText("~ KLMDEETool - The KLM Defeasible Entailment and Explanations Tool ~");
         LabelHeaderDee.setAlignmentY(0.0F);
 
+        LabelHeaderUct.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         LabelHeaderUct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelHeaderUct.setText("University of Cape Town");
 
@@ -138,9 +151,9 @@ public class ToolGUI extends javax.swing.JFrame {
             PanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelHeaderLayout.createSequentialGroup()
                 .addComponent(LabelHeaderDee)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(LabelHeaderUct)
-                .addGap(0, 8, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         PanelInputs.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -245,7 +258,7 @@ public class ToolGUI extends javax.swing.JFrame {
         PanelOutputKB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Verified Knowledge Base (KB):");
+        jLabel3.setText("Verified Knowledge Base, K :");
 
         textAreaOutputKB.setEditable(false);
         textAreaOutputKB.setColumns(20);
@@ -288,10 +301,10 @@ public class ToolGUI extends javax.swing.JFrame {
         jScrollPane4.setViewportView(textAreaOutputDiscardedRanks);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("BaseRanking of Statements");
+        jLabel4.setText("BaseRanking of Statements :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Rational Closure Discarded Ranks of Statements");
+        jLabel5.setText("Rational Closure Discarded Ranks of Statements :");
 
         javax.swing.GroupLayout PanelOutputBaseRankingLayout = new javax.swing.GroupLayout(PanelOutputBaseRanking);
         PanelOutputBaseRanking.setLayout(PanelOutputBaseRankingLayout);
@@ -339,10 +352,10 @@ public class ToolGUI extends javax.swing.JFrame {
         jScrollPane6.setViewportView(textAreaOutputJustification);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel6.setText("Entailment (does K entail α?):");
+        jLabel6.setText("Entailment (does K entail α?) :");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel7.setText("Justification (Minimal subset of K that entail α):");
+        jLabel7.setText("Justification (minimal subset of K that entails α) :");
 
         javax.swing.GroupLayout PanelOutputEntailAndJustifyLayout = new javax.swing.GroupLayout(PanelOutputEntailAndJustify);
         PanelOutputEntailAndJustify.setLayout(PanelOutputEntailAndJustifyLayout);
@@ -383,7 +396,7 @@ public class ToolGUI extends javax.swing.JFrame {
         jScrollPane7.setViewportView(textAreaOutputExplanation);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel8.setText("Explanation (why and how K entails α?):");
+        jLabel8.setText("Explanation (why and how K entails α?) :");
 
         jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
@@ -455,7 +468,7 @@ public class ToolGUI extends javax.swing.JFrame {
             .addGroup(PanelOutputExplanationsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelOutputExplanationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelOutputExplanationsLayout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -506,7 +519,7 @@ public class ToolGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(PanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -515,16 +528,51 @@ public class ToolGUI extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="EVENT HANDLERS">
     private void ButtonLoadKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoadKBActionPerformed
-        // TODO add your handling code here:
+       
+        try 
+        {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new java.io.File("."));
+            fileChooser.setDialogTitle("Please select a file with the Knowledge Base");
+            
+            File kbFile = null;
+            
+            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){               
+                kbFile = fileChooser.getSelectedFile();  
+                clearInputsAndOutputsData();
+            }
+            else {
+                throw new Exception("Invalid Knowledge Base selection. \nPlease correct and try again");                   
+            }
+                             
+            Scanner scanner = new Scanner(kbFile);
+
+            while (scanner.hasNextLine())
+            {
+                String line = scanner.nextLine();
+
+                 if (line == null || line.isEmpty())
+                        continue;
+
+                textAreaInputKB.append(line.trim()+ "\n");     
+            }       
+        } 
+        catch (FileNotFoundException ex)
+        {
+            showErrorPopupMessage(ErrorInputKnowledgeBase, ex);
+        }  
+        catch (Exception ex)
+        {
+            showErrorPopupMessage(ErrorInputKnowledgeBase, ex);
+        }  
     }//GEN-LAST:event_ButtonLoadKBActionPerformed
 
     private void ButtonVerifyKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyKBActionPerformed
        try
         {
-            ButtonClearOutputsActionPerformed(evt);
-            _knowledgeBaseSet = null;
+            ButtonClearOutputsActionPerformed(evt);           
                     
-            String inputKnowledgeBase = textFieldInputQuery.getText();             
+            String inputKnowledgeBase = textAreaInputKB.getText();             
             if (inputKnowledgeBase == null || inputKnowledgeBase.isEmpty())
                 throw new Exception("Please define a valid defeasible knowledge base."); 
             
@@ -547,7 +595,7 @@ public class ToolGUI extends javax.swing.JFrame {
 
     private void ButtonVerifyQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyQueryActionPerformed
        try
-        {
+        {            
             _queryFormula = null;
             
             String inputQueryString = textFieldInputQuery.getText();
@@ -567,6 +615,9 @@ public class ToolGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonVerifyQueryActionPerformed
 
     private void ButtonVerifyAndComputeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyAndComputeAllActionPerformed
+        
+        ButtonClearOutputsActionPerformed(evt);           
+        
         ButtonVerifyKBActionPerformed(evt);
         ButtonVerifyQueryActionPerformed(evt);
         
@@ -592,10 +643,9 @@ public class ToolGUI extends javax.swing.JFrame {
         setOutputKB("");
         setOutputBaseRanking("");
         setOutputDiscardedRanks("");
-       // textAreaOutputBaseRank.setText("");
-      //  textAreaOutputEntailment.setText("");
-      // textAreaOutputJustification.setText("");
-      //  textAreaOutputExplanations.setText("");
+        setOutputEntailment("");
+        setOutputJustification("");
+        setOutputExplanation("");      
     }//GEN-LAST:event_ButtonClearOutputsActionPerformed
 
     private void ButtonExitApplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExitApplicationActionPerformed
@@ -611,13 +661,21 @@ public class ToolGUI extends javax.swing.JFrame {
 
      // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="OUTPUT DATA">
+    // <editor-fold defaultstate="collapsed" desc="INPUT and OUTPUT DATA">
+    private void clearInputsAndOutputsData() {
+        ButtonClearInputsActionPerformed(null);
+        ButtonClearOutputsActionPerformed(null);
+    }
+     
     private void setOutputKB(String text) {
         textAreaOutputKB.setText(text);
     }
     
      private void appendOutputKB(String text) {
-        textAreaOutputKB.append(text);
+        if (text == null || text.isEmpty())
+            return;
+        
+        textAreaOutputKB.append(text + "\n");
     }
     
     private void setOutputBaseRanking(String text) {
@@ -625,7 +683,9 @@ public class ToolGUI extends javax.swing.JFrame {
     }
     
     private void appendOutputBaseRanking(String text) {
-        textAreaOutputBaseRanking.append(text);
+        if (text == null || text.isEmpty())
+            return;        
+        textAreaOutputBaseRanking.append(text + "\n");
     }
     
     private void setOutputDiscardedRanks(String text) {
@@ -634,7 +694,41 @@ public class ToolGUI extends javax.swing.JFrame {
     }
     
     private void appendOutputDiscardedRanks(String text) {
-        textAreaOutputBaseRanking.append(text);
+        if (text == null || text.isEmpty())
+            return;
+        textAreaOutputBaseRanking.append(text + "\n");
+    }
+    
+    private void setOutputEntailment(String text) {
+        textAreaOutputEntailment.setText(text);
+       
+    }
+    
+    private void appendOutputEntailment(String text) {
+        if (text == null || text.isEmpty())
+            return;
+        textAreaOutputEntailment.append(text + "\n");
+    }
+    
+    private void setOutputJustification(String text) {
+        textAreaOutputJustification.setText(text);
+       
+    }
+    
+    private void appendOutputJustification(String text) {
+        if (text == null || text.isEmpty())
+            return;
+        textAreaOutputJustification.append(text + "\n");
+    }
+    
+    private void setOutputExplanation(String text) {
+        textAreaOutputExplanation.setText(text);       
+    }
+    
+    private void appendOutputExplanation(String text) {
+        if (text == null || text.isEmpty())
+            return;
+        textAreaOutputExplanation.append(text + "\n");
     }
     // </editor-fold>
     
@@ -675,6 +769,10 @@ public class ToolGUI extends javax.swing.JFrame {
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">      
+    private void initialiseServices() {
+        _knowledgeBaseService = new DefeasibleKnowledgeBaseService();        
+    }
+    
     private void initKnowledgeBase(List<String> kbStatementList) throws ParserException, Exception
     {
         _knowledgeBaseSet = new PlBeliefSet();
@@ -686,6 +784,8 @@ public class ToolGUI extends javax.swing.JFrame {
             if (kbLine == null || kbLine.isEmpty())
                 continue;
             
+            kbLine = _knowledgeBaseService.translateFormula(kbLine);
+            
            if (kbLine.contains("~>"))
                 _knowledgeBaseSet.add(dp.parseFormula(kbLine));
             else
@@ -696,22 +796,22 @@ public class ToolGUI extends javax.swing.JFrame {
         int lineNumber = 1;
         for (PlFormula plFormula : _knowledgeBaseSet)
         {          
-            appendOutputKB(String.format("%s: %s\n",lineNumber, plFormula));               
+            appendOutputKB(String.format("%s: %s",lineNumber, plFormula));               
             lineNumber++;            
         }                         
-    }
+    }       
     
     private void initQuery(String queryString) throws ParserException, Exception
     {        
         PlParser classicalParser = new PlParser();
         DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(classicalParser);
-        _queryFormula = defeasibleParser.parseFormula(queryString);        
+        _queryFormula = defeasibleParser.parseFormula(_knowledgeBaseService.translateFormula(queryString));        
     }
     
     private void computeDefeasibleExplanation(PlBeliefSet knowledgeBase, PlFormula query) throws Exception
     {
-        textAreaOutputExplanation.append("Input Knowledge Base: " + _knowledgeBaseSet.toString() + "\n");
-        textAreaOutputExplanation.append("Input Query: " + _queryFormula.toString() + "\n");
+        appendOutputExplanation("Knowledge Base, K = " + _knowledgeBaseSet.toString());
+        appendOutputExplanation("Query, α = " +  _queryFormula.toString()); 
         
         List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
         
@@ -737,15 +837,23 @@ public class ToolGUI extends javax.swing.JFrame {
             Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
             List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
             List<List<PlFormula>> dematerialisedJustification = new ArrayList<List<PlFormula>>();
+            
             for (List<PlFormula> justification : justifiactions)
             {
                 dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
             }
-            textAreaOutputJustification.append("Final Justification:\n");
+            
+            textAreaOutputJustification.append("Justification, J = { ");
+            int justSize = dematerialisedJustification.size();
+            int justCounter = 0;
             for (List<PlFormula> newJust : dematerialisedJustification)
             {
-                textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust) + "\n");
+                textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust));
+                justCounter++;
+                if(justCounter < justSize)
+                    textAreaOutputJustification.append(", ");
             }
+            textAreaOutputJustification.append(" }");
             return;
         }
         

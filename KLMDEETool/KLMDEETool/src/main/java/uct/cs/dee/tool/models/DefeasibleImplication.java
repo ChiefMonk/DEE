@@ -13,6 +13,7 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
 import org.tweetyproject.logics.pl.syntax.PlPredicate;
 import org.tweetyproject.logics.pl.syntax.PlSignature;
 import org.tweetyproject.logics.pl.syntax.Proposition;
+import uct.cs.dee.tool.impl.DefeasibleKnowledgeBaseService;
 
 /**
  *
@@ -198,7 +199,7 @@ public class DefeasibleImplication extends PlFormula
     @Override
     public String toString()
     {
-        return "(" + this.formulas.getFirst().toString() + DefeasibleLogicSymbol.DEFEASIBLEIMPLICATION() + this.formulas.getSecond().toString() +")";
+        return "(" + this.formulas.getFirst().toString() + DefeasibleKnowledgeBaseService.SYMBOL_DEFEASIBLE_IMPLICATION + this.formulas.getSecond().toString() +")";
     }
     
 }

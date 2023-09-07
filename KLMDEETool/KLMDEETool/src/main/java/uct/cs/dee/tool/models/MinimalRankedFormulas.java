@@ -127,9 +127,11 @@ public class MinimalRankedFormulas
                     .append("\n");
         }
         
+        if(!this.infinitlyRankedFormulas.isEmpty()) {
         stringBuilder.append("Rank ∞").append(":   ")                       
                 .append(formatFormulaList(this.infinitlyRankedFormulas))
                 .append("\n");
+        }
         
         return stringBuilder.toString();
     }

@@ -5,6 +5,7 @@
 package uct.cs.dee.tool.services;
 
 import org.tweetyproject.commons.ParserException;
+import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 /**
@@ -12,6 +13,9 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
 public interface IJustificationService {
+   
+    
+    public boolean computeJustification(PlBeliefSet knowledgeBase, PlFormula query) throws Exception;
     
     /**
      * 

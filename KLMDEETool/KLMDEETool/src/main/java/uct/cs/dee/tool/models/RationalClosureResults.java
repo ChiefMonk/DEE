@@ -8,10 +8,10 @@ import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
  */
 public class RationalClosureResults 
 {
-    private boolean entailment;
-    private int ranksRemoved;
-    private MinimalRankedFormulas rankedFormulas;
-    private PlBeliefSet remainingFormulas;
+    private final boolean entailment;
+    private final int ranksRemoved;
+    private final MinimalRankedFormulas rankedFormulas;
+    private final PlBeliefSet remainingFormulas;
     
     public RationalClosureResults(boolean entailment, int ranksRemoved, MinimalRankedFormulas rankedFormulas, PlBeliefSet remainingFormulas)
     {
@@ -31,16 +31,29 @@ public class RationalClosureResults
         return this.ranksRemoved;
     }
     
+    /**
+     *
+     * @return
+     */
     public MinimalRankedFormulas getMinimalRanking()
     {
         return this.rankedFormulas;
     }
     
+    /**
+     *
+     * @return
+     */
     public PlBeliefSet getRemainingFormulas()
     {
         return this.remainingFormulas;
     }
     
+    /**
+     *
+     * @return
+     */
+    @Override
     public String toString()
     {
         StringBuilder stringBuilder = new StringBuilder();
