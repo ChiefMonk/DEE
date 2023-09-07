@@ -16,7 +16,6 @@ import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.BadLocationException;
 import org.tweetyproject.commons.ParserException;
 
@@ -34,6 +33,14 @@ public class ToolGUI extends javax.swing.JFrame {
      */
     public ToolGUI() {
         initComponents();
+          this.setResizable(true);
+          
+           this.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+            ButtonExitApplicationActionPerformed(null);
+        }});
     }
 
     /**
@@ -52,9 +59,9 @@ public class ToolGUI extends javax.swing.JFrame {
         LabelHeaderUct = new javax.swing.JLabel();
         PanelInputs = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TextAreaInputKB = new javax.swing.JTextArea();
+        textAreaInputKB = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
-        TextFieldInputQuery = new javax.swing.JTextField();
+        textFieldInputQuery = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         ButtonLoadKB = new javax.swing.JButton();
         ButtonVerifyKB = new javax.swing.JButton();
@@ -63,17 +70,26 @@ public class ToolGUI extends javax.swing.JFrame {
         PanelOutputKB = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textAreaOutputKB = new javax.swing.JTextArea();
         PanelOutputBaseRanking = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        textAreaOutputBaseRanking = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea3 = new javax.swing.JTextArea();
+        textAreaOutputDiscardedRanks = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         PanelOutputEntailAndJustify = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        textAreaOutputEntailment = new javax.swing.JTextArea();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        textAreaOutputJustification = new javax.swing.JTextArea();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         PanelOutputExplanations = new javax.swing.JPanel();
-        PanelExitButtons = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        textAreaOutputExplanation = new javax.swing.JTextArea();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         ButtonClearInputs = new javax.swing.JButton();
         ButtonClearOutputs = new javax.swing.JButton();
         ButtonExitApplication = new javax.swing.JButton();
@@ -99,11 +115,11 @@ public class ToolGUI extends javax.swing.JFrame {
         PanelHeader.setPreferredSize(new java.awt.Dimension(700, 48));
 
         LabelHeaderDee.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelHeaderDee.setText("~ DEE - Defeasible Entailment and Explanations ~");
+        LabelHeaderDee.setText("~ KLMDEETool - The KLM Defeasible Entailment and Explanations Tool ~");
         LabelHeaderDee.setAlignmentY(0.0F);
 
         LabelHeaderUct.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelHeaderUct.setText("University of Cape Town, Department of Computer Science");
+        LabelHeaderUct.setText("University of Cape Town");
 
         javax.swing.GroupLayout PanelHeaderLayout = new javax.swing.GroupLayout(PanelHeader);
         PanelHeader.setLayout(PanelHeaderLayout);
@@ -131,29 +147,54 @@ public class ToolGUI extends javax.swing.JFrame {
         PanelInputs.setAlignmentX(1.0F);
         PanelInputs.setAlignmentY(1.0F);
 
-        TextAreaInputKB.setColumns(20);
-        TextAreaInputKB.setRows(10);
-        jScrollPane1.setViewportView(TextAreaInputKB);
+        textAreaInputKB.setColumns(20);
+        textAreaInputKB.setRows(11);
+        textAreaInputKB.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                textAreaInputKBKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(textAreaInputKB);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel1.setText("Define the defeasible Knowledge Base (KB) :");
+        jLabel1.setText("Define the defeasible Knowledge Base, K :");
 
-        TextFieldInputQuery.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        textFieldInputQuery.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Enter the defeasible Query (Does KB entail Query?) :");
+        jLabel2.setText("Enter the defeasible Query, α :");
 
         ButtonLoadKB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ButtonLoadKB.setText("Load Knowledge Base File");
+        ButtonLoadKB.setText("Load Knowledge Base, K, from a File");
+        ButtonLoadKB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonLoadKBActionPerformed(evt);
+            }
+        });
 
         ButtonVerifyKB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ButtonVerifyKB.setText("Verify Knowledge Base");
+        ButtonVerifyKB.setText("Verify Knowledge Base, K");
+        ButtonVerifyKB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonVerifyKBActionPerformed(evt);
+            }
+        });
 
         ButtonVerifyQuery.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ButtonVerifyQuery.setText("Verify Query");
+        ButtonVerifyQuery.setText("Verify Query, α");
+        ButtonVerifyQuery.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonVerifyQueryActionPerformed(evt);
+            }
+        });
 
         ButtonVerifyAndComputeAll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ButtonVerifyAndComputeAll.setText("Verify and Compute Entailment and Explanations");
+        ButtonVerifyAndComputeAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonVerifyAndComputeAllActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelInputsLayout = new javax.swing.GroupLayout(PanelInputs);
         PanelInputs.setLayout(PanelInputsLayout);
@@ -163,40 +204,42 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ButtonLoadKB))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(ButtonLoadKB, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textFieldInputQuery, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(PanelInputsLayout.createSequentialGroup()
                         .addComponent(ButtonVerifyKB)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(ButtonVerifyQuery))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(TextFieldInputQuery)
-                    .addComponent(ButtonVerifyAndComputeAll, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
+                        .addComponent(ButtonVerifyQuery, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ButtonVerifyAndComputeAll, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         PanelInputsLayout.setVerticalGroup(
             PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelInputsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(PanelInputsLayout.createSequentialGroup()
-                        .addComponent(TextFieldInputQuery, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFieldInputQuery, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ButtonLoadKB)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ButtonVerifyKB)
-                            .addComponent(ButtonVerifyQuery)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(PanelInputsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ButtonLoadKB)
-                    .addComponent(ButtonVerifyAndComputeAll, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                            .addComponent(ButtonVerifyQuery))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ButtonVerifyAndComputeAll, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         PanelOutputKB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -204,10 +247,10 @@ public class ToolGUI extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Verified Knowledge Base (KB):");
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(10);
-        jScrollPane2.setViewportView(jTextArea1);
+        textAreaOutputKB.setEditable(false);
+        textAreaOutputKB.setColumns(20);
+        textAreaOutputKB.setRows(10);
+        jScrollPane2.setViewportView(textAreaOutputKB);
 
         javax.swing.GroupLayout PanelOutputKBLayout = new javax.swing.GroupLayout(PanelOutputKB);
         PanelOutputKB.setLayout(PanelOutputKBLayout);
@@ -219,7 +262,7 @@ public class ToolGUI extends javax.swing.JFrame {
                     .addGroup(PanelOutputKBLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE))
                 .addContainerGap())
         );
         PanelOutputKBLayout.setVerticalGroup(
@@ -228,21 +271,21 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                .addComponent(jScrollPane2)
                 .addContainerGap())
         );
 
         PanelOutputBaseRanking.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane3.setViewportView(jTextArea2);
+        textAreaOutputBaseRanking.setEditable(false);
+        textAreaOutputBaseRanking.setColumns(20);
+        textAreaOutputBaseRanking.setRows(5);
+        jScrollPane3.setViewportView(textAreaOutputBaseRanking);
 
-        jTextArea3.setEditable(false);
-        jTextArea3.setColumns(20);
-        jTextArea3.setRows(5);
-        jScrollPane4.setViewportView(jTextArea3);
+        textAreaOutputDiscardedRanks.setEditable(false);
+        textAreaOutputDiscardedRanks.setColumns(20);
+        textAreaOutputDiscardedRanks.setRows(5);
+        jScrollPane4.setViewportView(textAreaOutputDiscardedRanks);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("BaseRanking of Statements");
@@ -285,62 +328,138 @@ public class ToolGUI extends javax.swing.JFrame {
 
         PanelOutputEntailAndJustify.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        textAreaOutputEntailment.setEditable(false);
+        textAreaOutputEntailment.setColumns(20);
+        textAreaOutputEntailment.setRows(3);
+        jScrollPane5.setViewportView(textAreaOutputEntailment);
+
+        textAreaOutputJustification.setEditable(false);
+        textAreaOutputJustification.setColumns(20);
+        textAreaOutputJustification.setRows(3);
+        jScrollPane6.setViewportView(textAreaOutputJustification);
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel6.setText("Entailment (does K entail α?):");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel7.setText("Justification (Minimal subset of K that entail α):");
+
         javax.swing.GroupLayout PanelOutputEntailAndJustifyLayout = new javax.swing.GroupLayout(PanelOutputEntailAndJustify);
         PanelOutputEntailAndJustify.setLayout(PanelOutputEntailAndJustifyLayout);
         PanelOutputEntailAndJustifyLayout.setHorizontalGroup(
             PanelOutputEntailAndJustifyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(PanelOutputEntailAndJustifyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelOutputEntailAndJustifyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(PanelOutputEntailAndJustifyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelOutputEntailAndJustifyLayout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6))
+                .addContainerGap())
         );
         PanelOutputEntailAndJustifyLayout.setVerticalGroup(
             PanelOutputEntailAndJustifyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 89, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelOutputEntailAndJustifyLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelOutputEntailAndJustifyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(PanelOutputEntailAndJustifyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 64, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6))
+                .addContainerGap())
         );
 
         PanelOutputExplanations.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        textAreaOutputExplanation.setEditable(false);
+        textAreaOutputExplanation.setColumns(20);
+        textAreaOutputExplanation.setRows(5);
+        jScrollPane7.setViewportView(textAreaOutputExplanation);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel8.setText("Explanation (why and how K entails α?):");
+
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+
+        ButtonClearInputs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ButtonClearInputs.setText("Clear all Inputs");
+        ButtonClearInputs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonClearInputsActionPerformed(evt);
+            }
+        });
+
+        ButtonClearOutputs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ButtonClearOutputs.setText("Clear all Outputs");
+        ButtonClearOutputs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonClearOutputsActionPerformed(evt);
+            }
+        });
+
+        ButtonExitApplication.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ButtonExitApplication.setText("Exit Application");
+        ButtonExitApplication.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonExitApplicationActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ButtonClearInputs, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ButtonClearOutputs, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(ButtonExitApplication, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(ButtonClearInputs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ButtonClearOutputs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(ButtonExitApplication)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout PanelOutputExplanationsLayout = new javax.swing.GroupLayout(PanelOutputExplanations);
         PanelOutputExplanations.setLayout(PanelOutputExplanationsLayout);
         PanelOutputExplanationsLayout.setHorizontalGroup(
             PanelOutputExplanationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(PanelOutputExplanationsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelOutputExplanationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelOutputExplanationsLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane7))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         PanelOutputExplanationsLayout.setVerticalGroup(
             PanelOutputExplanationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 95, Short.MAX_VALUE)
-        );
-
-        PanelExitButtons.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        ButtonClearInputs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ButtonClearInputs.setText("Clear All Inputs");
-
-        ButtonClearOutputs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ButtonClearOutputs.setText("Clear All Outputs");
-
-        ButtonExitApplication.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ButtonExitApplication.setText("Exit Application");
-
-        javax.swing.GroupLayout PanelExitButtonsLayout = new javax.swing.GroupLayout(PanelExitButtons);
-        PanelExitButtons.setLayout(PanelExitButtonsLayout);
-        PanelExitButtonsLayout.setHorizontalGroup(
-            PanelExitButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelExitButtonsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ButtonClearInputs)
-                .addGap(67, 67, 67)
-                .addComponent(ButtonClearOutputs)
-                .addGap(50, 50, 50)
-                .addComponent(ButtonExitApplication)
-                .addContainerGap())
-        );
-        PanelExitButtonsLayout.setVerticalGroup(
-            PanelExitButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelExitButtonsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(PanelExitButtonsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ButtonClearInputs)
-                    .addComponent(ButtonClearOutputs)
-                    .addComponent(ButtonExitApplication))
+            .addGroup(PanelOutputExplanationsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(PanelOutputExplanationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(PanelOutputExplanationsLayout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane7)))
                 .addContainerGap())
         );
 
@@ -351,12 +470,11 @@ public class ToolGUI extends javax.swing.JFrame {
             .addGroup(PanelMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(PanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(PanelExitButtons, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PanelOutputEntailAndJustify, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PanelOutputBaseRanking, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 1233, Short.MAX_VALUE)
                     .addGroup(PanelMainLayout.createSequentialGroup()
-                        .addComponent(PanelInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(PanelInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(PanelOutputKB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(PanelOutputExplanations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -371,14 +489,12 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addGroup(PanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(PanelInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(PanelOutputKB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelOutputBaseRanking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelOutputEntailAndJustify, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(PanelOutputExplanations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(11, 11, 11)
-                .addComponent(PanelExitButtons, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -390,12 +506,293 @@ public class ToolGUI extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    // <editor-fold defaultstate="collapsed" desc="EVENT HANDLERS">
+    private void ButtonLoadKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoadKBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ButtonLoadKBActionPerformed
+
+    private void ButtonVerifyKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyKBActionPerformed
+       try
+        {
+            ButtonClearOutputsActionPerformed(evt);
+            _knowledgeBaseSet = null;
+                    
+            String inputKnowledgeBase = textFieldInputQuery.getText();             
+            if (inputKnowledgeBase == null || inputKnowledgeBase.isEmpty())
+                throw new Exception("Please define a valid defeasible knowledge base."); 
+            
+             List<String> kbStatementList = new ArrayList<String>();             
+                       
+             for (String line : inputKnowledgeBase.split("\\n")){                 
+                if (line == null || line.isEmpty())
+                    continue;
+                
+                kbStatementList.add(line.trim());              
+             }
+            
+            initKnowledgeBase(kbStatementList);                        
+        }
+        catch(Exception ex)
+        {
+            showErrorPopupMessage(ErrorInputKnowledgeBase, ex);
+        }
+    }//GEN-LAST:event_ButtonVerifyKBActionPerformed
+
+    private void ButtonVerifyQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyQueryActionPerformed
+       try
+        {
+            _queryFormula = null;
+            
+            String inputQueryString = textFieldInputQuery.getText();
+             
+            if (inputQueryString == null || inputQueryString.isEmpty())
+                throw new Exception("Please enter a valid defeasible input query.\nIt must contain a defeasible implication connective (~>)");     
+                       
+            if (!inputQueryString.contains("~>"))             
+                throw new Exception("The specified input query is not a defeasible statement.\nPlease correct and try again");    
+             
+            initQuery(inputQueryString);             
+        }
+        catch(Exception ex)
+        {
+            showErrorPopupMessage(ErrorInputQuery, ex);
+        }
+    }//GEN-LAST:event_ButtonVerifyQueryActionPerformed
+
+    private void ButtonVerifyAndComputeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyAndComputeAllActionPerformed
+        ButtonVerifyKBActionPerformed(evt);
+        ButtonVerifyQueryActionPerformed(evt);
+        
+        if(_knowledgeBaseSet == null || _queryFormula == null)
+            return;
+        
+        try 
+        {
+            computeDefeasibleExplanation(_knowledgeBaseSet, _queryFormula);
+        } 
+        catch (Exception ex) 
+        {
+             showErrorPopupMessage("Defeasible Entailment and Justification Computation Error", ex);           
+        }    
+    }//GEN-LAST:event_ButtonVerifyAndComputeAllActionPerformed
+
+    private void ButtonClearInputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearInputsActionPerformed
+        textAreaInputKB.setText("");
+        textFieldInputQuery.setText("");
+    }//GEN-LAST:event_ButtonClearInputsActionPerformed
+
+    private void ButtonClearOutputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearOutputsActionPerformed
+        setOutputKB("");
+        setOutputBaseRanking("");
+        setOutputDiscardedRanks("");
+       // textAreaOutputBaseRank.setText("");
+      //  textAreaOutputEntailment.setText("");
+      // textAreaOutputJustification.setText("");
+      //  textAreaOutputExplanations.setText("");
+    }//GEN-LAST:event_ButtonClearOutputsActionPerformed
+
+    private void ButtonExitApplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExitApplicationActionPerformed
+        int reply = JOptionPane.showConfirmDialog(this, "Are you sure you would like to Exit the Application", "Exit the Application", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+             System.exit(0);
+        }    
+    }//GEN-LAST:event_ButtonExitApplicationActionPerformed
+
+    private void textAreaInputKBKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textAreaInputKBKeyPressed
+        trunkTextArea(textAreaInputKB);
+    }//GEN-LAST:event_textAreaInputKBKeyPressed
+
+     // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="OUTPUT DATA">
+    private void setOutputKB(String text) {
+        textAreaOutputKB.setText(text);
+    }
+    
+     private void appendOutputKB(String text) {
+        textAreaOutputKB.append(text);
+    }
+    
+    private void setOutputBaseRanking(String text) {
+        textAreaOutputBaseRanking.setText(text);
+    }
+    
+    private void appendOutputBaseRanking(String text) {
+        textAreaOutputBaseRanking.append(text);
+    }
+    
+    private void setOutputDiscardedRanks(String text) {
+        textAreaOutputDiscardedRanks.setText(text);
+       
+    }
+    
+    private void appendOutputDiscardedRanks(String text) {
+        textAreaOutputBaseRanking.append(text);
+    }
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="ERROR MESSAGES">
+    private final String ErrorInputKnowledgeBase = "Input Defeasible Knowledge Base";
+    private final String ErrorInputQuery = "Input Defeasible Query";
+    private final String ErrorDefaultTitle = "Invalid Error Occurred";
+    
+    private void showErrorPopupMessage(String title, String errorMessage) {
+         if (errorMessage == null || errorMessage.isEmpty())
+             return;
+         
+         if (title == null || title.isEmpty())
+             title = ErrorDefaultTitle;
+         
+         JOptionPane.showMessageDialog(this, errorMessage, title, JOptionPane.ERROR_MESSAGE);
+    }
+        
+    private void showErrorPopupMessage(String errorMessage) {       
+        showErrorPopupMessage(ErrorDefaultTitle, errorMessage);
+    }
+    
+    private void showErrorPopupMessage(String title, Exception exception) {
+         if (exception == null)
+             return;
+         
+         if (title == null || title.isEmpty())
+             title = ErrorDefaultTitle;
+         
+        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, title, exception);
+        showErrorPopupMessage(title,exception.getMessage());
+    }
+    
+    private void showErrorPopupMessage(Exception exception) {       
+        showErrorPopupMessage(ErrorDefaultTitle, exception);
+    }
+    
+    // </editor-fold>
+    
+    // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">      
+    private void initKnowledgeBase(List<String> kbStatementList) throws ParserException, Exception
+    {
+        _knowledgeBaseSet = new PlBeliefSet();
+        PlParser cp = new PlParser();
+        DefeasibleLogicParser dp = new DefeasibleLogicParser(cp);       
+                    
+        for (String kbLine : kbStatementList)
+        {
+            if (kbLine == null || kbLine.isEmpty())
+                continue;
+            
+           if (kbLine.contains("~>"))
+                _knowledgeBaseSet.add(dp.parseFormula(kbLine));
+            else
+                _knowledgeBaseSet.add(cp.parseFormula(kbLine));                      
+        }
+        
+        setOutputKB("");        
+        int lineNumber = 1;
+        for (PlFormula plFormula : _knowledgeBaseSet)
+        {          
+            appendOutputKB(String.format("%s: %s\n",lineNumber, plFormula));               
+            lineNumber++;            
+        }                         
+    }
+    
+    private void initQuery(String queryString) throws ParserException, Exception
+    {        
+        PlParser classicalParser = new PlParser();
+        DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(classicalParser);
+        _queryFormula = defeasibleParser.parseFormula(queryString);        
+    }
+    
+    private void computeDefeasibleExplanation(PlBeliefSet knowledgeBase, PlFormula query) throws Exception
+    {
+        textAreaOutputExplanation.append("Input Knowledge Base: " + _knowledgeBaseSet.toString() + "\n");
+        textAreaOutputExplanation.append("Input Query: " + _queryFormula.toString() + "\n");
+        
+        List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
+        
+        RationalClosureResults rationalClosure = RationalClosure.computeRationalClosure(knowledgeBase, query);
+               
+        textAreaOutputBaseRanking.setText(rationalClosure.getMinimalRanking().toString());
+        
+        System.out.println(rationalClosure);
+        
+        if (!rationalClosure.entailmentsHolds())
+        {
+            textAreaOutputEntailment.append("The entailment does not hold." + "\n");
+            textAreaOutputEntailment.append("The remaining kb formulas do not entail the query: \n" + rationalClosure.getRemainingFormulas() + "\n");
+            return;
+        }
+        
+        textAreaOutputEntailment.append("Yes, the input query, " +  _queryFormula.toString() + ", is entailed by the knowledge base.");
+        
+        int ranksRemoved = rationalClosure.getRanksRemoved();
+        
+        if (ranksRemoved == 0)
+        {
+            Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
+            List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
+            List<List<PlFormula>> dematerialisedJustification = new ArrayList<List<PlFormula>>();
+            for (List<PlFormula> justification : justifiactions)
+            {
+                dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
+            }
+            textAreaOutputJustification.append("Final Justification:\n");
+            for (List<PlFormula> newJust : dematerialisedJustification)
+            {
+                textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust) + "\n");
+            }
+            return;
+        }
+        
+        int i = 0;
+        
+        while (i < ranksRemoved)
+        {
+            knowledgeBase = Utils.remove(knowledgeBase, rationalClosure.getMinimalRanking().getFinitlyRankedFormula(i));
+            textAreaOutputJustification.append("Removed rank " + i + ":\n");
+            textAreaOutputJustification.append(knowledgeBase.toString()+ "\n");
+            i ++;
+        }
+        
+        Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
+        List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
+        List<List<PlFormula>> dematerialisedJustification = new ArrayList<List<PlFormula>>();
+        for (List<PlFormula> justification : justifiactions)
+        {
+            dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
+        }
+        
+        textAreaOutputJustification.append("Final Justification:\n");
+        for (List<PlFormula> newJust : dematerialisedJustification)
+        {
+            textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust)+ "\n");
+        }
+        
+    }
+    
+    final int SCROLL_BUFFER_SIZE = 10;
+    private void trunkTextArea(javax.swing.JTextArea txtWin)
+    {
+        int numLinesToTrunk = txtWin.getLineCount() - SCROLL_BUFFER_SIZE;
+        if(numLinesToTrunk > 0)
+        {
+            try
+            {
+                int posOfLastLineToTrunk = txtWin.getLineEndOffset(numLinesToTrunk - 1);
+                txtWin.replaceRange("",0,posOfLastLineToTrunk);
+            }
+            catch (BadLocationException ex) {             
+            }
+        }
+    }
+    
+    // </editor-fold>
+    
     /**
      * @param args the command line arguments
      */
@@ -449,7 +846,6 @@ public class ToolGUI extends javax.swing.JFrame {
     private javax.swing.JButton ButtonVerifyQuery;
     private javax.swing.JLabel LabelHeaderDee;
     private javax.swing.JLabel LabelHeaderUct;
-    private javax.swing.JPanel PanelExitButtons;
     private javax.swing.JPanel PanelHeader;
     private javax.swing.JPanel PanelInputs;
     private javax.swing.JPanel PanelMain;
@@ -457,20 +853,30 @@ public class ToolGUI extends javax.swing.JFrame {
     private javax.swing.JPanel PanelOutputEntailAndJustify;
     private javax.swing.JPanel PanelOutputExplanations;
     private javax.swing.JPanel PanelOutputKB;
-    private javax.swing.JTextArea TextAreaInputKB;
-    private javax.swing.JTextField TextFieldInputQuery;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextArea jTextArea3;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JTextArea textAreaInputKB;
+    private javax.swing.JTextArea textAreaOutputBaseRanking;
+    private javax.swing.JTextArea textAreaOutputDiscardedRanks;
+    private javax.swing.JTextArea textAreaOutputEntailment;
+    private javax.swing.JTextArea textAreaOutputExplanation;
+    private javax.swing.JTextArea textAreaOutputJustification;
+    private javax.swing.JTextArea textAreaOutputKB;
+    private javax.swing.JTextField textFieldInputQuery;
     // End of variables declaration//GEN-END:variables
 }
