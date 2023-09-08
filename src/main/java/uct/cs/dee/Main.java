@@ -25,12 +25,16 @@ public class Main
                
         try 
         {
+            args = new String[2];
+            args[0] = "C:\\PROJECT_UCT\\DEE_Project\\target\\kb.txt";
+            args[1] = "p ~> w";
+            
         	if(args == null || args.length != 2)
         	{
         		throw new Exception("Please specify the knowledge base file and the query string e.g kb.txt 'p ~> w'");
         	}
         	
-        	String kbFileName = args[0];
+            String kbFileName = args[0];
             String formulaToCheckFor = args[1];
              
             File kbFile = new File(kbFileName);

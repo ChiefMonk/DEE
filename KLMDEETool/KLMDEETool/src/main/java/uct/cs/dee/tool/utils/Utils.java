@@ -186,20 +186,19 @@ public class Utils
         return stringBuilder.toString();
     }
     
-    public static Boolean compareFormulaList(List<PlFormula> left, List<PlFormula> right)
-    {
-        for (PlFormula formula : left)
-        {
-            if (!right.contains(formula))
+    public static Boolean compareFormulaList(List<PlFormula> left, List<PlFormula> right) {
+        for (PlFormula formula : left) {
+            if (!right.contains(formula)) {
                 return false;
+            }              
         }
         
-        for (PlFormula formula : right)
-        {
-            if (!left.contains(formula))
+        for (PlFormula formula : right) {
+            if (!left.contains(formula)) {
                 return false;
+            }            
         }
         
         return true;
-    }
+    }   
 }

@@ -705,7 +705,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
         
-        RationalClosureResults rationalClosure = RationalClosure.computeRationalClosure(knowledgeBase, query);
+        RationalClosureResults rationalClosure = RationalClosure2.computeRationalClosure(knowledgeBase, query);
                
         textAreaOutputBaseRank.setText(rationalClosure.getMinimalRanking().toString());
         

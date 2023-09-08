@@ -116,7 +116,8 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
             lineStatement = String.format("0%s",lineNumber); 
             if(lineNumber >= 10)
                  lineStatement = String.format("%s",lineNumber); 
-            formulaList.add(String.format("%s : %s",lineStatement, plFormula));                              
+            formulaList.add(String.format("%s : %s",lineStatement, plFormula));   
+            lineNumber++;
         } 
         
         return new ValidationResult<>(true,formulaList);

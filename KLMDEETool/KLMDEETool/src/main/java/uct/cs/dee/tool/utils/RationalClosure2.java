@@ -14,7 +14,7 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
  *
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
-public class RationalClosure 
+public class RationalClosure2 
 {
     
     public static RationalClosureResults computeRationalClosure(PlBeliefSet knowledgeBase, PlFormula query ) throws Exception
@@ -126,7 +126,7 @@ public class RationalClosure
         return defeasibleFormulas;
     }
     
-    private static Boolean equals(PlFormula x, PlFormula y) throws Exception
+    private static boolean equals(PlFormula x, PlFormula y) throws Exception
     {
         if (!(x instanceof DefeasibleImplication ) || !(y instanceof DefeasibleImplication) )
             throw new Exception("This equals method only compared defeasible implications");

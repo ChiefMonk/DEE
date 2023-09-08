@@ -11,7 +11,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import uct.cs.dee.tool.models.*;
 import uct.cs.dee.tool.utils.*;
-import org.tweetyproject.logics.pl.parser.PlParser;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
@@ -21,19 +20,16 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.text.BadLocationException;
-import org.tweetyproject.commons.ParserException;
-import uct.cs.dee.tool.impl.DefeasibleKnowledgeBaseService;
+import uct.cs.dee.tool.impl.*;
 import uct.cs.dee.tool.services.*;
 
 /**
  *
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
-public class ToolGUI extends javax.swing.JFrame {
-    
-    private PlFormula _queryFormula1;
-    private PlBeliefSet _knowledgeBaseSet1;  
+public class ToolGUI extends javax.swing.JFrame {       
     private IKnowledgeBaseService _knowledgeBaseService;
+    private IEntailmentService _entailmentService;
     
     /**
      * Creates new form ToolGUI
@@ -49,7 +45,8 @@ public class ToolGUI extends javax.swing.JFrame {
             ButtonExitApplicationActionPerformed(null);
         }});
         
-        initialiseServices();
+        _knowledgeBaseService = new DefeasibleKnowledgeBaseService(); 
+        _entailmentService = new DefeasibleEntailmentService();
     }
 
     /**
@@ -763,46 +760,7 @@ public class ToolGUI extends javax.swing.JFrame {
     
     // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">      
-    private void initialiseServices() {
-        _knowledgeBaseService = new DefeasibleKnowledgeBaseService();        
-    }
-    
-    private void initKnowledgeBase2(List<String> kbStatementList) throws ParserException, Exception
-    {
-       // _knowledgeBaseSet = new PlBeliefSet();
-        PlParser cp = new PlParser();
-        DefeasibleLogicParser dp = new DefeasibleLogicParser(cp);       
-                    
-        for (String kbLine : kbStatementList)
-        {
-            if (kbLine == null || kbLine.isEmpty())
-                continue;
-            
-            kbLine = _knowledgeBaseService.translateFormula(kbLine);
-            
-           if (kbLine.contains("~>"))
-               ; //_knowledgeBaseSet.add(dp.parseFormula(kbLine));
-            else
-               ; //_knowledgeBaseSet.add(cp.parseFormula(kbLine));                      
-        }
-        
-        setOutputKB("");        
-        int lineNumber = 1;
-//        for (PlFormula plFormula : _knowledgeBaseSet)
-//        {          
-//            appendOutputKB(String.format("%s: %s",lineNumber, plFormula));               
-//            lineNumber++;            
-//        }                         
-    }       
-    
-//    private void initQuery(String queryString) throws ParserException, Exception
-//    {        
-//        PlParser classicalParser = new PlParser();
-//        DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(classicalParser);
-//        _queryFormula = defeasibleParser.parseFormula(_knowledgeBaseService.translateFormula(queryString));        
-//    }
-    
+    // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">         
     private void computeDefeasibleExplanation(PlBeliefSet knowledgeBase, PlFormula query) throws Exception
     {
         appendOutputExplanation("Knowledge Base, K = " + knowledgeBase.toString());
@@ -810,7 +768,7 @@ public class ToolGUI extends javax.swing.JFrame {
         
         List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
         
-        RationalClosureResults rationalClosure = RationalClosure.computeRationalClosure(knowledgeBase, query);
+        RationalClosureResults rationalClosure = _entailmentService.computeRationalClosure(knowledgeBase, query);
                
         textAreaOutputBaseRanking.setText(rationalClosure.getMinimalRanking().toString());
         
