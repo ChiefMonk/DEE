@@ -109,11 +109,38 @@ public class MinimalRankedFormulas
     private String formatFormulaList(List<PlFormula> formulaList)
     {
         StringBuilder stringBuilder = new StringBuilder();
+        int counter = 0;
         for (PlFormula formula : formulaList)
         {
-            stringBuilder.append(formula).append(", ");
+            stringBuilder.append(formula);
+            if(counter < formulaList.size())
+                 stringBuilder.append(", ");
+            counter++;            
         }
-        return stringBuilder.substring(0, stringBuilder.length()-1);
+        return stringBuilder.toString();
+    }
+    
+    public List<String> getAllFormulasList()
+    {
+        List<String> result = new ArrayList<>();
+        
+       if(this.finitlyRankedFormulas.isEmpty()) {
+            result.add(String.format("Rank 0 : { empty }"));
+        }
+         else {
+            for (int i = 0; i < this.finitlyRankedFormulas.size(); i++)
+            {
+                 result.add(String.format("Rank %s : { %s }", i,this.finitlyRankedFormulas.get(i).toString().replace("[", "").replace("]", "")));                                 
+            }
+        }
+        
+        if(this.infinitlyRankedFormulas.isEmpty()) {
+            result.add(String.format("Rank ∞: { empty }"));          
+        }
+        else {
+             result.add(String.format("Rank ∞: { %s }", this.infinitlyRankedFormulas.toString().replace("[", "").replace("]", "")));                              
+        }
+        return result;
     }
     
     @Override
@@ -122,7 +149,7 @@ public class MinimalRankedFormulas
         StringBuilder stringBuilder = new StringBuilder();        
         
         if(this.finitlyRankedFormulas.isEmpty()) {
-            stringBuilder.append("Rank 0").append(": { empty }\n");
+            stringBuilder.append("Rank 0").append(" : { empty }\n");
         }
          else {
             for (int i = 0; i < this.finitlyRankedFormulas.size(); i++)

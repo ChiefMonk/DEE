@@ -1,6 +1,9 @@
 package uct.cs.dee.tool.models;
 
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
+import java.util.ArrayList;
+import java.util.List;
+import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 /**
  *
@@ -13,12 +16,16 @@ public class RationalClosureResults
     private final MinimalRankedFormulas rankedFormulas;
     private final PlBeliefSet remainingFormulas;
     
+    private List<String> _rankedFormulaList;   
+    
     public RationalClosureResults(boolean entailment, int ranksRemoved, MinimalRankedFormulas rankedFormulas, PlBeliefSet remainingFormulas)
     {
         this.entailment = entailment;
         this.ranksRemoved = ranksRemoved;
         this.rankedFormulas = rankedFormulas;
         this.remainingFormulas = remainingFormulas;
+        
+        _rankedFormulaList = rankedFormulas.getAllFormulasList();       
     }
     
     public boolean entailmentsHolds()
@@ -57,6 +64,87 @@ public class RationalClosureResults
     {
         return this.rankedFormulas;
     }
+    
+    public List<String> getRemainingFormulaList() {
+        List<String> result = new ArrayList<>();
+         
+        for (int i = getRanksRemoved(); i < _rankedFormulaList.size(); i++)
+        {
+            result.add(_rankedFormulaList.get(i));                                       
+        }
+        
+        return result;
+    }
+    
+    public List<String> getDiscardedFormulaList() {
+        List<String> result = new ArrayList<>();
+         
+        for (int i = 0; i < getRanksRemoved(); i++)
+        {
+            result.add(_rankedFormulaList.get(i));                                       
+        }
+        
+        return result;
+    }
+    
+    public String getEntailmentMessage()
+    {
+         StringBuilder sb = new StringBuilder();   
+         sb.append("Does K entail α? : ");
+         if(entailmentsHolds())
+            sb.append("YES");
+         else
+            sb.append("NO");    
+         
+         return sb.toString();
+    }
+    
+    public String getRemainingFormulaListMessage()
+    {       
+        if(getRemainingFormulaList().isEmpty())
+        {
+            return "{ empty }";           
+        }
+        
+        StringBuilder stringBuilder = new StringBuilder();
+        int counter = 0;
+        for (String formula : getRemainingFormulaList())
+        {
+            stringBuilder.append(formula);
+            if(counter < getRemainingFormulaList().size())
+                  stringBuilder.append("\n");
+            counter++;            
+        }
+        return stringBuilder.toString();
+    }
+    
+    public String getDiscardedFormulaListMessage()
+    {          
+        if(getDiscardedFormulaList().isEmpty())
+        {
+            return "{ empty }"; 
+        }
+        StringBuilder stringBuilder = new StringBuilder();      
+        int counter = 0;
+        for (String formula : getDiscardedFormulaList())
+        {
+            stringBuilder.append(formula);
+            if(counter < getDiscardedFormulaList().size())
+                 stringBuilder.append("\n");
+            counter++;            
+        }
+        return stringBuilder.toString();
+    }
+    
+    public String getRemainingFormulasMessage()
+    {
+        StringBuilder sb = new StringBuilder();            
+        sb.append(String.format("Remaining formulas in K : %s", getRemainingFormulas()));               
+         
+         return sb.toString();
+    }
+    
+    
     
     /**
      *

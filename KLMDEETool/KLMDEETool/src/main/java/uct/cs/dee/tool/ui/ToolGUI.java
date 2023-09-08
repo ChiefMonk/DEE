@@ -299,7 +299,7 @@ public class ToolGUI extends javax.swing.JFrame {
         jLabel4.setText("BaseRanking of Statements :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Rational Closure Discarded Ranks of Statements :");
+        jLabel5.setText("Discarded Statements from BaseRank :");
 
         javax.swing.GroupLayout PanelOutputBaseRankingLayout = new javax.swing.GroupLayout(PanelOutputBaseRanking);
         PanelOutputBaseRanking.setLayout(PanelOutputBaseRankingLayout);
@@ -688,7 +688,7 @@ public class ToolGUI extends javax.swing.JFrame {
     private void appendOutputDiscardedRanks(String text) {
         if (text == null || text.isEmpty())
             return;
-        textAreaOutputBaseRanking.append(text + "\n");
+        textAreaOutputDiscardedRanks.append(text + "\n");
     }
     
     private void setOutputEntailment(String text) {
@@ -774,12 +774,15 @@ public class ToolGUI extends javax.swing.JFrame {
         
         System.out.println(rationalClosure);
         appendOutputExplanation(String.format("Number of ranks discarded: %s", rationalClosure.getRanksRemoved()));
-         
+        appendOutputEntailment(rationalClosure.getEntailmentMessage());
+        appendOutputEntailment(rationalClosure.getRemainingFormulasMessage());
+        
+        appendOutputDiscardedRanks(rationalClosure.getDiscardedFormulaListMessage());
         
         if (!rationalClosure.entailmentsHolds())
         {
-            textAreaOutputEntailment.append("The entailment does not hold." + "\n");
-            textAreaOutputEntailment.append("The remaining kb formulas do not entail the query: \n" + rationalClosure.getRemainingFormulas() + "\n");
+           // textAreaOutputEntailment.append("The entailment does not hold." + "\n");
+            //textAreaOutputEntailment.append("The remaining kb formulas do not entail the query: \n" + rationalClosure.getRemainingFormulas() + "\n");
             return;
         }
         
