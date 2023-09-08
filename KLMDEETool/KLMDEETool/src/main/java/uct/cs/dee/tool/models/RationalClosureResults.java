@@ -53,6 +53,15 @@ public class RationalClosureResults
      *
      * @return
      */
+    public MinimalRankedFormulas getDiscardedFormulas()
+    {
+        return this.rankedFormulas;
+    }
+    
+    /**
+     *
+     * @return
+     */
     @Override
     public String toString()
     {

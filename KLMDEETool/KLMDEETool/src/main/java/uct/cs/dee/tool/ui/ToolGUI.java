@@ -770,9 +770,11 @@ public class ToolGUI extends javax.swing.JFrame {
         
         RationalClosureResults rationalClosure = _entailmentService.computeRationalClosure(knowledgeBase, query);
                
-        textAreaOutputBaseRanking.setText(rationalClosure.getMinimalRanking().toString());
+        setOutputBaseRanking(rationalClosure.getMinimalRanking().toString());
         
         System.out.println(rationalClosure);
+        appendOutputExplanation(String.format("Number of ranks discarded: %s", rationalClosure.getRanksRemoved()));
+         
         
         if (!rationalClosure.entailmentsHolds())
         {
@@ -784,7 +786,7 @@ public class ToolGUI extends javax.swing.JFrame {
         textAreaOutputEntailment.append("Yes, the input query, " +  query.toString() + ", is entailed by the knowledge base.");
         
         int ranksRemoved = rationalClosure.getRanksRemoved();
-        
+       
         if (ranksRemoved == 0)
         {
             Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
@@ -811,6 +813,7 @@ public class ToolGUI extends javax.swing.JFrame {
         }
         
         int i = 0;
+       
         
         while (i < ranksRemoved)
         {

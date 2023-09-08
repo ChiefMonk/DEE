@@ -37,7 +37,7 @@ public class MinimalRankedFormulas
         
         if (formulaList == null)
         {
-            formulaList = new ArrayList<PlFormula>();
+            formulaList = new ArrayList<>();
             formulaList.add(formula);
             this.finitlyRankedFormulas.add(rank, formulaList);
         }
@@ -52,7 +52,7 @@ public class MinimalRankedFormulas
     {
         if (rank > this.finitlyRankedFormulas.size())
         {
-            this.finitlyRankedFormulas.set(rank, new ArrayList<PlFormula>());
+            this.finitlyRankedFormulas.set(rank, new ArrayList<>());
         }
         
         List<PlFormula> formulaList = finitlyRankedFormulas.get(rank);
@@ -90,7 +90,7 @@ public class MinimalRankedFormulas
     
     public List<PlFormula> getFinitlyRankedFormulas()
     {
-        List<PlFormula> result = new ArrayList<PlFormula>();
+        List<PlFormula> result = new ArrayList<>();
         for(List<PlFormula> rankedFormulas: this.finitlyRankedFormulas)
         {
             result.addAll(rankedFormulas);
@@ -100,7 +100,7 @@ public class MinimalRankedFormulas
     
     public List<PlFormula> getAllFormulas()
     {
-        List<PlFormula> result = new ArrayList<PlFormula>();
+        List<PlFormula> result = new ArrayList<>();
         result.addAll(getFinitlyRankedFormulas());
         result.addAll(this.infinitlyRankedFormulas);
         return result;
@@ -111,27 +111,37 @@ public class MinimalRankedFormulas
         StringBuilder stringBuilder = new StringBuilder();
         for (PlFormula formula : formulaList)
         {
-            stringBuilder.append(formula).append(",");
+            stringBuilder.append(formula).append(", ");
         }
         return stringBuilder.substring(0, stringBuilder.length()-1);
     }
     
+    @Override
     public String toString()
     {
         StringBuilder stringBuilder = new StringBuilder();        
         
-        for (int i = 0; i < this.finitlyRankedFormulas.size(); i++)
-        {
-            stringBuilder.append("Rank ").append(i).append(" :   ")                   
-                    .append(formatFormulaList(this.finitlyRankedFormulas.get(i)))
-                    .append("\n");
+        if(this.finitlyRankedFormulas.isEmpty()) {
+            stringBuilder.append("Rank 0").append(": { empty }\n");
+        }
+         else {
+            for (int i = 0; i < this.finitlyRankedFormulas.size(); i++)
+            {
+                stringBuilder.append("Rank ").append(i).append(" : { ")                   
+                        .append(formatFormulaList(this.finitlyRankedFormulas.get(i)))
+                        .append(" }\n");
+            }
         }
         
-        if(!this.infinitlyRankedFormulas.isEmpty()) {
-        stringBuilder.append("Rank ∞").append(":   ")                       
-                .append(formatFormulaList(this.infinitlyRankedFormulas))
-                .append("\n");
+        if(this.infinitlyRankedFormulas.isEmpty()) {
+            stringBuilder.append("Rank ∞").append(": { empty }\n");
         }
+        else {
+            stringBuilder.append("Rank ∞").append(": {  ")                       
+                .append(formatFormulaList(this.infinitlyRankedFormulas))
+                .append(" }\n");
+        }
+            
         
         return stringBuilder.toString();
     }
@@ -146,7 +156,7 @@ public class MinimalRankedFormulas
         
         for (int i = this.finitlyRankedFormulas.size()-1; i >= 0; i --)
         {
-            stringBuilder.append("R_{" + i + "}")
+            stringBuilder.append("R_{").append(i).append("}")
                     .append("\t\t|")
                     .append(formatFormulaList(this.finitlyRankedFormulas.get(i)))
                     .append("\n");
