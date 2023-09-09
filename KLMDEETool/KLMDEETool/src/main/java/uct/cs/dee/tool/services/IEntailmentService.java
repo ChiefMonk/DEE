@@ -17,4 +17,10 @@ public interface IEntailmentService {
    public void computeEntailment(PlBeliefSet knowledgeBase, PlFormula query) throws Exception;   
    
    public RationalClosureResults computeRationalClosure(PlBeliefSet knowledgeBase, PlFormula query ) throws Exception;
+   
+   /**
+     *     
+     * @return Boolean
+     */
+    public boolean doesKbEntailQuery();  
 }

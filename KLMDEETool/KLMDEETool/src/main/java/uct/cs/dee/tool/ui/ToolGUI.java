@@ -781,6 +781,8 @@ public class ToolGUI extends javax.swing.JFrame {
         
         if (!rationalClosure.entailmentsHolds())
         {
+            setOutputJustification("J = { empty }"); 
+            
            // textAreaOutputEntailment.append("The entailment does not hold." + "\n");
             //textAreaOutputEntailment.append("The remaining kb formulas do not entail the query: \n" + rationalClosure.getRemainingFormulas() + "\n");
             return;
@@ -801,7 +803,7 @@ public class ToolGUI extends javax.swing.JFrame {
                 dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
             }
             
-            textAreaOutputJustification.append("Justification, J = { ");
+            textAreaOutputJustification.append("J = { ");
             int justSize = dematerialisedJustification.size();
             int justCounter = 0;
             for (List<PlFormula> newJust : dematerialisedJustification)

@@ -19,10 +19,13 @@ import uct.cs.dee.tool.utils.*;
  */
 public final class DefeasibleEntailmentService implements IEntailmentService {
      
-    private  RationalClosureResults _rationalClosure;  
+    private IKnowledgeBaseService _knowledgeBaseService;    
+    private  RationalClosureResults _rationalClosure;
+    
     private List<List<PlFormula>> _dematerialisedJustification;
     
-    public DefeasibleEntailmentService() {        
+    public DefeasibleEntailmentService(IKnowledgeBaseService knowledgeBaseService) {    
+        _knowledgeBaseService = knowledgeBaseService;
         _dematerialisedJustification = new ArrayList<List<PlFormula>>();
     }
     
