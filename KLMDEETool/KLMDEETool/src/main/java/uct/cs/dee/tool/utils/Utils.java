@@ -168,7 +168,7 @@ public class Utils
         if (result != null && result != "" && result.length() > 2)
             return result.substring(0, result.length()-2);
         else
-            return "NULL";
+            return "empty";
     }
     
     public static String justificationToString(List<PlFormula> formulas)

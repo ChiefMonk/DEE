@@ -1,0 +1,8 @@
+Animal ~> Wild
+Animal ~> Hunt
+Pet ~> Animal
+Pet ~> !Wild
+ExoticPet ~> Pet
+ExoticPet ~> Wild
+Simba ~> ExoticPet
+Simba ~> Hunt

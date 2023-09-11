@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package uct.cs.dee.tool.services;
 
 import java.util.List;
@@ -13,13 +9,7 @@ import uct.cs.dee.tool.models.ValidationResult;
  *
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
-public interface IKnowledgeBaseService  {       
-    /**
-     * 
-     * @param formula
-     * @return 
-    */    
-    public String translateFormula(String formula);      
+public interface IKnowledgeBaseService  {          
     
      /**
      * 
@@ -30,10 +20,24 @@ public interface IKnowledgeBaseService  {
     
     /**
      * 
-     * @param kbStatementList
+     * @param kbString
      * @return 
      */
-    public ValidationResult<List<String>> validateKnowledgeBase(List<String> kbStatementList);
+    public ValidationResult<String> validateKnowledgeBase(String kbString);
+    
+     /**
+     * 
+     * @param kbStatements
+     * @return 
+     */
+    public ValidationResult<String> validateKnowledgeBase(List<String> kbStatements);
+    
+     /**
+     * 
+     * @param filePath
+     * @return 
+     */
+    public ValidationResult<String> validateKnowledgeBaseFile(String filePath);         
     
      /**
      * 
@@ -41,9 +45,34 @@ public interface IKnowledgeBaseService  {
     */
     public PlBeliefSet getKnowledgeBase();
     
+   /**
+    * This method returns an indicator showing if the knowledge base entails the query. 
+    * 
+    * @return the query formula.
+    */
+    public PlFormula getQuery();   
+    
+    /**
+     *
+     * @return
+     */
+    public List<PlFormula> getClassicalKbFormulas();
+    
     /**
      * 
      * @return 
     */
-    public PlFormula getQuery();
+    public String getValidatedKnowledgeBaseMessage() ;
+    
+     /**
+     *     
+     * @return a display message.
+    */
+    public String getDisplayMessage(); 
+    
+     /**
+     *     
+     * @return an explanation message.
+     */
+    public String getExplanationMessage();
 }

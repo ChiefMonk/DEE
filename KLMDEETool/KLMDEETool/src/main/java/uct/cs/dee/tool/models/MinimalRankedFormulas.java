@@ -109,7 +109,7 @@ public class MinimalRankedFormulas
     private String formatFormulaList(List<PlFormula> formulaList)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        int counter = 0;
+        int counter = 1;
         for (PlFormula formula : formulaList)
         {
             stringBuilder.append(formula);

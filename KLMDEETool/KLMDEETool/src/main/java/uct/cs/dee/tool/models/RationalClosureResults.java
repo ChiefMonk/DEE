@@ -3,11 +3,14 @@ package uct.cs.dee.tool.models;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import java.util.ArrayList;
 import java.util.List;
-import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 /**
- *
+ * <h1> RationalClosureResults <\h1>
+ * The RationalClosureResults model has methods that return the results of entailment determination.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2013-06-01
  */
 public class RationalClosureResults 
 {
@@ -16,7 +19,7 @@ public class RationalClosureResults
     private final MinimalRankedFormulas rankedFormulas;
     private final PlBeliefSet remainingFormulas;
     
-    private List<String> _rankedFormulaList;   
+    private final List<String> _rankedFormulaList;   
     
     public RationalClosureResults(boolean entailment, int ranksRemoved, MinimalRankedFormulas rankedFormulas, PlBeliefSet remainingFormulas)
     {
@@ -28,14 +31,17 @@ public class RationalClosureResults
         _rankedFormulaList = rankedFormulas.getAllFormulasList();       
     }
     
-    public boolean entailmentsHolds()
+    public boolean doesEntailmentHold()
     {
         return this.entailment;
     }
     
-    public int getRanksRemoved()
+    public int getNumberOfDiscardedRanks()
     {
-        return this.ranksRemoved;
+        if(doesEntailmentHold())
+            return this.ranksRemoved;
+        
+        return _rankedFormulaList.size();
     }
     
     /**
@@ -55,20 +61,11 @@ public class RationalClosureResults
     {
         return this.remainingFormulas;
     }
-    
-    /**
-     *
-     * @return
-     */
-    public MinimalRankedFormulas getDiscardedFormulas()
-    {
-        return this.rankedFormulas;
-    }
-    
+       
     public List<String> getRemainingFormulaList() {
         List<String> result = new ArrayList<>();
          
-        for (int i = getRanksRemoved(); i < _rankedFormulaList.size(); i++)
+        for (int i = getNumberOfDiscardedRanks(); i < _rankedFormulaList.size(); i++)
         {
             result.add(_rankedFormulaList.get(i));                                       
         }
@@ -79,7 +76,7 @@ public class RationalClosureResults
     public List<String> getDiscardedFormulaList() {
         List<String> result = new ArrayList<>();
          
-        for (int i = 0; i < getRanksRemoved(); i++)
+        for (int i = 0; i < getNumberOfDiscardedRanks(); i++)
         {
             result.add(_rankedFormulaList.get(i));                                       
         }
@@ -91,7 +88,8 @@ public class RationalClosureResults
     {
          StringBuilder sb = new StringBuilder();   
          sb.append("Does K entail α? : ");
-         if(entailmentsHolds())
+         
+         if(doesEntailmentHold())
             sb.append("YES");
          else
             sb.append("NO");    
@@ -99,7 +97,12 @@ public class RationalClosureResults
          return sb.toString();
     }
     
-    public String getRemainingFormulaListMessage()
+    /**
+     *
+     * @param addEndline
+     * @return
+     */
+    public String getRemainingFormulaListMessage(boolean addEndline)
     {       
         if(getRemainingFormulaList().isEmpty())
         {
@@ -110,8 +113,11 @@ public class RationalClosureResults
         int counter = 0;
         for (String formula : getRemainingFormulaList())
         {
+            if(formula.contains("empty"))
+                continue;
+            
             stringBuilder.append(formula);
-            if(counter < getRemainingFormulaList().size())
+            if(counter < getRemainingFormulaList().size() && addEndline)
                   stringBuilder.append("\n");
             counter++;            
         }
@@ -128,6 +134,9 @@ public class RationalClosureResults
         int counter = 0;
         for (String formula : getDiscardedFormulaList())
         {
+             if(formula.contains("empty"))
+                continue;
+             
             stringBuilder.append(formula);
             if(counter < getDiscardedFormulaList().size())
                  stringBuilder.append("\n");

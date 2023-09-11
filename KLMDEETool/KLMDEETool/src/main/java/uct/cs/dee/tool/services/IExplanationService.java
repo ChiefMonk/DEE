@@ -1,13 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package uct.cs.dee.tool.services;
 
+import uct.cs.dee.tool.models.ValidationResult;
+
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2013-06-01
  */
-public interface IExplanationService {
+public interface IExplanationService {      
     
+    /**    
+     * 
+     * @return A ValidationResult
+     */
+    public ValidationResult<String> computeExplanation();        
+    
+     /**
+     *     
+     * @return an explanation message.
+     */
+    public String getExplanationMessage();
 }

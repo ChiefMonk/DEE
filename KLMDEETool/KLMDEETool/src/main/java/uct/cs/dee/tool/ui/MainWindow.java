@@ -711,7 +711,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         System.out.println(rationalClosure);
         
-        if (!rationalClosure.entailmentsHolds())
+        if (!rationalClosure.doesEntailmentHold())
         {
             textAreaOutputEntailment.append("The entailment does not hold." + "\n");
             textAreaOutputEntailment.append("The remaining kb formulas do not entail the query: \n" + rationalClosure.getRemainingFormulas() + "\n");
@@ -720,7 +720,7 @@ public class MainWindow extends javax.swing.JFrame {
         
         textAreaOutputEntailment.append("Yes, the input query, " +  _queryFormula.toString() + ", is entailed by the knowledge base.");
         
-        int ranksRemoved = rationalClosure.getRanksRemoved();
+        int ranksRemoved = rationalClosure.getNumberOfDiscardedRanks();
         
         if (ranksRemoved == 0)
         {

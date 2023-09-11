@@ -4,12 +4,10 @@
  */
 package uct.cs.dee.tool.services;
 
-import java.util.List;
-import org.tweetyproject.commons.ParserException;
-import org.tweetyproject.logics.pl.syntax.PlFormula;
+import uct.cs.dee.tool.models.ValidationResult;
 
 /**
- * <h1> IJustificationService <\h1>
+ * <h1>IJustificationService<\h1>
  * The IJustificationService interface has methods that should be implemented for entailment justification.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
@@ -20,45 +18,26 @@ public interface IJustificationService {
    
      /**    
      * 
-     * @return boolean
-     * @throws org.tweetyproject.commons.ParserException
-     * @throws java.lang.Exception 
+     * @return A ValidationResult<String>    
      */
-    public boolean computeJustification() throws ParserException, Exception;
+    public ValidationResult<String> computeJustification();        
+    
+    /**
+    *
+    * @return
+    */
+    public IEntailmentService getEntailmentService();
     
     /**
      *     
-     * @return boolean
-     */
-    public boolean isQueryEntailed();
-    
-    /**
-     * 
-     *
-     * @return java.util.List<org.tweetyproject.logics.pl.syntax.PlFormula>    
-     */
-    public List<PlFormula> getJustification();
+     * @return a display message.
+    */
+    public String getDisplayMessage(); 
     
      /**
      *     
-     * @return java.util.List<java.util.List<org.tweetyproject.logics.pl.syntax.PlFormula>>    
+     * @return an explanation message.
      */
-    public  List<List<PlFormula>> getDematerialisedJustification();
-    
-     /**
-     *     
-     * @return String
-     */
-    public String getDisplayMessage();
-    
-    /**
-     * 
-     * @param formula
-     * @return org.tweetyproject.logics.pl.syntax.PlFormula
-     * @throws org.tweetyproject.commons.ParserException
-     * @throws java.lang.Exception 
-     * @see java.lang.Exception
-     */
-    //public PlFormula parseFormula(String formula) throws ParserException, Exception;
+    public String getExplanationMessage();  
 }
 

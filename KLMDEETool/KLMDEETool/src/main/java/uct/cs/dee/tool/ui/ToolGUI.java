@@ -15,22 +15,21 @@ import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 import com.formdev.flatlaf.FlatLightLaf;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.JFileChooser;
 import javax.swing.text.BadLocationException;
-import uct.cs.dee.tool.impl.*;
-import uct.cs.dee.tool.services.*;
 
 /**
  *
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  */
-public class ToolGUI extends javax.swing.JFrame {       
-    private IKnowledgeBaseService _knowledgeBaseService;
-    private IEntailmentService _entailmentService;
+public class ToolGUI extends javax.swing.JFrame {         
     
+    JFileChooser _fileChooser;
     /**
      * Creates new form ToolGUI
      */
@@ -43,10 +42,11 @@ public class ToolGUI extends javax.swing.JFrame {
         @Override
         public void windowClosing(java.awt.event.WindowEvent windowEvent) {
             ButtonExitApplicationActionPerformed(null);
-        }});
+        }}); 
         
-        _knowledgeBaseService = new DefeasibleKnowledgeBaseService(); 
-        _entailmentService = new DefeasibleEntailmentService();
+         _fileChooser = new JFileChooser();
+        _fileChooser.setCurrentDirectory(new java.io.File("."));
+        _fileChooser.setDialogTitle("Select the Knowledge Base File");
     }
 
     /**
@@ -296,10 +296,10 @@ public class ToolGUI extends javax.swing.JFrame {
         jScrollPane4.setViewportView(textAreaOutputDiscardedRanks);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("BaseRanking of Statements :");
+        jLabel4.setText("BaseRanking of Statements, R :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setText("Discarded Statements from BaseRank :");
+        jLabel5.setText("Discarded BaseRankings :");
 
         javax.swing.GroupLayout PanelOutputBaseRankingLayout = new javax.swing.GroupLayout(PanelOutputBaseRanking);
         PanelOutputBaseRanking.setLayout(PanelOutputBaseRankingLayout);
@@ -523,107 +523,94 @@ public class ToolGUI extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="EVENT HANDLERS">
     private void ButtonLoadKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoadKBActionPerformed
-       
-        try 
-        {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new java.io.File("."));
-            fileChooser.setDialogTitle("Please select a file with the Knowledge Base");
-            
-            File kbFile = null;
-            
-            if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){               
-                kbFile = fileChooser.getSelectedFile();  
-                clearInputsAndOutputsData();
-            }
-            else {
-                throw new Exception("Invalid Knowledge Base selection. \nPlease correct and try again");                   
-            }
-                             
-            Scanner scanner = new Scanner(kbFile);
+              
+        //JFileChooser fileChooser = new JFileChooser();
+        //fileChooser.setCurrentDirectory(new java.io.File("."));
+       // fileChooser.setDialogTitle("Select the Knowledge Base File");
 
-            while (scanner.hasNextLine())
-            {
-                String line = scanner.nextLine();
+        if (_fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
+        {                             
+           showErrorPopupMessage(ErrorInputKnowledgeBase, "Please select a valid file with a predefined defeasible knowledge base, K.");    
+           return;
+        }
+                      
+        try
+        {           
+            Path path = Paths.get(_fileChooser.getSelectedFile().getAbsolutePath());                      
+            List<String> fileLines = Files.readAllLines(path, StandardCharsets.UTF_8);
+            textAreaInputKB.setText("");
+           
+            for (String line : fileLines)
+            {                 
+                if (line == null || line.trim().isEmpty())
+                    continue;
 
-                 if (line == null || line.isEmpty())
-                        continue;
-
-                textAreaInputKB.append(line.trim()+ "\n");     
-            }       
-        } 
-        catch (FileNotFoundException ex)
-        {
-            showErrorPopupMessage(ErrorInputKnowledgeBase, ex);
-        }  
-        catch (Exception ex)
-        {
-            showErrorPopupMessage(ErrorInputKnowledgeBase, ex);
-        }  
+                textAreaInputKB.append(String.format("%s\n", line.trim()));              
+             }
+        }
+        catch (IOException ex)
+        {         
+            showErrorPopupMessage(ErrorInputKnowledgeBase, "Please select a valid file with a predefined defeasible knowledge base, K.", ex);                     
+        }        
     }//GEN-LAST:event_ButtonLoadKBActionPerformed
 
     private void ButtonVerifyKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyKBActionPerformed
-       try
-        {
-            ButtonClearOutputsActionPerformed(evt);           
+        ButtonClearOutputsActionPerformed(evt);
                     
-            String inputKb = textAreaInputKB.getText();             
-            if (inputKb == null || inputKb.isEmpty())
-                throw new Exception("Please define a valid defeasible knowledge base, K."); 
-            
-            List<String> kbStatementList = new ArrayList<String>();             
-                       
-            for (String line : inputKb.split("\\n")){                 
-                if (line == null || line.isEmpty())
-                    continue;
-                
-                kbStatementList.add(line.trim());              
-             }
-            
-              ValidationResult<List<String>> validKb = _knowledgeBaseService.validateKnowledgeBase(kbStatementList);
-            
-            if(validKb.isValid()) {
-                setOutputKB("");        
-                for (String formula : validKb.getData()) {          
-                    appendOutputKB(formula);                           
-                }    
-            }
-            else {
-                showErrorPopupMessage(ErrorInputKnowledgeBase, validKb.getMessage());
-            }
-        }
-        catch(Exception ex)
+        ValidationResult<String> validKb = UIManager.validateKnowledgeBase(textAreaInputKB.getText());
+        
+        if(validKb.isValid())
         {
-            showErrorPopupMessage(ErrorInputKnowledgeBase, ex);
+          textAreaOutputKB.setText(UIManager.KnowledgeBaseService().getValidatedKnowledgeBaseMessage());
+        }
+        else
+        {
+            showErrorPopupMessage(ErrorInputKnowledgeBase, validKb.getMessage());
         }
     }//GEN-LAST:event_ButtonVerifyKBActionPerformed
 
     private void ButtonVerifyQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyQueryActionPerformed
        
-        ValidationResult<String> validQuery = _knowledgeBaseService.validateQuery( textFieldInputQuery.getText());
+        ValidationResult<String> validQuery = UIManager.validateQuery( textFieldInputQuery.getText());
         
         if(!validQuery.isValid())
+        {
             showErrorPopupMessage(ErrorInputQuery, validQuery.getMessage());
+        }
     }//GEN-LAST:event_ButtonVerifyQueryActionPerformed
 
     private void ButtonVerifyAndComputeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyAndComputeAllActionPerformed
         
-        ButtonClearOutputsActionPerformed(evt);           
+        ButtonClearOutputsActionPerformed(evt); 
         
-        ButtonVerifyKBActionPerformed(evt);
-        ButtonVerifyQueryActionPerformed(evt);
-        
-        if(_knowledgeBaseService.getKnowledgeBase() == null || _knowledgeBaseService.getQuery() == null)
+        ValidationResult<String> result = UIManager.computeEntailmentAndExplanation(textAreaInputKB.getText(), textFieldInputQuery.getText());
+                    
+        if(!result.isValid())
+        {
+            showErrorPopupMessage(ErrorInputKnowledgeBase, result.getMessage());
             return;
+        }
         
-        try 
-        {
-            computeDefeasibleExplanation(_knowledgeBaseService.getKnowledgeBase(), _knowledgeBaseService.getQuery());
-        } 
-        catch (Exception ex) 
-        {
-             showErrorPopupMessage("Defeasible Entailment and Justification Computation Error", ex);           
-        }    
+        // validated knowledge base
+        textAreaOutputKB.setText(UIManager.KnowledgeBaseService().getValidatedKnowledgeBaseMessage());
+        
+        // base ranking
+        textAreaOutputBaseRanking.setText(UIManager.EntailmentService().getBaseRankingFormulasMessage());
+        
+        // discarded formulas       
+        textAreaOutputDiscardedRanks.setText(UIManager.EntailmentService().getDiscardedFormulaListMessage());
+        
+        // entailment       
+        textAreaOutputEntailment.setText(UIManager.EntailmentService().getDisplayMessage());
+        
+        // justification       
+        textAreaOutputJustification.setText(UIManager.JustificationService().getDisplayMessage());
+        
+        // explanation  
+        textAreaOutputExplanation.setText(UIManager.KnowledgeBaseService().getExplanationMessage());
+        textAreaOutputExplanation.setText(UIManager.EntailmentService().getExplanationMessage());
+        textAreaOutputExplanation.setText(UIManager.JustificationService().getExplanationMessage());
+        textAreaOutputExplanation.setText(UIManager.ExplanationService().getExplanationMessage());
     }//GEN-LAST:event_ButtonVerifyAndComputeAllActionPerformed
 
     private void ButtonClearInputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearInputsActionPerformed
@@ -654,6 +641,11 @@ public class ToolGUI extends javax.swing.JFrame {
      // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="INPUT and OUTPUT DATA">
+    private void displayValidKnowledgeBase()
+    {
+        ButtonClearOutputsActionPerformed(null);
+          textAreaOutputKB.setText(UIManager.KnowledgeBaseService().getValidatedKnowledgeBaseMessage());
+    }
     private void clearInputsAndOutputsData() {
         ButtonClearInputsActionPerformed(null);
         ButtonClearOutputsActionPerformed(null);
@@ -744,18 +736,29 @@ public class ToolGUI extends javax.swing.JFrame {
     }
     
     private void showErrorPopupMessage(String title, Exception exception) {
-         if (exception == null)
+        if (exception == null)
              return;
          
-         if (title == null || title.isEmpty())
+        if (title == null || title.isEmpty())
              title = ErrorDefaultTitle;
-         
-        Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, title, exception);
+                       
+        Logger.getLogger(this.getName()).log(Level.SEVERE, title, exception);       
         showErrorPopupMessage(title,exception.getMessage());
     }
     
     private void showErrorPopupMessage(Exception exception) {       
         showErrorPopupMessage(ErrorDefaultTitle, exception);
+    }
+    
+     private void showErrorPopupMessage(String title, String errorMessage, Exception exception) {
+        if (errorMessage == null || errorMessage.isEmpty())
+            return;
+         
+        if (title == null || title.isEmpty())
+            title = ErrorDefaultTitle;
+         
+        Logger.getLogger(this.getName()).log(Level.SEVERE, title, exception);
+        JOptionPane.showMessageDialog(this, String.format("%s\n%s", errorMessage, exception.getMessage()) + "", title, JOptionPane.ERROR_MESSAGE);
     }
     
     // </editor-fold>
@@ -768,18 +771,19 @@ public class ToolGUI extends javax.swing.JFrame {
         
         List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
         
-        RationalClosureResults rationalClosure = _entailmentService.computeRationalClosure(knowledgeBase, query);
+        RationalClosureResults rationalClosure = new RationalClosureResults(true, 0, new MinimalRankedFormulas(), new  PlBeliefSet()) ;
+                //_entailmentService.computeRationalClosure(knowledgeBase, query);
                
         setOutputBaseRanking(rationalClosure.getMinimalRanking().toString());
         
         System.out.println(rationalClosure);
-        appendOutputExplanation(String.format("Number of ranks discarded: %s", rationalClosure.getRanksRemoved()));
+        appendOutputExplanation(String.format("Number of ranks discarded: %s", rationalClosure.getNumberOfDiscardedRanks()));
         appendOutputEntailment(rationalClosure.getEntailmentMessage());
         appendOutputEntailment(rationalClosure.getRemainingFormulasMessage());
         
         appendOutputDiscardedRanks(rationalClosure.getDiscardedFormulaListMessage());
         
-        if (!rationalClosure.entailmentsHolds())
+        if (!rationalClosure.doesEntailmentHold())
         {
             setOutputJustification("J = { empty }"); 
             
@@ -790,7 +794,7 @@ public class ToolGUI extends javax.swing.JFrame {
         
         textAreaOutputEntailment.append("Yes, the input query, " +  query.toString() + ", is entailed by the knowledge base.");
         
-        int ranksRemoved = rationalClosure.getRanksRemoved();
+        int ranksRemoved = rationalClosure.getNumberOfDiscardedRanks();
        
         if (ranksRemoved == 0)
         {
@@ -879,7 +883,7 @@ public class ToolGUI extends javax.swing.JFrame {
             isLookSet = true;
             
          } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ToolGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(ToolGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
            
        if(!isLookSet) {
@@ -892,7 +896,7 @@ public class ToolGUI extends javax.swing.JFrame {
                     javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
                 }
             } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-                java.util.logging.Logger.getLogger(ToolGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                Logger.getLogger(ToolGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
             }
        }
         //</editor-fold>

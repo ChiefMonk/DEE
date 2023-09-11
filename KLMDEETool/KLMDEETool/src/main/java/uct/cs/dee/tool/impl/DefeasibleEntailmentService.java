@@ -1,11 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package uct.cs.dee.tool.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.tweetyproject.logics.pl.reasoner.SatReasoner;
 import org.tweetyproject.logics.pl.sat.Sat4jSolver;
 import org.tweetyproject.logics.pl.sat.SatSolver;
@@ -19,111 +17,168 @@ import uct.cs.dee.tool.utils.*;
  */
 public final class DefeasibleEntailmentService implements IEntailmentService {
      
-    private IKnowledgeBaseService _knowledgeBaseService;    
-    private  RationalClosureResults _rationalClosure;
-    
-    private List<List<PlFormula>> _dematerialisedJustification;
-    
+    private final IKnowledgeBaseService _knowledgeBaseService;    
+    private RationalClosureResults _rationalClosure;
+       
     public DefeasibleEntailmentService(IKnowledgeBaseService knowledgeBaseService) {    
-        _knowledgeBaseService = knowledgeBaseService;
-        _dematerialisedJustification = new ArrayList<List<PlFormula>>();
+        _knowledgeBaseService = knowledgeBaseService;       
     }
     
      public RationalClosureResults getEntailmentResults() {
         return _rationalClosure;
     }
-    
-    @Override
-    public void computeEntailment(PlBeliefSet knowledgeBase, PlFormula query) throws Exception {
-       
-       List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
-        
-        _rationalClosure = computeRationalClosure(knowledgeBase, query);
-                      
-        if (!_rationalClosure.entailmentsHolds())        
-            return;        
-               
-        int ranksRemoved = _rationalClosure.getRanksRemoved();
-        
-        if (ranksRemoved == 0)
-        {
-            Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
-            List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
-            List<List<PlFormula>> dematerialisedJustification = new ArrayList<List<PlFormula>>();
-            
-            for (List<PlFormula> justification : justifiactions)
-            {
-                dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
-            }
-            
-           // textAreaOutputJustification.append("Justification, J = { ");
-            int justSize = dematerialisedJustification.size();
-            int justCounter = 0;
-            for (List<PlFormula> newJust : dematerialisedJustification)
-            {
-              //  textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust));
-                justCounter++;
-                //if(justCounter < justSize)
-                  //  textAreaOutputJustification.append(", ");
-            }
-          
-            return;
-        }
-        
-        int i = 0;
-        
-        while (i < ranksRemoved)
-        {
-            knowledgeBase = Utils.remove(knowledgeBase, _rationalClosure.getMinimalRanking().getFinitlyRankedFormula(i));
-          //  textAreaOutputJustification.append("Removed rank " + i + ":\n");
-           // textAreaOutputJustification.append(knowledgeBase.toString()+ "\n");
-            i ++;
-        }
-        
-        Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
-        List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
-      
-        
-        for (List<PlFormula> justification : justifiactions)
-        {
-            _dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
-        }
-        
-      //  textAreaOutputJustification.append("Final Justification:\n");
-        for (List<PlFormula> newJust : _dematerialisedJustification)
-        {
-          //  textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust)+ "\n");
-        }               
-   }
-    
-    
-    @Override
-    public RationalClosureResults computeRationalClosure(PlBeliefSet knowledgeBase, PlFormula query ) throws Exception
+     
+     /**
+    * This method returns the IKnowledgeBaseService. 
+    * 
+    * @return an IKnowledgeBaseService.
+    */
+    public IKnowledgeBaseService getKnowledgeBaseService()
     {
-        SatSolver.setDefaultSolver(new Sat4jSolver());
-        SatReasoner reasoner = new SatReasoner();
-        
-        MinimalRankedFormulas minimalRankedFormulas = computeMinimalRanking(knowledgeBase, reasoner);
-        System.out.println("=====Minimal Ranked Formulas=====");
-        System.out.println(minimalRankedFormulas);
-        
-        PlBeliefSet R = new PlBeliefSet(Utils.materialise(minimalRankedFormulas.getAllFormulas()));
-        System.out.println("=====R=====");
-        System.out.println(R);
-        
-        int i = 0;
-        
-        while(reasoner.query(R, new Negation(((DefeasibleImplication) query).getFirstFormula())) && !R.isEmpty())
-        {
-            R = removeRankedFormulas(minimalRankedFormulas.getFinitlyRankedFormula(i), R);
-            i ++;
-        }
-        
-        _rationalClosure = new RationalClosureResults(reasoner.query(R, Utils.materialise((DefeasibleImplication)query)), i, minimalRankedFormulas, R);
-        
-        return _rationalClosure;
+        return _knowledgeBaseService;
     }
     
+    /**
+    *     
+    * @return Boolean
+    */
+    @Override
+    public boolean doesKbEntailQuery() {
+        return _rationalClosure.doesEntailmentHold();
+    }
+    
+    /**
+    *     
+    * @return integer
+    */
+    @Override
+    public int getNumberOfDiscardedRanks() {
+        return _rationalClosure.getNumberOfDiscardedRanks();
+    }
+    
+    @Override
+    public ValidationResult<String> computeEntailment() 
+    {           
+        try
+        { 
+            SatSolver.setDefaultSolver(new Sat4jSolver());
+            SatReasoner reasoner = new SatReasoner();
+
+            MinimalRankedFormulas minimalRankedFormulas = computeMinimalRanking(_knowledgeBaseService.getKnowledgeBase(), reasoner);
+            System.out.println("=====Minimal Ranked Formulas=====");
+            System.out.println(minimalRankedFormulas);
+
+            PlBeliefSet R = new PlBeliefSet(Utils.materialise(minimalRankedFormulas.getAllFormulas()));
+            System.out.println("=====R=====");
+            System.out.println(R);
+
+            int i = 0;
+
+            while(reasoner.query(R, new Negation(((DefeasibleImplication) _knowledgeBaseService.getQuery()).getFirstFormula())) && !R.isEmpty())
+            {
+                R = removeRankedFormulas(minimalRankedFormulas.getFinitlyRankedFormula(i), R);
+                i ++;
+            }
+
+            _rationalClosure = new RationalClosureResults(reasoner.query(R, Utils.materialise((DefeasibleImplication)_knowledgeBaseService.getQuery())), i, minimalRankedFormulas, R);                       
+            
+            return new ValidationResult<>(true,_rationalClosure.getEntailmentMessage());
+        }
+        catch (Exception ex) 
+        {
+            Logger.getLogger(DefeasibleEntailmentService.class.getName()).log(Level.SEVERE, "Error computing defeasible entailment", ex);
+            return new ValidationResult<>(String.format("An error occurred when computing the defeasible entailment. Plaese correct and try again.\n%s)", ex.getMessage())); 
+        }       
+    }  
+    
+    
+     /**
+     *
+     * @return
+     */
+    @Override
+    public MinimalRankedFormulas getBaseRankingFormulas()
+    {
+        return _rationalClosure.getMinimalRanking();        
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getBaseRankingFormulasMessage()
+    {
+        return getBaseRankingFormulas().toString();        
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public String getDiscardedFormulaListMessage()
+    {
+        return _rationalClosure.getDiscardedFormulaListMessage();        
+    }
+    
+     /**
+     *
+     * @return
+     */
+    @Override
+    public String getRemainingFormulaListMessage(boolean addEndline)
+    {
+          return _rationalClosure.getRemainingFormulaListMessage(addEndline); 
+    }
+    
+    /**
+     *     
+     * @return a display message.
+    */
+    @Override
+    public String getDisplayMessage()
+    {
+        StringBuilder sb = new StringBuilder();       
+        
+        if(doesKbEntailQuery())
+        {
+           sb.append("Does K entail α? : YES\n");
+           sb.append(String.format("Remaining %s entails %s \n", getRemainingFormulaListMessage(false), getKnowledgeBaseService().getQuery()));
+           sb.append(String.format("K = %s entails %s", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));          
+        }
+        else
+        {
+          sb.append("Does K entail α? : NO\n");
+          sb.append("No remaining base rank, all have been discarded\n");
+          sb.append(String.format("K = %s entails not %s", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));  
+        }                          
+             
+        return sb.toString();         
+    }
+    
+    /**
+     *     
+     * @return an explanation message.
+    */
+    @Override
+    public String getExplanationMessage()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Does K entail α? : ");
+        
+        if(doesKbEntailQuery())
+        {
+           sb.append("YES"); 
+        }
+        else
+        {
+           sb.append("NO"); 
+        }                          
+        
+        return sb.toString();    
+    }  
+          
     private static MinimalRankedFormulas computeMinimalRanking(PlBeliefSet knowledgeBase, SatReasoner reasoner) throws Exception
     {
         
@@ -132,8 +187,8 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
         //Utils.print(classicalFormulas);
         
         List<PlFormula> currentFormulas = getDefeasibleFormulas(knowledgeBase, classicalFormulas);
-        List<PlFormula> prevFormulas = new ArrayList<PlFormula>();
-        List<List<PlFormula>> rankedFormulas = new ArrayList<List<PlFormula>>();
+        List<PlFormula> prevFormulas = new ArrayList<>();
+        List<List<PlFormula>> rankedFormulas = new ArrayList<>();
         int i = 0;
         
         while(!prevFormulas.equals(currentFormulas))
@@ -217,7 +272,6 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
         if (((DefeasibleImplication)x).getFormula().equals(((DefeasibleImplication)y).getFormula()))
             return true;
         else
-            return false;
-        
+            return false;        
     }
 }
