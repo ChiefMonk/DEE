@@ -137,21 +137,71 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
      * @return a display message.
     */
     @Override
-    public String getDisplayMessage()
+    public String getExplanationMessage()
     {
         StringBuilder sb = new StringBuilder();       
+        int counter = 1;
         
-        if(doesKbEntailQuery())
+        sb.append("BaseRaking : ");
+        int size = _rationalClosure.getMinimalRanking().getAllFormulasList().size();
+        for (String formula : _rationalClosure.getMinimalRanking().getAllFormulasList())
         {
-           sb.append("Does K entail α? : YES\n");
-           sb.append(String.format("Remaining %s entails %s \n", getRemainingFormulaListMessage(false), getKnowledgeBaseService().getQuery()));
-           sb.append(String.format("K = %s entails %s", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));          
+            sb.append(formula);
+            if(counter < size)
+                 sb.append(", ");
+            counter++;            
+        }
+        sb.append("\n");
+        
+        counter = 1;
+        sb.append("Discarded Rakings : ");
+        size = _rationalClosure.getDiscardedFormulaList().size();
+        if(size == 0)
+        {
+             sb.append("Discarded Rakings : None");
         }
         else
         {
-          sb.append("Does K entail α? : NO\n");
-          sb.append("No remaining base rank, all have been discarded\n");
-          sb.append(String.format("K = %s entails not %s", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));  
+            for (String formula : _rationalClosure.getDiscardedFormulaList())
+            {
+                sb.append(formula);
+                if(counter < size)
+                     sb.append(", ");
+                counter++;            
+            }
+        }
+        sb.append("\n");
+        
+        counter = 1;
+        sb.append("Remaining Rakings : ");
+        size = _rationalClosure.getRemainingFormulaList().size();
+        if(size == 0)
+        {
+             sb.append("Remaining Rakings : None, all have been discarded");
+        }
+        else
+        {
+            for (String formula : _rationalClosure.getRemainingFormulaList())
+            {
+                sb.append(formula);
+                if(counter < size)
+                     sb.append(", ");
+                counter++;            
+            }
+        }
+        sb.append("\n");
+       
+        if(doesKbEntailQuery())
+        {
+            sb.append(String.format("%s entails %s \n", _rationalClosure.getRemainingFormulaList().get(0), getKnowledgeBaseService().getQuery()));
+            sb.append(String.format("K = %s entails %s\n", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));          
+            sb.append("Does K entail α? : Yes");
+        }
+        else
+        {
+            sb.append("No remaining baseranked formulas, all have been discarded\n");
+            sb.append(String.format("K = %s not entail %s\n", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));  
+            sb.append("Does K entail α? : No");
         }                          
              
         return sb.toString();         
@@ -162,20 +212,23 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
      * @return an explanation message.
     */
     @Override
-    public String getExplanationMessage()
+    public String getDisplayMessage()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Does K entail α? : ");
+        StringBuilder sb = new StringBuilder();   
         
         if(doesKbEntailQuery())
         {
-           sb.append("YES"); 
+            sb.append(String.format("%s entails %s \n", _rationalClosure.getRemainingFormulaList().get(0), getKnowledgeBaseService().getQuery()));
+            sb.append(String.format("K = %s entails %s\n", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));          
+            sb.append("Does K entail α? : Yes");
         }
         else
         {
-           sb.append("NO"); 
+            sb.append("No remaining baseranked formulas, all have been discarded\n");
+            sb.append(String.format("K = %s not entail %s\n", getKnowledgeBaseService().getKnowledgeBase(), getKnowledgeBaseService().getQuery()));  
+            sb.append("Does K entail α? : No");
         }                          
-        
+             
         return sb.toString();    
     }  
           

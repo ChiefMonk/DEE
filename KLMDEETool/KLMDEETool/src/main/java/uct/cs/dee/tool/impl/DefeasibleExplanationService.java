@@ -44,9 +44,9 @@ public class DefeasibleExplanationService implements IExplanationService {
     @Override
     public String getExplanationMessage() 
     {        
-        String justification = _justificationService.getDisplayMessage();
-        String entailment = _justificationService.getEntailmentService().getDisplayMessage();
-        String knowledgeBase = _justificationService.getEntailmentService().getKnowledgeBaseService().getDisplayMessage();                 
+        String justification = _justificationService.getExplanationMessage();
+        String entailment = _justificationService.getEntailmentService().getExplanationMessage();
+        String knowledgeBase = _justificationService.getEntailmentService().getKnowledgeBaseService().getExplanationMessage();                 
         
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("%s\n", knowledgeBase));

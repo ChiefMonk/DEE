@@ -124,6 +124,28 @@ public class RationalClosureResults
         return stringBuilder.toString();
     }
     
+    public String getRemainingFormulasExplanationMessage()
+    {       
+        if(getRemainingFormulaList().isEmpty())
+        {
+            return "{ empty }";           
+        }
+        
+        StringBuilder stringBuilder = new StringBuilder();
+        int counter = 0;
+        for (String formula : getRemainingFormulaList())
+        {
+            if(formula.contains("empty"))
+                continue;
+            
+            stringBuilder.append(formula);
+            if(counter < getRemainingFormulaList().size())
+                  stringBuilder.append(", ");
+            counter++;            
+        }
+        return stringBuilder.toString();
+    }
+    
     public String getDiscardedFormulaListMessage()
     {          
         if(getDiscardedFormulaList().isEmpty())

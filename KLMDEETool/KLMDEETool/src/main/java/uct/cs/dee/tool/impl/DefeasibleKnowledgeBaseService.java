@@ -33,6 +33,7 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
     private static final String SYMBOL_IMPLICATION = "=>";
     private static final String SYMBOL_BI_IMPLICATION = "<=>";
     public static final String SYMBOL_DEFEASIBLE_IMPLICATION = "~>";
+    public static final String SYMBOL_DEFEASIBLE_IMPLICATION_ERROR = "~";
     
     private PlFormula _queryFormula = null;
     private PlBeliefSet _knowledgeBaseSet = null;  
@@ -182,6 +183,9 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
 
                 lineStatement = statement;            
                 statement = translateFormula(statement);
+                
+                if(statement.contains(SYMBOL_DEFEASIBLE_IMPLICATION_ERROR) && !statement.contains(SYMBOL_DEFEASIBLE_IMPLICATION))
+                    throw new Exception("Invalid defeasible implication sympol");
                 
                 PlFormula formula = isDefeasibleFormula(statement) ? defeasibleParser.parseFormula(statement) : classicalParser.parseFormula(statement);
                 

@@ -74,7 +74,7 @@ public class UIManager {
         if(!validateResult.isValid())
             return validateResult;
         
-        return  ExplanationService().computeExplanation();
+        return ExplanationService().computeExplanation();
     }
     
     public static IKnowledgeBaseService KnowledgeBaseService() {

@@ -607,10 +607,10 @@ public class ToolGUI extends javax.swing.JFrame {
         textAreaOutputJustification.setText(UIManager.JustificationService().getDisplayMessage());
         
         // explanation  
-        textAreaOutputExplanation.setText(UIManager.KnowledgeBaseService().getExplanationMessage());
-        textAreaOutputExplanation.setText(UIManager.EntailmentService().getExplanationMessage());
-        textAreaOutputExplanation.setText(UIManager.JustificationService().getExplanationMessage());
-        textAreaOutputExplanation.setText(UIManager.ExplanationService().getExplanationMessage());
+        textAreaOutputExplanation.append(UIManager.KnowledgeBaseService().getExplanationMessage());
+        textAreaOutputExplanation.append(UIManager.EntailmentService().getExplanationMessage());
+        textAreaOutputExplanation.append(UIManager.JustificationService().getExplanationMessage());
+        textAreaOutputExplanation.append(UIManager.ExplanationService().getExplanationMessage());
     }//GEN-LAST:event_ButtonVerifyAndComputeAllActionPerformed
 
     private void ButtonClearInputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearInputsActionPerformed
