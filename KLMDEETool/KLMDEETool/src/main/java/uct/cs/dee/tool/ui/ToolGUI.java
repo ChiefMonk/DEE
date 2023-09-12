@@ -296,7 +296,7 @@ public class ToolGUI extends javax.swing.JFrame {
         jScrollPane4.setViewportView(textAreaOutputDiscardedRanks);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("BaseRanking of Statements, R :");
+        jLabel4.setText("BaseRanking of Statements, Ri :");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Discarded BaseRankings :");
