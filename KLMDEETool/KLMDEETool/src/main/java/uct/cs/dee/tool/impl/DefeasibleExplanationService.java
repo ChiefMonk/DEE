@@ -52,7 +52,7 @@ public class DefeasibleExplanationService implements IExplanationService {
         sb.append(String.format("%s\n", knowledgeBase));
         sb.append(String.format("%s\n", entailment));
         sb.append(String.format("%s", justification));
-          
+                 
        return sb.toString();                       
     }
     

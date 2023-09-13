@@ -131,8 +131,16 @@ public class DefeasibleJustificationService implements IJustificationService {
     */
     @Override
     public String getExplanationMessage()
-    {      
-        return getDisplayMessage();
+    {                     
+        if(!_entailmentService.doesKbEntailQuery())                  
+            return "";
+        
+        StringBuilder sb = new StringBuilder();                            
+        sb.append(String.format("Bacause %s is a subset of remaining %s\n", getDisplayMessage(), _entailmentService.getEntailmentResults().getRemainingFormulaList().get(0)));                 
+        sb.append(String.format("Therefore %s entails %s \n", _entailmentService.getEntailmentResults().getRemainingFormulaList().get(0), _entailmentService.getKnowledgeBaseService().getQuery()));       
+        sb.append(String.format("It follows that K = %s entails %s", _entailmentService.getKnowledgeBaseService().getKnowledgeBase(), _entailmentService.getKnowledgeBaseService().getQuery()));                   
+          
+        return sb.toString();
     }  
            
 }

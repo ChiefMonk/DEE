@@ -1,6 +1,7 @@
 package uct.cs.dee.tool.services;
 
 import uct.cs.dee.tool.models.MinimalRankedFormulas;
+import uct.cs.dee.tool.models.RationalClosureResults;
 import uct.cs.dee.tool.models.ValidationResult;
 
 /**
@@ -45,6 +46,12 @@ public interface IEntailmentService {
      * @return
      */
     public  MinimalRankedFormulas getBaseRankingFormulas();
+    
+    /**
+     *
+     * @return
+    */
+    public  RationalClosureResults getEntailmentResults();
     
     /**
      *

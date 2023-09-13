@@ -274,7 +274,7 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
     {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Knowledge Base, K = %s\n", _knowledgeBaseSet.toString()));
-        sb.append(String.format("Query, α = %s\n", _queryFormula.toString()));
+        sb.append(String.format("Query, α = %s", _queryFormula.toString()));
         return sb.toString();        
     }    
     /**
@@ -285,7 +285,7 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
     {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("Knowledge Base, K : %s\n", _knowledgeBaseSet.toString()));
-        sb.append(String.format("Query, α : %s\n", _queryFormula.toString()));
+        sb.append(String.format("Query, α : %s", _queryFormula.toString()));
         return sb.toString();
     }    
 }

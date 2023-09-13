@@ -113,9 +113,9 @@ public class ToolGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        PanelMain.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        PanelMain.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(204, 204, 204), 1, true));
 
-        PanelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PanelHeader.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(51, 51, 51), 1, true));
         PanelHeader.setAlignmentX(1.0F);
         PanelHeader.setAlignmentY(1.0F);
         PanelHeader.setPreferredSize(new java.awt.Dimension(700, 54));
@@ -151,7 +151,7 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        PanelInputs.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        PanelInputs.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 204, 255), 1, true));
         PanelInputs.setAlignmentX(1.0F);
         PanelInputs.setAlignmentY(1.0F);
 
@@ -250,7 +250,8 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        PanelOutputKB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PanelOutputKB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 204, 255)));
+        PanelOutputKB.setForeground(new java.awt.Color(153, 204, 255));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Verified Knowledge Base, K :");
@@ -258,6 +259,7 @@ public class ToolGUI extends javax.swing.JFrame {
         textAreaOutputKB.setEditable(false);
         textAreaOutputKB.setColumns(20);
         textAreaOutputKB.setRows(10);
+        textAreaOutputKB.setFocusable(false);
         jScrollPane2.setViewportView(textAreaOutputKB);
 
         javax.swing.GroupLayout PanelOutputKBLayout = new javax.swing.GroupLayout(PanelOutputKB);
@@ -283,16 +285,18 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        PanelOutputBaseRanking.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PanelOutputBaseRanking.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 204, 255)));
 
         textAreaOutputBaseRanking.setEditable(false);
         textAreaOutputBaseRanking.setColumns(20);
         textAreaOutputBaseRanking.setRows(5);
+        textAreaOutputBaseRanking.setFocusable(false);
         jScrollPane3.setViewportView(textAreaOutputBaseRanking);
 
         textAreaOutputDiscardedRanks.setEditable(false);
         textAreaOutputDiscardedRanks.setColumns(20);
         textAreaOutputDiscardedRanks.setRows(5);
+        textAreaOutputDiscardedRanks.setFocusable(false);
         jScrollPane4.setViewportView(textAreaOutputDiscardedRanks);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -334,16 +338,18 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        PanelOutputEntailAndJustify.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PanelOutputEntailAndJustify.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 204, 255)));
 
         textAreaOutputEntailment.setEditable(false);
         textAreaOutputEntailment.setColumns(20);
         textAreaOutputEntailment.setRows(3);
+        textAreaOutputEntailment.setFocusable(false);
         jScrollPane5.setViewportView(textAreaOutputEntailment);
 
         textAreaOutputJustification.setEditable(false);
         textAreaOutputJustification.setColumns(20);
         textAreaOutputJustification.setRows(3);
+        textAreaOutputJustification.setFocusable(false);
         jScrollPane6.setViewportView(textAreaOutputJustification);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -383,17 +389,18 @@ public class ToolGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        PanelOutputExplanations.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        PanelOutputExplanations.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 204, 255)));
 
         textAreaOutputExplanation.setEditable(false);
         textAreaOutputExplanation.setColumns(20);
         textAreaOutputExplanation.setRows(5);
+        textAreaOutputExplanation.setFocusable(false);
         jScrollPane7.setViewportView(textAreaOutputExplanation);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Explanation (why and how K entails α?) :");
 
-        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true));
 
         ButtonClearInputs.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ButtonClearInputs.setText("Clear all Inputs");
@@ -606,10 +613,7 @@ public class ToolGUI extends javax.swing.JFrame {
         // justification       
         textAreaOutputJustification.setText(UIManager.JustificationService().getDisplayMessage());
         
-        // explanation  
-        textAreaOutputExplanation.append(UIManager.KnowledgeBaseService().getExplanationMessage());
-        textAreaOutputExplanation.append(UIManager.EntailmentService().getExplanationMessage());
-        textAreaOutputExplanation.append(UIManager.JustificationService().getExplanationMessage());
+        // explanation      
         textAreaOutputExplanation.append(UIManager.ExplanationService().getExplanationMessage());
     }//GEN-LAST:event_ButtonVerifyAndComputeAllActionPerformed
 
