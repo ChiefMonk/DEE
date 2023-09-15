@@ -1,5 +1,6 @@
-# The <strong>KLMDEETOOL</strong> - The KLM Defeasible Entailment and Explanations Tool
-<img src="images\uct_logo.jpg" width="200px" style="text-align:center;float:center;" />
+# The <strong>KLMDEETOOL</strong>
+## The KLM Defeasible Entailment and Explanations Tool
+<img src="images\uct_logo.png" width="200px" style="text-align:center;float:center;" />
 
 ### Table of Contents
 1. [About the Tool](#about) 
@@ -35,6 +36,8 @@ external libraries or packages: the <strong>TweetyProject</strong> and the <stro
 
 <a name="compile"></a>
 ## 3. Compilation
+The <strong>target</strong> folder already has the binary '<strong>KLMDEETool-1.0.1-jar-with-dependencies.jar</strong>' which can be run directly without any need for compilation. The default application is the Desktop Application (GUI).
+
 To build th <strong>KLMDEETOOL</strong>, run the following against the home folder:
 ```mvn package```
 
