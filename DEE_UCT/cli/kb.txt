@@ -1,5 +1,0 @@
-Bird ~> Fly
-Penguin => Bird
-Penguin ~> (! Fly)
-Fly => Wings
-Robin => Bird

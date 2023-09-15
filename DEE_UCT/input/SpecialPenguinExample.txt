@@ -1,7 +1,0 @@
-Penguin => Bird
-Robin=>Bird
-SpecialPenguin=>Penguin
-Bird~>Fly
-Bird~>Wings
-Penguin~>!Fly
-SpecialPenguin~>Fly
