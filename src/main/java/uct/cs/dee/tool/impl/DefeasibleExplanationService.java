@@ -3,12 +3,12 @@ package uct.cs.dee.tool.impl;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.tweetyproject.commons.ParserException;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.ValidationResultModel;
 import uct.cs.dee.tool.services.*;
 
 /**
- * <h1>IExplanationService<\h1>
- * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * <h1>DefeasibleExplanationService<\h1>
+ * The DefeasibleExplanationService implements IExplanationService for Defeasible Reasoning.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -23,7 +23,7 @@ public class DefeasibleExplanationService implements IExplanationService {
     }   
     
     @Override
-    public ValidationResult<String> computeExplanation() 
+    public ValidationResultModel<String> computeExplanation() 
     {
         try 
         { 
@@ -31,14 +31,14 @@ public class DefeasibleExplanationService implements IExplanationService {
         } 
         catch (ParserException ex) {
             Logger.getLogger(DefeasibleJustificationService.class.getName()).log(Level.SEVERE, null, ex);
-             return new ValidationResult<>(String.format("Computing justification failed: %s", ex.getMessage()));
+             return new ValidationResultModel<>(String.format("Computing justification failed: %s", ex.getMessage()));
         }
         catch (Exception ex) {
             Logger.getLogger(DefeasibleJustificationService.class.getName()).log(Level.SEVERE, null, ex);
-            return new ValidationResult<>(String.format("Computing justification failed: %s", ex.getMessage()));
+            return new ValidationResultModel<>(String.format("Computing justification failed: %s", ex.getMessage()));
         }   
         
-        return new ValidationResult<>(true, null);
+        return new ValidationResultModel<>(true, null);
     }
 
     /**

@@ -1,4 +1,7 @@
-p&&q  => b
-(b||q) ~> f
-r => p
-b ~> w
+a ~> w
+a ~> h
+p => a
+p ~> !w
+e => p
+e ~> w
+s => e

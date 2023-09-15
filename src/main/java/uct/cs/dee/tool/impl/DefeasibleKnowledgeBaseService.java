@@ -16,14 +16,13 @@ import java.util.logging.Logger;
 import org.tweetyproject.logics.pl.parser.PlParser;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.ValidationResultModel;
 import uct.cs.dee.tool.services.*;
-import uct.cs.dee.tool.helpers.DefeasibleLogicParser;
-import uct.cs.dee.tool.helpers.Utils;
+import uct.cs.dee.tool.helpers.*;
 
 /**
- * <h1>IExplanationService<\h1>
- * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * <h1>DefeasibleKnowledgeBaseService<\h1>
+ *  The DefeasibleKnowledgeBaseService implements IKnowledgeBaseService for Defeasible Reasoning.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -73,7 +72,7 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
     @Override
     public List<PlFormula> getClassicalKbFormulas()
     {
-       return  Utils.getClassicalFormulas(getKnowledgeBase()); 
+       return  UtilsHelper.getClassicalFormulas(getKnowledgeBase()); 
     }
     
      /**
@@ -82,27 +81,27 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
      * @return 
      */
     @Override
-    public ValidationResult<String> validateQuery(String inputQuery) {  
+    public ValidationResultModel<String> validateQuery(String inputQuery) {  
         try {
             if (inputQuery == null || inputQuery.isEmpty()) {
-                return new ValidationResult<>(String.format("Please enter a valid defeasible query.\nIt must contain a defeasible implication connective (%s)", SYMBOL_DEFEASIBLE_IMPLICATION));     
+                return new ValidationResultModel<>(String.format("Please enter a valid defeasible query.\nIt must contain a defeasible implication connective (%s)", SYMBOL_DEFEASIBLE_IMPLICATION));     
             }   
             
             if (!isDefeasibleFormula(inputQuery)) {
-                return new ValidationResult<>(String.format("Please defeasible query (%s) is not invalidy.\nIt must contain a defeasible implication connective (%s)", inputQuery, SYMBOL_DEFEASIBLE_IMPLICATION)); 
+                return new ValidationResultModel<>(String.format("Please defeasible query (%s) is not invalidy.\nIt must contain a defeasible implication connective (%s)", inputQuery, SYMBOL_DEFEASIBLE_IMPLICATION)); 
             }
             
-            DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(new PlParser());
+            DefeasibleParserHelper defeasibleParser = new DefeasibleParserHelper(new PlParser());
             _queryFormula = defeasibleParser.parseFormula(translateFormula(inputQuery)); 
             
         } 
         catch (Exception ex) 
         {
             Logger.getLogger(DefeasibleKnowledgeBaseService.class.getName()).log(Level.SEVERE, "Error validating input query", ex);
-            return new ValidationResult<>(String.format("Please defeasible query (%s) is not invalidy.\nIt must contain a defeasible implication connective (%s)", inputQuery, SYMBOL_DEFEASIBLE_IMPLICATION)); 
+            return new ValidationResultModel<>(String.format("Please defeasible query (%s) is not invalidy.\nIt must contain a defeasible implication connective (%s)", inputQuery, SYMBOL_DEFEASIBLE_IMPLICATION)); 
         } 
         
-        return new ValidationResult<>(true,_queryFormula.toString());
+        return new ValidationResultModel<>(true,_queryFormula.toString());
     }
     
     /**
@@ -111,19 +110,19 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
      * @return ValidationResult
      */
     @Override
-    public ValidationResult<String> validateKnowledgeBaseFile(String filePath) 
+    public ValidationResultModel<String> validateKnowledgeBaseFile(String filePath) 
     {   
         String error = "Please select a valid file with a predefined defeasible knowledge base, K.";
         
         if (filePath == null || filePath.isEmpty())            
-            return new ValidationResult(error); 
+            return new ValidationResultModel(error); 
          
         try
         {   
             Path path = Paths.get(filePath);
            
             if(!Files.exists(path))
-                return new ValidationResult(error); 
+                return new ValidationResultModel(error); 
            
            List<String> fileLines = Files.readAllLines(path, StandardCharsets.UTF_8);
 
@@ -132,7 +131,7 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
         catch (IOException ex)
         {
            Logger.getLogger(DefeasibleKnowledgeBaseService.class.getName()).log(Level.SEVERE, "Error validating input knowledge base file", ex);
-           return new ValidationResult<>(String.format("%s\n%s",error, ex.getMessage()));          
+           return new ValidationResultModel<>(String.format("%s\n%s",error, ex.getMessage()));          
         }                          
     }
     
@@ -142,10 +141,10 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
      * @return ValidationResult
      */
     @Override
-    public ValidationResult<String> validateKnowledgeBase(String kbString) 
+    public ValidationResultModel<String> validateKnowledgeBase(String kbString) 
     {                
         if (kbString == null || kbString.isEmpty())            
-            return new ValidationResult("Please define a valid defeasible knowledge base, K."); 
+            return new ValidationResultModel("Please define a valid defeasible knowledge base, K."); 
             
         List<String> kbStatementList = new ArrayList<>();             
                        
@@ -166,14 +165,14 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
      * @return ValidationResult
      */
     @Override
-    public ValidationResult<String> validateKnowledgeBase(List<String> kbStatements) 
+    public ValidationResultModel<String> validateKnowledgeBase(List<String> kbStatements) 
     {
          if (kbStatements == null || kbStatements.isEmpty())            
-            return new ValidationResult("Please define a valid defeasible knowledge base, K."); 
+            return new ValidationResultModel("Please define a valid defeasible knowledge base, K."); 
          
         _knowledgeBaseSet = new PlBeliefSet();
         PlParser classicalParser = new PlParser();
-        DefeasibleLogicParser defeasibleParser = new DefeasibleLogicParser(classicalParser);
+        DefeasibleParserHelper defeasibleParser = new DefeasibleParserHelper(classicalParser);
         
         int lineNumber = 1;
         String lineStatement = "";
@@ -202,10 +201,10 @@ public class DefeasibleKnowledgeBaseService implements IKnowledgeBaseService {
         catch (Exception ex) 
         {
            Logger.getLogger(DefeasibleKnowledgeBaseService.class.getName()).log(Level.SEVERE, "Error validating input knowledge base", ex);
-           return new ValidationResult<>(String.format("The Knowledgebase statement on line %s (%s) is not valid.\nPlease use the following symbols.\n%s\n%s",lineNumber, lineStatement, getConnectiveList(),ex.getMessage()));            
+           return new ValidationResultModel<>(String.format("The Knowledgebase statement on line %s (%s) is not valid.\nPlease use the following symbols.\n%s\n%s",lineNumber, lineStatement, getConnectiveList(),ex.getMessage()));            
         }
                    
-        return new ValidationResult<>(true, null);
+        return new ValidationResultModel<>(true, null);
     }
         
     public String translateFormula(String formula) {       

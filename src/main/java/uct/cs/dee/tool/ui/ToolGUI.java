@@ -15,8 +15,8 @@ import javax.swing.JFileChooser;
 import javax.swing.text.BadLocationException;
 
 /**
- * <h1>IJustificationService<\h1>
- * The IJustificationService interface has methods that should be implemented for entailment justification.
+ * <h1>ToolGUI<\h1>
+ * The ToolGUI is the main class for the Desktop Application.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -24,11 +24,11 @@ import javax.swing.text.BadLocationException;
  */
 public class ToolGUI extends javax.swing.JFrame {         
     
+    // static and final parameters
     private static final String ERROR_INPUT_KNOWLEDGEBASE = "Input Defeasible Knowledge Base";
     private static final String ERROR_INPUT_QUERY = "Input Defeasible Query";
     private static final String ERROR_DEFAULT_TITLE = "Invalid Error Occurred";
-    private static final int SCROLL_BUFFER_SIZE = 10;
-    
+    private static final int SCROLL_BUFFER_SIZE = 10;    
     private final JFileChooser _fileChooser;
     /**
      * Creates new form ToolGUI
@@ -529,6 +529,11 @@ public class ToolGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // <editor-fold defaultstate="collapsed" desc="EVENT HANDLERS">
+    
+     /**    
+     * handles Button LoadKB from File
+     * @param evt    
+     **/
     private void ButtonLoadKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoadKBActionPerformed
 
         if (_fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
@@ -557,10 +562,14 @@ public class ToolGUI extends javax.swing.JFrame {
         }        
     }//GEN-LAST:event_ButtonLoadKBActionPerformed
 
+    /**    
+     * handles Button VerifyKB
+     * @param evt    
+     **/
     private void ButtonVerifyKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyKBActionPerformed
         ButtonClearOutputsActionPerformed(evt);
                     
-        ValidationResult<String> validKb = UIManager.validateKnowledgeBase(textAreaInputKB.getText());
+        ValidationResultModel<String> validKb = UIManager.validateKnowledgeBase(textAreaInputKB.getText());
         
         if(validKb.isValid())
         {
@@ -572,9 +581,13 @@ public class ToolGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ButtonVerifyKBActionPerformed
 
+    /**    
+     * handles Button VerifyQuery
+     * @param evt    
+     */
     private void ButtonVerifyQueryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyQueryActionPerformed
        
-        ValidationResult<String> validQuery = UIManager.validateQuery( textFieldInputQuery.getText());
+        ValidationResultModel<String> validQuery = UIManager.validateQuery( textFieldInputQuery.getText());
         
         if(!validQuery.isValid())
         {
@@ -582,11 +595,15 @@ public class ToolGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ButtonVerifyQueryActionPerformed
 
+     /**    
+     * handles Button VerifyAndComputeAll
+     * @param evt    
+     */
     private void ButtonVerifyAndComputeAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonVerifyAndComputeAllActionPerformed
         
         ButtonClearOutputsActionPerformed(evt); 
         
-        ValidationResult<String> result = UIManager.computeEntailmentAndExplanation(textAreaInputKB.getText(), textFieldInputQuery.getText());
+        ValidationResultModel<String> result = UIManager.computeEntailmentAndExplanation(textAreaInputKB.getText(), textFieldInputQuery.getText());
                     
         if(!result.isValid())
         {
@@ -613,11 +630,19 @@ public class ToolGUI extends javax.swing.JFrame {
         textAreaOutputExplanation.append(UIManager.ExplanationService().getExplanationMessage());
     }//GEN-LAST:event_ButtonVerifyAndComputeAllActionPerformed
 
+    /**    
+     * handles Button ClearInputs
+     * @param evt    
+     */
     private void ButtonClearInputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearInputsActionPerformed
         textAreaInputKB.setText("");
         textFieldInputQuery.setText("");
     }//GEN-LAST:event_ButtonClearInputsActionPerformed
 
+     /**    
+     * handles Button ClearOutputs
+     * @param evt    
+     */
     private void ButtonClearOutputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearOutputsActionPerformed
         textAreaOutputKB.setText("");
         textAreaOutputBaseRanking.setText("");
@@ -626,7 +651,10 @@ public class ToolGUI extends javax.swing.JFrame {
         textAreaOutputJustification.setText("");
         textAreaOutputExplanation.setText("");     
     }//GEN-LAST:event_ButtonClearOutputsActionPerformed
-
+    /**    
+     * handles Button ExitApplication
+     * @param evt    
+     */
     private void ButtonExitApplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExitApplicationActionPerformed
         int reply = JOptionPane.showConfirmDialog(this, "Are you sure you would like to Exit the Application", "Exit the Application", JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
@@ -634,6 +662,10 @@ public class ToolGUI extends javax.swing.JFrame {
         }    
     }//GEN-LAST:event_ButtonExitApplicationActionPerformed
 
+    /**    
+     * handles textAreaInputKB KeyPressed
+     * @param evt    
+     */
     private void textAreaInputKBKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textAreaInputKBKeyPressed
 
         int numLinesToTrunk = textAreaInputKB.getLineCount() - SCROLL_BUFFER_SIZE;
@@ -652,6 +684,11 @@ public class ToolGUI extends javax.swing.JFrame {
      // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="ERROR MESSAGES">
+   /**    
+     * shows a message popup
+     * @param title
+     * @param errorMessage  
+     */
     private void showErrorPopupMessage(String title, String errorMessage) {
          if (errorMessage == null || errorMessage.isEmpty())
              return;
@@ -662,6 +699,12 @@ public class ToolGUI extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(this, errorMessage, title, JOptionPane.ERROR_MESSAGE);
     }    
     
+    /**    
+     * shows a message popup
+     * @param title
+     * @param errorMessage
+     * @param exception
+     */
      private void showErrorPopupMessage(String title, String errorMessage, Exception exception) {
         if (errorMessage == null || errorMessage.isEmpty())
             return;

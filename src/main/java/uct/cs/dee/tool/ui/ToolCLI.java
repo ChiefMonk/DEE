@@ -6,17 +6,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.ValidationResultModel;
 
 /**
- * <h1>IJustificationService<\h1>
- * The IJustificationService interface has methods that should be implemented for entailment justification.
+ * <h1>ToolCLI<\h1>
+ * The ToolCLI is the main class for the Console Application.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
  * @since 2023-07-03
  */
 public class ToolCLI {
+    
+      /**    
+     * The main method    
+     * @param args
+     */
      public static void main(String[] args)
      {      
        try 
@@ -32,7 +37,7 @@ public class ToolCLI {
             Path path = Paths.get(knowledgeBaseFilePath); 
             List<String> fileLines = Files.readAllLines(path, StandardCharsets.UTF_8);
                       
-            ValidationResult<String> result = UIManager.computeEntailmentAndExplanation(fileLines, queryString);
+            ValidationResultModel<String> result = UIManager.computeEntailmentAndExplanation(fileLines, queryString);
 
             if(!result.isValid())
             {
@@ -72,6 +77,11 @@ public class ToolCLI {
         }
     }
      
+     /**    
+     * prints the message to the console
+     * @param heading
+     * @param message
+     */
     private static void consoleWriteLine(String heading, String message)
     {     
         System.out.println();

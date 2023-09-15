@@ -2,12 +2,12 @@ package uct.cs.dee.tool.ui;
 
 import java.util.List;
 import uct.cs.dee.tool.impl.*;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.ValidationResultModel;
 import uct.cs.dee.tool.services.*;
 
 /**
- * <h1>IJustificationService<\h1>
- * The IJustificationService interface has methods that should be implemented for entailment justification.
+ * <h1>UIManager<\h1>
+ * The UIManager manager all user interactions with the GUI and CLI.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -15,6 +15,7 @@ import uct.cs.dee.tool.services.*;
  */
 public class UIManager { 
     
+    // static variables
     private static IKnowledgeBaseService _knowledgeBaseService;
     private static IEntailmentService _entailmentService;
     private static IJustificationService _justificationService;
@@ -28,59 +29,97 @@ public class UIManager {
     }
     
     // <editor-fold defaultstate="collapsed" desc="IKnowledgeBaseService">
-    public static ValidationResult<String> validateKnowledgeBase(String kbString) {            
+    
+     /**
+      * Validate the KnowledgeBase string
+     * @param kbString
+     * @return ValidationResultModel
+     */
+    public static ValidationResultModel<String> validateKnowledgeBase(String kbString) {            
        
         initialiseServices();
        
        return _knowledgeBaseService.validateKnowledgeBase(kbString);
     }
     
-    public static ValidationResult<String> validateKnowledgeBase(List<String> kbStatements) {        
+      /**
+     * Validate the KnowledgeBase List
+     * @param kbStatements
+     * @return ValidationResultModel
+     */
+    public static ValidationResultModel<String> validateKnowledgeBase(List<String> kbStatements) {        
 
         initialiseServices();
         
        return _knowledgeBaseService.validateKnowledgeBase(kbStatements);
     }
     
-    public static ValidationResult<String> validateKnowledgeBaseFile(String filePath) {            
+      /**
+     * * Validate the KnowledgeBase File
+     * @param filePath
+     * @return ValidationResultModel
+     */
+    public static ValidationResultModel<String> validateKnowledgeBaseFile(String filePath) {            
        
         initialiseServices();
        
        return _knowledgeBaseService.validateKnowledgeBaseFile(filePath);
     }
     
-     public static ValidationResult<String> validateQuery(String query) {               
+      /**
+     * * Validate the input Query
+     * @param query
+     * @return ValidationResultModel
+     */
+    public static ValidationResultModel<String> validateQuery(String query) {               
        return _knowledgeBaseService.validateQuery(query);
     }
     
-    public static ValidationResult<String> computeEntailmentAndExplanation(String kbString, String query) { 
+      /**
+     * execute Entailment And Explanation
+     * @param kbString
+     * @param query
+     * @return ValidationResultModel
+     */
+    public static ValidationResultModel<String> computeEntailmentAndExplanation(String kbString, String query) { 
         
          initialiseServices();
          
         // validate the knowledge base string
-        ValidationResult<String> validateResult = validateKnowledgeBase(kbString);        
+        ValidationResultModel<String> validateResult = validateKnowledgeBase(kbString);        
         if(!validateResult.isValid())
             return validateResult;             
         
         return executeEntailmentAndExplanation(query);
     }
     
-     public static ValidationResult<String> computeEntailmentAndExplanation(List<String> kbStatements, String query) { 
+      /**
+     * execute Entailment And Explanation
+     * @param kbStatements
+     * @param query
+     * @return ValidationResultModel
+     */
+     public static ValidationResultModel<String> computeEntailmentAndExplanation(List<String> kbStatements, String query) { 
         
          initialiseServices();
          
         // validate the knowledge base string
-        ValidationResult<String> validateResult = validateKnowledgeBase(kbStatements);        
+        ValidationResultModel<String> validateResult = validateKnowledgeBase(kbStatements);        
         if(!validateResult.isValid())
             return validateResult;             
         
         return executeEntailmentAndExplanation(query);
     }
     
-    private static ValidationResult<String> executeEntailmentAndExplanation(String query) 
+     /**
+     * execute Entailment And Explanation
+     * @param query
+     * @return ValidationResultModel
+     */
+    private static ValidationResultModel<String> executeEntailmentAndExplanation(String query) 
     { 
      // validate the query string
-       ValidationResult<String>  validateResult = validateQuery(query);        
+       ValidationResultModel<String>  validateResult = validateQuery(query);        
         if(!validateResult.isValid())
             return validateResult;
                 
@@ -97,24 +136,40 @@ public class UIManager {
         return ExplanationService().computeExplanation();
     }
     
+    /**
+     * get the KnowledgeBaseService    
+     * @return IKnowledgeBaseService
+    */
     public static IKnowledgeBaseService KnowledgeBaseService() {
         return _knowledgeBaseService;
     }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="EntailmentService">
+     /**
+     * get the EntailmentService    
+     * @return IEntailmentService
+    */
     public static IEntailmentService EntailmentService() {
         return _entailmentService;
     }
     // </editor-fold>
      
     // <editor-fold defaultstate="collapsed" desc="IJustificationService">
+     /**
+     * get the JustificationService    
+     * @return IJustificationService
+    */
     public static IJustificationService JustificationService() {
         return _justificationService;
     }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc="IExplanationService">
+     /**
+     * get the ExplanationService    
+     * @return IExplanationService
+    */
     public static IExplanationService ExplanationService() {
         return _explanationService;
     }

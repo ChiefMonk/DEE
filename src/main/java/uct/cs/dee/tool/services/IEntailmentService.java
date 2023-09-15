@@ -1,12 +1,11 @@
 package uct.cs.dee.tool.services;
 
-import uct.cs.dee.tool.models.MinimalRankedFormulas;
-import uct.cs.dee.tool.models.RationalClosureResults;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.MinimalRankedFormulaModel;
+import uct.cs.dee.tool.models.*;
 
 /**
  * <h1> IEntailmentService <\h1>
- * The IEntailmentService interface has methods that should be implemented for entailment determination.
+ * The IEntailmentService interface has methods that should be implemented for entailment.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -14,11 +13,11 @@ import uct.cs.dee.tool.models.ValidationResult;
  */
 public interface IEntailmentService {      
      /**
-    * This method returns an indicator showing if the knowledge base entails the query. 
+    * compute entailment
     * 
     * @return ValidationResult.
     */
-    public ValidationResult<String> computeEntailment();
+    public ValidationResultModel<String> computeEntailment();
      
     /**
     * This method returns the IKnowledgeBaseService. 
@@ -45,13 +44,13 @@ public interface IEntailmentService {
      *
      * @return
      */
-    public  MinimalRankedFormulas getBaseRankingFormulas();
+    public  MinimalRankedFormulaModel getBaseRankingFormulas();
     
     /**
      *
      * @return
     */
-    public  RationalClosureResults getEntailmentResults();
+    public  EntailmentResultModel getEntailmentResults();
     
     /**
      *

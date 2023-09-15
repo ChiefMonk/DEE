@@ -1,6 +1,6 @@
 package uct.cs.dee.tool.impl;
 
-import uct.cs.dee.tool.helpers.Utils;
+import uct.cs.dee.tool.helpers.UtilsHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,8 +13,8 @@ import uct.cs.dee.tool.models.*;
 import uct.cs.dee.tool.services.*;
 
 /**
- * <h1>IExplanationService<\h1>
- * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * <h1>DefeasibleEntailmentService<\h1>
+ * The DefeasibleEntailmentService implements IEntailmentService for Defeasible Reasoning.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -23,14 +23,14 @@ import uct.cs.dee.tool.services.*;
 public final class DefeasibleEntailmentService implements IEntailmentService {
      
     private final IKnowledgeBaseService _knowledgeBaseService;    
-    private RationalClosureResults _rationalClosure;
+    private EntailmentResultModel _rationalClosure;
        
     public DefeasibleEntailmentService(IKnowledgeBaseService knowledgeBaseService) {    
         _knowledgeBaseService = knowledgeBaseService;       
     }
     
     @Override
-     public RationalClosureResults getEntailmentResults() {
+     public EntailmentResultModel getEntailmentResults() {
         return _rationalClosure;
     }
      
@@ -65,37 +65,37 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
     }
     
     @Override
-    public ValidationResult<String> computeEntailment() 
+    public ValidationResultModel<String> computeEntailment() 
     {           
         try
         { 
             SatSolver.setDefaultSolver(new Sat4jSolver());
             SatReasoner reasoner = new SatReasoner();
 
-            MinimalRankedFormulas minimalRankedFormulas = computeMinimalRanking(_knowledgeBaseService.getKnowledgeBase(), reasoner);
+            MinimalRankedFormulaModel minimalRankedFormulas = computeMinimalRanking(_knowledgeBaseService.getKnowledgeBase(), reasoner);
            // System.out.println("=====Minimal Ranked Formulas=====");
            // System.out.println(minimalRankedFormulas);
 
-            PlBeliefSet R = new PlBeliefSet(Utils.materialise(minimalRankedFormulas.getAllFormulas()));
+            PlBeliefSet R = new PlBeliefSet(UtilsHelper.materialise(minimalRankedFormulas.getAllFormulas()));
            // System.out.println("=====R=====");
            // System.out.println(R);
 
             int i = 0;
 
-            while(reasoner.query(R, new Negation(((DefeasibleImplication) _knowledgeBaseService.getQuery()).getFirstFormula())) && !R.isEmpty())
+            while(reasoner.query(R, new Negation(((DefeasibleImplicationModel) _knowledgeBaseService.getQuery()).getFirstFormula())) && !R.isEmpty())
             {
                 R = removeRankedFormulas(minimalRankedFormulas.getFinitlyRankedFormula(i), R);
                 i ++;
             }
 
-            _rationalClosure = new RationalClosureResults(reasoner.query(R, Utils.materialise((DefeasibleImplication)_knowledgeBaseService.getQuery())), i, minimalRankedFormulas, R);                       
+            _rationalClosure = new EntailmentResultModel(reasoner.query(R, UtilsHelper.materialise((DefeasibleImplicationModel)_knowledgeBaseService.getQuery())), i, minimalRankedFormulas, R);                       
             
-            return new ValidationResult<>(true,_rationalClosure.getEntailmentMessage());
+            return new ValidationResultModel<>(true,_rationalClosure.getEntailmentMessage());
         }
         catch (Exception ex) 
         {
             Logger.getLogger(DefeasibleEntailmentService.class.getName()).log(Level.SEVERE, "Error computing defeasible entailment", ex);
-            return new ValidationResult<>(String.format("An error occurred when computing the defeasible entailment. Plaese correct and try again.\n%s)", ex.getMessage())); 
+            return new ValidationResultModel<>(String.format("An error occurred when computing the defeasible entailment. Plaese correct and try again.\n%s)", ex.getMessage())); 
         }       
     }  
     
@@ -105,7 +105,7 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
      * @return
      */
     @Override
-    public MinimalRankedFormulas getBaseRankingFormulas()
+    public MinimalRankedFormulaModel getBaseRankingFormulas()
     {
         return _rationalClosure.getMinimalRanking();        
     }
@@ -239,12 +239,9 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
         return sb.toString();    
     }  
           
-    private static MinimalRankedFormulas computeMinimalRanking(PlBeliefSet knowledgeBase, SatReasoner reasoner) throws Exception
-    {
-        
-        List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
-        //System.out.println("=====Classical Formulas=====");
-        //Utils.print(classicalFormulas);
+    private static MinimalRankedFormulaModel computeMinimalRanking(PlBeliefSet knowledgeBase, SatReasoner reasoner) throws Exception
+    {        
+        List<PlFormula> classicalFormulas = UtilsHelper.getClassicalFormulas(knowledgeBase);       
         
         List<PlFormula> currentFormulas = getDefeasibleFormulas(knowledgeBase, classicalFormulas);
         List<PlFormula> prevFormulas = new ArrayList<>();
@@ -252,22 +249,16 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
         int i = 0;
         
         while(!prevFormulas.equals(currentFormulas))
-        {
-            //System.out.println("=====E_"+i+"=====");
-            //Utils.print(currentFormulas);
+        {          
             prevFormulas = currentFormulas;
-            currentFormulas = computeExceptionalFormulas(currentFormulas, classicalFormulas, reasoner);
-            
-            //System.out.println("=====R_"+i+"=====");
-            List<PlFormula> currentRank = remove(prevFormulas, currentFormulas);
-            //Utils.print(currentRank);
-            rankedFormulas.add(currentRank);
-            //Utils.print(currentRank);
+            currentFormulas = computeExceptionalFormulas(currentFormulas, classicalFormulas, reasoner);                      
+            List<PlFormula> currentRank = remove(prevFormulas, currentFormulas);           
+            rankedFormulas.add(currentRank);          
             i++;
         }
         
         List<PlFormula> infinitRank = rankedFormulas.remove(i-1);
-        MinimalRankedFormulas result = new MinimalRankedFormulas(classicalFormulas, rankedFormulas);
+        MinimalRankedFormulaModel result = new MinimalRankedFormulaModel(classicalFormulas, rankedFormulas);
         result.addInfinitlyRankedFormula(infinitRank);
         
         return result;
@@ -277,16 +268,16 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
     private static List<PlFormula> computeExceptionalFormulas(List<PlFormula> formulaList, List<PlFormula> classicalFormulas, SatReasoner reasoner ) throws Exception
     {
         List<PlFormula> exceptionals = new ArrayList<PlFormula>();
-        List<PlFormula> materialised = Utils.materialise(formulaList);
-        List<PlFormula> unionedList = Utils.union(materialised, classicalFormulas);
+        List<PlFormula> materialised = UtilsHelper.materialise(formulaList);
+        List<PlFormula> unionedList = UtilsHelper.union(materialised, classicalFormulas);
         PlBeliefSet beliefSet = new PlBeliefSet(unionedList);
         
         
         for (PlFormula formula : formulaList)
         {
-            if (formula instanceof DefeasibleImplication)
+            if (formula instanceof DefeasibleImplicationModel)
             {
-                PlFormula alpha = ((DefeasibleImplication) formula).getFirstFormula();
+                PlFormula alpha = ((DefeasibleImplicationModel) formula).getFirstFormula();
                 if (reasoner.query(beliefSet, new Negation(alpha)))
                 {
                     exceptionals.add(formula);
@@ -309,7 +300,7 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
     
     private static PlBeliefSet removeRankedFormulas(List<PlFormula> removeList, PlBeliefSet R) throws Exception
     {
-        R.removeAll(Utils.materialise(removeList));
+        R.removeAll(UtilsHelper.materialise(removeList));
         return R;
     }
     
@@ -326,10 +317,10 @@ public final class DefeasibleEntailmentService implements IEntailmentService {
     
     private static boolean equals(PlFormula x, PlFormula y) throws Exception
     {
-        if (!(x instanceof DefeasibleImplication ) || !(y instanceof DefeasibleImplication) )
+        if (!(x instanceof DefeasibleImplicationModel ) || !(y instanceof DefeasibleImplicationModel) )
             throw new Exception("This equals method only compared defeasible implications");
         
-        if (((DefeasibleImplication)x).getFormula().equals(((DefeasibleImplication)y).getFormula()))
+        if (((DefeasibleImplicationModel)x).getFormula().equals(((DefeasibleImplicationModel)y).getFormula()))
             return true;
         else
             return false;        

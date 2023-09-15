@@ -6,8 +6,8 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
 import uct.cs.dee.tool.services.*;
 
 /**
- * <h1>IExplanationService<\h1>
- * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * <h1>DefeasibleParsingService<\h1>
+ *  The DefeasibleParsingService implements IParsingService for Defeasible Reasoning.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1

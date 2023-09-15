@@ -7,15 +7,13 @@ import java.util.logging.Logger;
 import org.tweetyproject.commons.ParserException;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
-import uct.cs.dee.tool.models.Node;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.*;
 import uct.cs.dee.tool.services.*;
-import uct.cs.dee.tool.helpers.ClassicJust;
-import uct.cs.dee.tool.helpers.Utils;
+import uct.cs.dee.tool.helpers.*;
 
 /**
- * <h1>IExplanationService<\h1>
- * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * <h1>DefeasibleJustificationService<\h1>
+ *  The DefeasibleJustificationService implements IJustificationService for Defeasible Reasoning.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -44,52 +42,52 @@ public class DefeasibleJustificationService implements IJustificationService {
     }
     
     @Override
-    public ValidationResult<String> computeJustification() {
+    public ValidationResultModel<String> computeJustification() {
         try 
         { 
             if (!_entailmentService.doesKbEntailQuery())            
-                return new ValidationResult<>(true, null);
+                return new ValidationResultModel<>(true, null);
                     
            
             if (_entailmentService.getNumberOfDiscardedRanks() == 0)
             {         
-                List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(_entailmentService.getKnowledgeBaseService().getKnowledgeBase());                        
-                Node rootNode = ClassicJust.computeJustification(Utils.materialise(_entailmentService.getKnowledgeBaseService().getKnowledgeBase()), Utils.materialise(_entailmentService.getKnowledgeBaseService().getQuery()));                
+                List<PlFormula> classicalFormulas = UtilsHelper.getClassicalFormulas(_entailmentService.getKnowledgeBaseService().getKnowledgeBase());                        
+                NodeModel rootNode = ClassicalJustificationHelper.computeJustification(UtilsHelper.materialise(_entailmentService.getKnowledgeBaseService().getKnowledgeBase()), UtilsHelper.materialise(_entailmentService.getKnowledgeBaseService().getQuery()));                
                                        
                 for (List<PlFormula> j : rootNode.getAllJustifications())                
-                    _dematerialisedJustificationFormulas.add(Utils.dematerialise(j, classicalFormulas));                                                            
+                    _dematerialisedJustificationFormulas.add(UtilsHelper.dematerialise(j, classicalFormulas));                                                            
             }
             else                
             {  
                 int i = 0;
                
-                PlBeliefSet knowledgeBase = Utils.clone(_entailmentService.getKnowledgeBaseService().getKnowledgeBase());
+                PlBeliefSet knowledgeBase = UtilsHelper.clone(_entailmentService.getKnowledgeBaseService().getKnowledgeBase());
         
                 while (i < _entailmentService.getNumberOfDiscardedRanks())
                 {
-                    knowledgeBase = Utils.remove(knowledgeBase, _entailmentService.getBaseRankingFormulas().getFinitlyRankedFormula(i));
+                    knowledgeBase = UtilsHelper.remove(knowledgeBase, _entailmentService.getBaseRankingFormulas().getFinitlyRankedFormula(i));
                     _removeKbFormulas.add(knowledgeBase.toString());                   
                     i ++;
                 }
                 
-                List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);                        
-                Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(_entailmentService.getKnowledgeBaseService().getQuery()));                
+                List<PlFormula> classicalFormulas = UtilsHelper.getClassicalFormulas(knowledgeBase);                        
+                NodeModel rootNode = ClassicalJustificationHelper.computeJustification(UtilsHelper.materialise(knowledgeBase), UtilsHelper.materialise(_entailmentService.getKnowledgeBaseService().getQuery()));                
                 
                  for (List<PlFormula> j : rootNode.getAllJustifications())                
-                    _dematerialisedJustificationFormulas.add(Utils.dematerialise(j, classicalFormulas));                                               
+                    _dematerialisedJustificationFormulas.add(UtilsHelper.dematerialise(j, classicalFormulas));                                               
             }
         } 
         catch (ParserException ex) 
         {
             Logger.getLogger(DefeasibleJustificationService.class.getName()).log(Level.SEVERE, "Error computing justification", ex);
-            return new ValidationResult<>(String.format("Computing justification failed: %s", ex.getMessage()));
+            return new ValidationResultModel<>(String.format("Computing justification failed: %s", ex.getMessage()));
         }
         catch (Exception ex) {
             Logger.getLogger(DefeasibleJustificationService.class.getName()).log(Level.SEVERE, "Error computing justification", ex);
-            return new ValidationResult<>(String.format("Computing justification failed: %s", ex.getMessage()));
+            return new ValidationResultModel<>(String.format("Computing justification failed: %s", ex.getMessage()));
         }   
         
-        return new ValidationResult<>(true, null);
+        return new ValidationResultModel<>(true, null);
     }
     
     public List<List<PlFormula>> getDematerialisedJustificationFormulas()
@@ -118,7 +116,7 @@ public class DefeasibleJustificationService implements IJustificationService {
          sb.append("J = { ");
         for (List<PlFormula> just : _dematerialisedJustificationFormulas)
         {
-            sb.append(Utils.printJustificationAsCSV(just));
+            sb.append(UtilsHelper.printJustificationAsCSV(just));
             justCounter++;
             if(justCounter < justSize)
                 sb.append(", ");

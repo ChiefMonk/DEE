@@ -1,6 +1,6 @@
 package uct.cs.dee.tool.services;
 
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.ValidationResultModel;
 
 /**
  * <h1>IJustificationService<\h1>
@@ -13,25 +13,25 @@ import uct.cs.dee.tool.models.ValidationResult;
 public interface IJustificationService {
    
      /**    
-     * 
+     * compute justification
      * @return A ValidationResult<String>    
      */
-    public ValidationResult<String> computeJustification();        
+    public ValidationResultModel<String> computeJustification();        
     
     /**
-    *
+    * Get EntailmentService
     * @return
     */
     public IEntailmentService getEntailmentService();
     
     /**
-     *     
+     * Get display message
      * @return a display message.
     */
     public String getDisplayMessage(); 
     
      /**
-     *     
+     * Get explanation message    
      * @return an explanation message.
      */
     public String getExplanationMessage();  

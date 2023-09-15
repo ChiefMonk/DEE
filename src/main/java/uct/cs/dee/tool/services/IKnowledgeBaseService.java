@@ -3,11 +3,11 @@ package uct.cs.dee.tool.services;
 import java.util.List;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
-import uct.cs.dee.tool.models.ValidationResult;
+import uct.cs.dee.tool.models.ValidationResultModel;
 
 /**
- * <h1>IJustificationService<\h1>
- * The IJustificationService interface has methods that should be implemented for entailment justification.
+ * <h1>IKnowledgeBaseService<\h1>
+ * The IKnowledgeBaseService interface has methods that should be implemented for KnowledgeBase management.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
@@ -16,41 +16,41 @@ import uct.cs.dee.tool.models.ValidationResult;
 public interface IKnowledgeBaseService  {          
     
      /**
-     * 
+     * * Validate the input Query
      * @param inputQuery
      * @return 
      */
-    public ValidationResult<String> validateQuery(String inputQuery);
+    public ValidationResultModel<String> validateQuery(String inputQuery);
     
     /**
-     * 
+     * Validate the input knowledge base string
      * @param kbString
      * @return 
      */
-    public ValidationResult<String> validateKnowledgeBase(String kbString);
+    public ValidationResultModel<String> validateKnowledgeBase(String kbString);
     
      /**
-     * 
+    * Validate the input knowledge base list
      * @param kbStatements
      * @return 
      */
-    public ValidationResult<String> validateKnowledgeBase(List<String> kbStatements);
+    public ValidationResultModel<String> validateKnowledgeBase(List<String> kbStatements);
     
      /**
-     * 
+     * Validate the input knowledge base file
      * @param filePath
      * @return 
      */
-    public ValidationResult<String> validateKnowledgeBaseFile(String filePath);         
+    public ValidationResultModel<String> validateKnowledgeBaseFile(String filePath);         
     
      /**
-     * 
+     * Get the knowledge base
      * @return 
     */
     public PlBeliefSet getKnowledgeBase();
     
    /**
-    * This method returns an indicator showing if the knowledge base entails the query. 
+    *  Get the qyery
     * 
     * @return the query formula.
     */
