@@ -10,12 +10,16 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
 import uct.cs.dee.tool.models.Node;
 import uct.cs.dee.tool.models.ValidationResult;
 import uct.cs.dee.tool.services.*;
-import uct.cs.dee.tool.utils.ClassicJust;
-import uct.cs.dee.tool.utils.Utils;
+import uct.cs.dee.tool.helpers.ClassicJust;
+import uct.cs.dee.tool.helpers.Utils;
 
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class DefeasibleJustificationService implements IJustificationService {
 

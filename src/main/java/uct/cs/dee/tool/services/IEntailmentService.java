@@ -5,12 +5,12 @@ import uct.cs.dee.tool.models.RationalClosureResults;
 import uct.cs.dee.tool.models.ValidationResult;
 
 /**
- * <h1>IEntailmentService <\h1>
+ * <h1> IEntailmentService <\h1>
  * The IEntailmentService interface has methods that should be implemented for entailment determination.
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
- * @since 2013-06-01
+ * @since 2023-07-03
  */
 public interface IEntailmentService {      
      /**

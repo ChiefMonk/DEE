@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
 package uct.cs.dee.tool.services;
 
 import uct.cs.dee.tool.models.ValidationResult;
@@ -12,7 +8,7 @@ import uct.cs.dee.tool.models.ValidationResult;
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
- * @since 2013-06-01
+ * @since 2023-07-03
  */
 public interface IJustificationService {
    

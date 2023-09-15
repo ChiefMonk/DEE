@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package uct.cs.dee.tool.utils;
+package uct.cs.dee.tool.helpers;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -15,8 +11,12 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
 import org.tweetyproject.logics.pl.syntax.Proposition;
 
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class Utils 
 {
@@ -28,15 +28,15 @@ public class Utils
         if (list2 == null || list2.isEmpty())
             return list1;
         
-        Set<PlFormula> set = new HashSet<PlFormula>();
+        Set<PlFormula> set = new HashSet<>();
         set.addAll(list1);
         set.addAll(list2);
-        return new ArrayList<PlFormula>(set);
+        return new ArrayList<>(set);
     }
     
     public static List<PlFormula> materialise(List<PlFormula> formulaList) throws Exception
     {
-        List<PlFormula> materialised = new ArrayList<PlFormula>();
+        List<PlFormula> materialised = new ArrayList<>();
         for (PlFormula formula : formulaList)
         {
             materialised.add(materialise(formula));
@@ -70,7 +70,7 @@ public class Utils
     
     public static List<PlFormula> dematerialise(List<PlFormula> justification, List<PlFormula> classicalFormulas )
     {
-        List<PlFormula> result = new ArrayList<PlFormula>();
+        List<PlFormula> result = new ArrayList<>();
         
         for( PlFormula formula : justification)
         {
@@ -89,7 +89,7 @@ public class Utils
     
     public static List<PlFormula> getClassicalFormulas(PlBeliefSet knowledgeBase)
     {
-        List<PlFormula> classicalFormulas = new ArrayList<PlFormula>();
+        List<PlFormula> classicalFormulas = new ArrayList<>();
         for (PlFormula plFormula : knowledgeBase)
         {
             if (!(plFormula instanceof DefeasibleImplication))
@@ -131,7 +131,7 @@ public class Utils
     {
         if (list == null || list.isEmpty())
             System.out.println("null");
-        for(PlFormula plFormula: list)
+        for(var plFormula: list)
             System.out.println(plFormula);
     }
     
@@ -139,7 +139,7 @@ public class Utils
     {
         if (list == null || list.isEmpty())
             System.out.println("null");
-        for(Proposition proposition: list)
+        for(var proposition: list)
             System.out.println(proposition);
     }
     

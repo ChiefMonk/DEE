@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
  * @version 1.0.1
- * @since 2013-06-01
+ * @since 2023-07-03
  */
 public class RationalClosureResults 
 {

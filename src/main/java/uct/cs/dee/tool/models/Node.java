@@ -1,16 +1,20 @@
 package uct.cs.dee.tool.models;
 
+import uct.cs.dee.tool.helpers.Utils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import uct.cs.dee.tool.utils.*;
 import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class Node 
 {

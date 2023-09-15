@@ -1,4 +1,4 @@
-package uct.cs.dee.tool.utils;
+package uct.cs.dee.tool.helpers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +15,12 @@ import org.tweetyproject.logics.pl.syntax.PlFormula;
 import org.tweetyproject.logics.pl.syntax.Proposition;
 
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class ClassicJust 
 {
@@ -30,7 +34,7 @@ public class ClassicJust
         Node rootNode = new Node(knowledgeBase, rootJustification);
         
         // Create a queue to keep track of nodes
-        Queue<Node> queue = new LinkedList<Node>();
+        Queue<Node> queue = new LinkedList<>();
         queue.add(rootNode);
         HittingSetTree tree = new HittingSetTree(rootNode);
         
@@ -67,7 +71,7 @@ public class ClassicJust
     
     private static List<PlFormula> computeSingleJustification(PlBeliefSet knowledgeBase, PlFormula query, SatReasoner reasoner)
     {  
-        List<PlFormula> result = new ArrayList<PlFormula>();
+        List<PlFormula> result = new ArrayList<>();
         
         if (knowledgeBase.contains(query))
         {
@@ -85,21 +89,15 @@ public class ClassicJust
         return result;
     }
     
-    private static void printResultJustification(List<PlFormula> result)
-    {
-        System.out.println("Print result justification");
-        Utils.print(result);
-    }
-
     private static List<PlFormula> expandFormulas(PlBeliefSet knowledgeBase, PlFormula query, SatReasoner reasoner) 
     {
-        List<PlFormula> result = new ArrayList<PlFormula>();
+        List<PlFormula> result = new ArrayList<>();
         
         if (!reasoner.query(knowledgeBase, query))
-            return new ArrayList<PlFormula>();
+            return new ArrayList<>();
         else
         {
-            List<PlFormula> sPrime = new ArrayList<PlFormula>();
+            List<PlFormula> sPrime = new ArrayList<>();
             List<Proposition> sigma = getSignature(query);
             while (result != sPrime)
             {
@@ -116,7 +114,7 @@ public class ClassicJust
     
     private static List<PlFormula> findRelatedFormulas(List<Proposition> signatures, PlBeliefSet knowledgeBase)
     {
-        List<PlFormula> result = new ArrayList<PlFormula>();
+        List<PlFormula> result = new ArrayList<>();
         
         for(PlFormula formula: knowledgeBase)
         {
@@ -129,7 +127,7 @@ public class ClassicJust
     
     private static List<Proposition> getSignature(List<PlFormula> formulas)
     {
-        List<Proposition> result = new ArrayList<Proposition>();
+        List<Proposition> result = new ArrayList<>();
         for (PlFormula formula: formulas)
         {
             List<Proposition> signature = getSignature(formula);
@@ -144,7 +142,7 @@ public class ClassicJust
     
     private static List<Proposition> getSignature(PlFormula query)
     {
-        List<Proposition> result = new ArrayList<Proposition>();
+        List<Proposition> result = new ArrayList<>();
         Set<Proposition> atoms = query.getAtoms();
         result.addAll(atoms);
         return result;
@@ -152,7 +150,7 @@ public class ClassicJust
 
     private static List<PlFormula> contractFormuls(List<PlFormula> result, PlFormula query, SatReasoner reasoner) 
     {
-        return contractRecursive(new ArrayList<PlFormula>(), result, query, reasoner);
+        return contractRecursive(new ArrayList<>(), result, query, reasoner);
     }
 
     private static List<PlFormula> contractRecursive(List<PlFormula> support, List<PlFormula> whole, PlFormula query, SatReasoner reasoner) 

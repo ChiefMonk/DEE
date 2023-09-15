@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package uct.cs.dee.tool.utils;
-
+package uct.cs.dee.tool.helpers;
 
 import org.tweetyproject.logics.pl.parser.*;
 import org.tweetyproject.logics.pl.syntax.*;
@@ -15,8 +10,12 @@ import uct.cs.dee.tool.models.*;
 
 
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class DefeasibleLogicParser {
     
@@ -29,7 +28,7 @@ public class DefeasibleLogicParser {
     
     public PlFormula parseFormula(String formula) throws Exception
     {
-        Stack<Object> stack = new Stack<Object>();
+        Stack<Object> stack = new Stack<>();
         for (int i = 0; i < formula.length(); i++)
         {
             consumeToken(stack, formula.charAt(i));
@@ -48,7 +47,7 @@ public class DefeasibleLogicParser {
         {
             if (!stack.contains("("))
                 throw new Exception("Parse Exception: unmatching brackets.");
-            List<Object> subFormula = new ArrayList<Object>();
+            List<Object> subFormula = new ArrayList<>();
             for (Object o = stack.pop(); !((o instanceof String) && ((String) o).equals("(")); o = stack.pop())
 		subFormula.add(0, o);
             PlFormula x = null;
@@ -79,8 +78,8 @@ public class DefeasibleLogicParser {
             return (DefeasibleImplication)formula.get(0);
         
         
-        List<Object> left = new ArrayList<Object>();
-        List<Object> right = new ArrayList<Object>();
+        List<Object> left = new ArrayList<>();
+        List<Object> right = new ArrayList<>();
         boolean isRightFormula = false;
         for (Object o : formula)
         {
@@ -118,14 +117,5 @@ public class DefeasibleLogicParser {
         }
         return false;
     }
-    
-    private void printSubFormula(List<Object> list)
-    {
-        for (Object o : list)
-        {
-            System.out.println(o.toString());
-        }
-    }
-    
 }
 

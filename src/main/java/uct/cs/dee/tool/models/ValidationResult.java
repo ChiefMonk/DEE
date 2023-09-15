@@ -5,9 +5,12 @@
 package uct.cs.dee.tool.models;
 
 /**
- *
+ * <h1>IExplanationService<\h1>
+ * The IExplanationService interface has methods that should be implemented for a full entailment explanation.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
- * @param <T>
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class ValidationResult<T> {
     private final boolean _isValid;

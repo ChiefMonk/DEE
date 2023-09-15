@@ -1,19 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package uct.cs.dee.tool.ui;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import uct.cs.dee.tool.models.*;
-import uct.cs.dee.tool.utils.*;
-import org.tweetyproject.logics.pl.syntax.PlBeliefSet;
-import org.tweetyproject.logics.pl.syntax.PlFormula;
-
 import com.formdev.flatlaf.FlatLightLaf;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,12 +15,21 @@ import javax.swing.JFileChooser;
 import javax.swing.text.BadLocationException;
 
 /**
- *
+ * <h1>IJustificationService<\h1>
+ * The IJustificationService interface has methods that should be implemented for entailment justification.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public class ToolGUI extends javax.swing.JFrame {         
     
-    JFileChooser _fileChooser;
+    private static final String ERROR_INPUT_KNOWLEDGEBASE = "Input Defeasible Knowledge Base";
+    private static final String ERROR_INPUT_QUERY = "Input Defeasible Query";
+    private static final String ERROR_DEFAULT_TITLE = "Invalid Error Occurred";
+    private static final int SCROLL_BUFFER_SIZE = 10;
+    
+    private final JFileChooser _fileChooser;
     /**
      * Creates new form ToolGUI
      */
@@ -530,14 +530,10 @@ public class ToolGUI extends javax.swing.JFrame {
 
     // <editor-fold defaultstate="collapsed" desc="EVENT HANDLERS">
     private void ButtonLoadKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonLoadKBActionPerformed
-              
-        //JFileChooser fileChooser = new JFileChooser();
-        //fileChooser.setCurrentDirectory(new java.io.File("."));
-       // fileChooser.setDialogTitle("Select the Knowledge Base File");
 
         if (_fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
         {                             
-           showErrorPopupMessage(ErrorInputKnowledgeBase, "Please select a valid file with a predefined defeasible knowledge base, K.");    
+           showErrorPopupMessage(ERROR_INPUT_KNOWLEDGEBASE, "Please select a valid file with a predefined defeasible knowledge base, K.");    
            return;
         }
                       
@@ -557,7 +553,7 @@ public class ToolGUI extends javax.swing.JFrame {
         }
         catch (IOException ex)
         {         
-            showErrorPopupMessage(ErrorInputKnowledgeBase, "Please select a valid file with a predefined defeasible knowledge base, K.", ex);                     
+            showErrorPopupMessage(ERROR_INPUT_KNOWLEDGEBASE, "Please select a valid file with a predefined defeasible knowledge base, K.", ex);                     
         }        
     }//GEN-LAST:event_ButtonLoadKBActionPerformed
 
@@ -572,7 +568,7 @@ public class ToolGUI extends javax.swing.JFrame {
         }
         else
         {
-            showErrorPopupMessage(ErrorInputKnowledgeBase, validKb.getMessage());
+            showErrorPopupMessage(ERROR_INPUT_KNOWLEDGEBASE, validKb.getMessage());
         }
     }//GEN-LAST:event_ButtonVerifyKBActionPerformed
 
@@ -582,7 +578,7 @@ public class ToolGUI extends javax.swing.JFrame {
         
         if(!validQuery.isValid())
         {
-            showErrorPopupMessage(ErrorInputQuery, validQuery.getMessage());
+            showErrorPopupMessage(ERROR_INPUT_QUERY, validQuery.getMessage());
         }
     }//GEN-LAST:event_ButtonVerifyQueryActionPerformed
 
@@ -594,7 +590,7 @@ public class ToolGUI extends javax.swing.JFrame {
                     
         if(!result.isValid())
         {
-            showErrorPopupMessage(ErrorInputKnowledgeBase, result.getMessage());
+            showErrorPopupMessage(ERROR_INPUT_KNOWLEDGEBASE, result.getMessage());
             return;
         }
         
@@ -623,12 +619,12 @@ public class ToolGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonClearInputsActionPerformed
 
     private void ButtonClearOutputsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonClearOutputsActionPerformed
-        setOutputKB("");
-        setOutputBaseRanking("");
-        setOutputDiscardedRanks("");
-        setOutputEntailment("");
-        setOutputJustification("");
-        setOutputExplanation("");      
+        textAreaOutputKB.setText("");
+        textAreaOutputBaseRanking.setText("");
+        textAreaOutputDiscardedRanks.setText("");
+        textAreaOutputEntailment.setText("");
+        textAreaOutputJustification.setText("");
+        textAreaOutputExplanation.setText("");     
     }//GEN-LAST:event_ButtonClearOutputsActionPerformed
 
     private void ButtonExitApplicationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonExitApplicationActionPerformed
@@ -639,233 +635,42 @@ public class ToolGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonExitApplicationActionPerformed
 
     private void textAreaInputKBKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textAreaInputKBKeyPressed
-        trunkTextArea(textAreaInputKB);
+
+        int numLinesToTrunk = textAreaInputKB.getLineCount() - SCROLL_BUFFER_SIZE;
+        if(numLinesToTrunk > 0)
+        {
+            try
+            {
+                int posOfLastLineToTrunk = textAreaInputKB.getLineEndOffset(numLinesToTrunk - 1);
+                textAreaInputKB.replaceRange("",0,posOfLastLineToTrunk);
+            }
+            catch (BadLocationException ex) {             
+            }
+        }
     }//GEN-LAST:event_textAreaInputKBKeyPressed
 
      // </editor-fold>
     
-    // <editor-fold defaultstate="collapsed" desc="INPUT and OUTPUT DATA">
-    private void displayValidKnowledgeBase()
-    {
-        ButtonClearOutputsActionPerformed(null);
-          textAreaOutputKB.setText(UIManager.KnowledgeBaseService().getValidatedKnowledgeBaseMessage());
-    }
-    private void clearInputsAndOutputsData() {
-        ButtonClearInputsActionPerformed(null);
-        ButtonClearOutputsActionPerformed(null);
-    }
-     
-    private void setOutputKB(String text) {
-        textAreaOutputKB.setText(text);
-    }
-    
-     private void appendOutputKB(String text) {
-        if (text == null || text.isEmpty())
-            return;
-        
-        textAreaOutputKB.append(text + "\n");
-    }
-    
-    private void setOutputBaseRanking(String text) {
-        textAreaOutputBaseRanking.setText(text);
-    }
-    
-    private void appendOutputBaseRanking(String text) {
-        if (text == null || text.isEmpty())
-            return;        
-        textAreaOutputBaseRanking.append(text + "\n");
-    }
-    
-    private void setOutputDiscardedRanks(String text) {
-        textAreaOutputDiscardedRanks.setText(text);
-       
-    }
-    
-    private void appendOutputDiscardedRanks(String text) {
-        if (text == null || text.isEmpty())
-            return;
-        textAreaOutputDiscardedRanks.append(text + "\n");
-    }
-    
-    private void setOutputEntailment(String text) {
-        textAreaOutputEntailment.setText(text);
-       
-    }
-    
-    private void appendOutputEntailment(String text) {
-        if (text == null || text.isEmpty())
-            return;
-        textAreaOutputEntailment.append(text + "\n");
-    }
-    
-    private void setOutputJustification(String text) {
-        textAreaOutputJustification.setText(text);
-       
-    }
-    
-    private void appendOutputJustification(String text) {
-        if (text == null || text.isEmpty())
-            return;
-        textAreaOutputJustification.append(text + "\n");
-    }
-    
-    private void setOutputExplanation(String text) {
-        textAreaOutputExplanation.setText(text);       
-    }
-    
-    private void appendOutputExplanation(String text) {
-        if (text == null || text.isEmpty())
-            return;
-        textAreaOutputExplanation.append(text + "\n");
-    }
-    // </editor-fold>
-    
     // <editor-fold defaultstate="collapsed" desc="ERROR MESSAGES">
-    private final String ErrorInputKnowledgeBase = "Input Defeasible Knowledge Base";
-    private final String ErrorInputQuery = "Input Defeasible Query";
-    private final String ErrorDefaultTitle = "Invalid Error Occurred";
-    
     private void showErrorPopupMessage(String title, String errorMessage) {
          if (errorMessage == null || errorMessage.isEmpty())
              return;
          
          if (title == null || title.isEmpty())
-             title = ErrorDefaultTitle;
+             title = ERROR_DEFAULT_TITLE;
          
          JOptionPane.showMessageDialog(this, errorMessage, title, JOptionPane.ERROR_MESSAGE);
-    }
-        
-    private void showErrorPopupMessage(String errorMessage) {       
-        showErrorPopupMessage(ErrorDefaultTitle, errorMessage);
-    }
-    
-    private void showErrorPopupMessage(String title, Exception exception) {
-        if (exception == null)
-             return;
-         
-        if (title == null || title.isEmpty())
-             title = ErrorDefaultTitle;
-                       
-        Logger.getLogger(this.getName()).log(Level.SEVERE, title, exception);       
-        showErrorPopupMessage(title,exception.getMessage());
-    }
-    
-    private void showErrorPopupMessage(Exception exception) {       
-        showErrorPopupMessage(ErrorDefaultTitle, exception);
-    }
+    }    
     
      private void showErrorPopupMessage(String title, String errorMessage, Exception exception) {
         if (errorMessage == null || errorMessage.isEmpty())
             return;
          
         if (title == null || title.isEmpty())
-            title = ErrorDefaultTitle;
+            title = ERROR_DEFAULT_TITLE;
          
         Logger.getLogger(this.getName()).log(Level.SEVERE, title, exception);
         JOptionPane.showMessageDialog(this, String.format("%s\n%s", errorMessage, exception.getMessage()) + "", title, JOptionPane.ERROR_MESSAGE);
-    }
-    
-    // </editor-fold>
-    
-    // <editor-fold defaultstate="collapsed" desc="PRIVATE METHODS">         
-    private void computeDefeasibleExplanation(PlBeliefSet knowledgeBase, PlFormula query) throws Exception
-    {
-        appendOutputExplanation("Knowledge Base, K = " + knowledgeBase.toString());
-        appendOutputExplanation("Query, α = " +  query.toString()); 
-        
-        List<PlFormula> classicalFormulas = Utils.getClassicalFormulas(knowledgeBase);
-        
-        RationalClosureResults rationalClosure = new RationalClosureResults(true, 0, new MinimalRankedFormulas(), new  PlBeliefSet()) ;
-                //_entailmentService.computeRationalClosure(knowledgeBase, query);
-               
-        setOutputBaseRanking(rationalClosure.getMinimalRanking().toString());
-        
-        System.out.println(rationalClosure);
-        appendOutputExplanation(String.format("Number of ranks discarded: %s", rationalClosure.getNumberOfDiscardedRanks()));
-        appendOutputEntailment(rationalClosure.getEntailmentMessage());
-        appendOutputEntailment(rationalClosure.getRemainingFormulasMessage());
-        
-        appendOutputDiscardedRanks(rationalClosure.getDiscardedFormulaListMessage());
-        
-        if (!rationalClosure.doesEntailmentHold())
-        {
-            setOutputJustification("J = { empty }"); 
-            
-           // textAreaOutputEntailment.append("The entailment does not hold." + "\n");
-            //textAreaOutputEntailment.append("The remaining kb formulas do not entail the query: \n" + rationalClosure.getRemainingFormulas() + "\n");
-            return;
-        }
-        
-        textAreaOutputEntailment.append("Yes, the input query, " +  query.toString() + ", is entailed by the knowledge base.");
-        
-        int ranksRemoved = rationalClosure.getNumberOfDiscardedRanks();
-       
-        if (ranksRemoved == 0)
-        {
-            Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
-            List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
-            List<List<PlFormula>> dematerialisedJustification = new ArrayList<List<PlFormula>>();
-            
-            for (List<PlFormula> justification : justifiactions)
-            {
-                dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
-            }
-            
-            textAreaOutputJustification.append("J = { ");
-            int justSize = dematerialisedJustification.size();
-            int justCounter = 0;
-            for (List<PlFormula> newJust : dematerialisedJustification)
-            {
-                textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust));
-                justCounter++;
-                if(justCounter < justSize)
-                    textAreaOutputJustification.append(", ");
-            }
-            textAreaOutputJustification.append(" }");
-            return;
-        }
-        
-        int i = 0;
-       
-        
-        while (i < ranksRemoved)
-        {
-            knowledgeBase = Utils.remove(knowledgeBase, rationalClosure.getMinimalRanking().getFinitlyRankedFormula(i));
-            textAreaOutputJustification.append("Removed rank " + i + ":\n");
-            textAreaOutputJustification.append(knowledgeBase.toString()+ "\n");
-            i ++;
-        }
-        
-        Node rootNode = ClassicJust.computeJustification(Utils.materialise(knowledgeBase), Utils.materialise(query));
-        List<List<PlFormula>> justifiactions = rootNode.getAllJustifications();
-        List<List<PlFormula>> dematerialisedJustification = new ArrayList<List<PlFormula>>();
-        for (List<PlFormula> justification : justifiactions)
-        {
-            dematerialisedJustification.add(Utils.dematerialise(justification, classicalFormulas));
-        }
-        
-        textAreaOutputJustification.append("Final Justification:\n");
-        for (List<PlFormula> newJust : dematerialisedJustification)
-        {
-            textAreaOutputJustification.append(Utils.printJustificationAsCSV(newJust)+ "\n");
-        }
-        
-    }
-    
-    final int SCROLL_BUFFER_SIZE = 10;
-    private void trunkTextArea(javax.swing.JTextArea txtWin)
-    {
-        int numLinesToTrunk = txtWin.getLineCount() - SCROLL_BUFFER_SIZE;
-        if(numLinesToTrunk > 0)
-        {
-            try
-            {
-                int posOfLastLineToTrunk = txtWin.getLineEndOffset(numLinesToTrunk - 1);
-                txtWin.replaceRange("",0,posOfLastLineToTrunk);
-            }
-            catch (BadLocationException ex) {             
-            }
-        }
     }
     
     // </editor-fold>

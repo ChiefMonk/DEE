@@ -4,8 +4,12 @@ import org.tweetyproject.commons.ParserException;
 import org.tweetyproject.logics.pl.syntax.PlFormula;
 
 /**
- *
+ * <h1>IJustificationService<\h1>
+ * The IJustificationService interface has methods that should be implemented for entailment justification.
+ * 
  * @author Chipo Hamayobe (chipo@cs.uct.ac.za)
+ * @version 1.0.1
+ * @since 2023-07-03
  */
 public interface IParsingService {
     
