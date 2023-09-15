@@ -58,16 +58,15 @@ To build th <strong>KLMDEETOOL</strong>, run the following against the home fold
 
 <a name="refs"></a>
 ## 7. References
-### The TweetyProject
-* The <strong>TweetyProject</strong> consists of diverse Java libraries that embody strategies for knowledge representation formalisms, encompassing classical logics, conditional logics, and probabilistic logics.
-* [http://tweetyproject.org](http://tweetyproject.org)
-### The SAT4J SAT Solver
+### The TweetyProject - [http://tweetyproject.org](http://tweetyproject.org)
+The <strong>TweetyProject</strong> consists of diverse Java libraries that embody strategies for knowledge representation formalisms, encompassing classical logics, conditional logics, and probabilistic logics.
+
+### The SAT4J SAT Solver - [http://www.sat4j.org](http://www.sat4j.org)
 The <strong>SAT4J SAT Solver</strong> is a Java library designed to solve problems related to boolean satisfaction and optimisation.
-* [http://www.sat4j.org](http://www.sat4j.org)
-### JUnit
+
+### JUnit - [https://junit.org](https://junit.org)
 The <strong>JUnit</strong> is a widely adopted open-source framework that provides a structured and
 organised approach to writing and running unit tests in Java applications..
-* [https://junit.org](https://junit.org)
 
 
 
