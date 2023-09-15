@@ -39,7 +39,7 @@ external libraries or packages: the <strong>TweetyProject</strong> and the <stro
 ## 3. Compilation
 The <strong>target</strong> folder already has the binary '<strong>KLMDEETool-1.0.1-jar-with-dependencies.jar</strong>' which can be run directly without any need for compilation. The default application is the Desktop Application (GUI).
 
-To build th <strong>KLMDEETOOL</strong>, run the following against the home folder:
+To build the <strong>KLMDEETOOL</strong>, run the following Maven command against the home folder:
 ```mvn package```
 
 <a name="usage"></a>
