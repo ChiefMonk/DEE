@@ -1,6 +1,6 @@
-# The <strong>KLMDEETOOL</strong>
-## The KLM Defeasible Entailment and Explanations Tool
-<img src="images\uct_logo.png" width="200px" style="text-align:center;float:center;" />
+<center># The <strong>KLMDEETOOL</strong></center>
+<center>## The KLM Defeasible Entailment and Explanations Tool</center>
+<center><img src="images\uct_logo.png" width="100px" style="text-align:center;float:center;" /></center>
 
 ### Table of Contents
 1. [About the Tool](#about) 
