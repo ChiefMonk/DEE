@@ -1,4 +1,5 @@
 <img src="images\uct_logo.png" width="100px" style="text-align:center;float:center;" />
+
 # The <strong>KLMDEETOOL</strong>
 ## The KLM Defeasible Entailment and Explanations Tool
 
@@ -62,7 +63,11 @@ To build th <strong>KLMDEETOOL</strong>, run the following against the home fold
 * [http://tweetyproject.org](http://tweetyproject.org)
 ### The SAT4J SAT Solver
 The <strong>SAT4J SAT Solver</strong> is a Java library designed to solve problems related to boolean satisfaction and optimisation.
-* [http://www.sat4j.org/](http://www.sat4j.org/)
+* [http://www.sat4j.org](http://www.sat4j.org)
+### JUnit
+The <strong>JUnit</strong> is a widely adopted open-source framework that provides a structured and
+organised approach to writing and running unit tests in Java applications..
+* [https://junit.org](https://junit.org)
 
 
 
