@@ -15,10 +15,10 @@
 ## 1. About the Tool
 The <strong>KLMDEETOOL</strong>, developed in Java, implements algorithms for KLM-style Rational Closure Entailment and Explanations. It consists of several interconnected components that work together to facilitate the processing and analysis of defeasible reasoning scenarios. The user interface tier offers both a command line interface (CLI) and a graphical user interface (GUI) for user interaction.
 
-To aid in processing and solving complex logical expressions and queries efficiently, the KLMDEETool incorporates and relies on two
+To aid in processing and solving complex logical expressions and queries efficiently, the <strong>KLMDEETOOL</strong> incorporates and relies on two
 external libraries or packages: the <strong>TweetyProject</strong> and the <strong> SAT4J SAT Solver</strong>. The Desktop and Console Applications output of the <strong>KLMDEETOOL</strong> are shown below:
 
-<img src="images\main_screen.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\main_screen.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 1: The <strong>KLMDEETOOL</strong> GUI with an active example output</em><sub></sub></p>
 
 <img src="images\main_screen_cli.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
