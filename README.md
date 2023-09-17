@@ -21,13 +21,13 @@ external libraries or packages: the <strong>TweetyProject</strong> and the <stro
 <img src="images\main_screen.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 1: The <strong>KLMDEETOOL</strong> GUI with an active example output</em><sub></sub></p>
 
-<img src="images\main_screen_cli.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\main_screen_cli.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 2: The <strong>KLMDEETOOL</strong> CLI with an active example output</em><sub></sub></p>
 
-<img src="images\explain_01.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\explain_01.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 3: The <strong>KLMDEETOOL</strong> GUI explanation output for K |≈ 𝑠 |∼ 𝑤?</em><sub></sub></p>
 
-<img src="images\explain_011.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\explain_011.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 4: The <strong>KLMDEETOOL</strong> CLI explanation output for K |≈ 𝑠 |∼ 𝑤?</em><sub></sub></p>
 
 <a name="req"></a>
@@ -50,7 +50,7 @@ To build the <strong>KLMDEETOOL</strong>, run the following Maven command agains
 
 ### The Console App (CLI)
 ```java -cp target/KLMDEETool-1.0.1-jar-with-dependencies.jar uct.cs.dee.tool.ui.ToolCLI kb.txt "s~>w"```
-<br />where 'kb.txt' is the Knowledge Base file and "s~>w" is the defeasible query.
+<br />where <strong>'kb.txt'</strong> is the Knowledge Base file and <strong>"s~>w"</strong> is the defeasible query.
 
 
 <a name="cont"></a>
