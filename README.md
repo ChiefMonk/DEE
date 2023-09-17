@@ -13,7 +13,7 @@
 
 <a name="about"></a>
 ## 1. About the Tool
-The <strong>KLMDEETOOL</strong> is developed in Java, an object-oriented programming language, and is structured around a well-defined architecture that adheres to the Multi-tier Architecture pattern of software engineering. It consists of several interconnected components that work together to facilitate the processing and analysis of defeasible reasoning scenarios. The user interface tier or component offers both a command line interface (CLI) and a graphical user interface (GUI) for user interaction.
+The <strong>KLMDEETOOL</strong>, developed in Java, implements algorithms for KLM-style Rational Closure Entailment and Explanations. It consists of several interconnected components that work together to facilitate the processing and analysis of defeasible reasoning scenarios. The user interface tier offers both a command line interface (CLI) and a graphical user interface (GUI) for user interaction.
 
 To aid in processing and solving complex logical expressions and queries efficiently, the KLMDEETool incorporates and relies on two
 external libraries or packages: the <strong>TweetyProject</strong> and the <strong> SAT4J SAT Solver</strong>. The Desktop and Console Applications output of the <strong>KLMDEETOOL</strong> are shown below:
@@ -50,7 +50,7 @@ To build the <strong>KLMDEETOOL</strong>, run the following Maven command agains
 
 ### The Console App (CLI)
 ```java -cp target/KLMDEETool-1.0.1-jar-with-dependencies.jar uct.cs.dee.tool.ui.ToolCLI kb.txt "s~>w"```
-where 'kb.txt' is the Knowledge Base file and "s~>w" is the defeasible query.
+<br />where 'kb.txt' is the Knowledge Base file and "s~>w" is the defeasible query.
 
 
 <a name="cont"></a>
