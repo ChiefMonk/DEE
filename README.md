@@ -13,22 +13,22 @@
 
 <a name="about"></a>
 ## 1. About the Tool
-The <strong>KLMDEETOOL</strong> is developed in Java, an object-oriented programming language, and is structured around a well-defined architecture that adheres to the Multi-tier Architecture pattern of software engineering. It consists of several interconnected components that work together to facilitate the processing and analysis of defeasible reasoning scenarios. The user interface tier or component offers both a command line interface (CLI) and a graphical user interface (GUI) for user interaction.
+The <strong>KLMDEETOOL</strong>, developed in Java, implements algorithms for KLM-style Rational Closure Entailment and Explanations. It consists of several interconnected components that work together to facilitate the processing and analysis of defeasible reasoning scenarios. The user interface tier offers both a command line interface (CLI) and a graphical user interface (GUI) for user interaction.
 
-To aid in processing and solving complex logical expressions and queries efficiently, the KLMDEETool incorporates and relies on two
+To aid in processing and solving complex logical expressions and queries efficiently, the <strong>KLMDEETOOL</strong> incorporates and relies on two
 external libraries or packages: the <strong>TweetyProject</strong> and the <strong> SAT4J SAT Solver</strong>. The Desktop and Console Applications output of the <strong>KLMDEETOOL</strong> are shown below:
 
-<img src="images\main_screen.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\main_screen.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 1: The <strong>KLMDEETOOL</strong> GUI with an active example output</em><sub></sub></p>
 
-<img src="images\main_screen_cli.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\main_screen_cli.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 2: The <strong>KLMDEETOOL</strong> CLI with an active example output</em><sub></sub></p>
 
-<img src="images\explain_01.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
+<img src="images\explain_01.png" style="display: inline-block; margin: 0 auto;" />
 <p><sup></sup><em>Figure 3: The <strong>KLMDEETOOL</strong> GUI explanation output for K |≈ 𝑠 |∼ 𝑤?</em><sub></sub></p>
 
-<img src="images\explain_011.png" width="500px" style="display: inline-block; margin: 0 auto; max-width: 300px" />
-<p><sup></sup><em>Figure 3: The <strong>KLMDEETOOL</strong> CLI explanation output for K |≈ 𝑠 |∼ 𝑤?</em><sub></sub></p>
+<img src="images\explain_011.png" style="display: inline-block; margin: 0 auto;" />
+<p><sup></sup><em>Figure 4: The <strong>KLMDEETOOL</strong> CLI explanation output for K |≈ 𝑠 |∼ 𝑤?</em><sub></sub></p>
 
 <a name="req"></a>
 ## 2. Requirements
@@ -50,6 +50,7 @@ To build the <strong>KLMDEETOOL</strong>, run the following Maven command agains
 
 ### The Console App (CLI)
 ```java -cp target/KLMDEETool-1.0.1-jar-with-dependencies.jar uct.cs.dee.tool.ui.ToolCLI kb.txt "s~>w"```
+<br />where <strong>'kb.txt'</strong> is the Knowledge Base file and <strong>"s~>w"</strong> is the defeasible query.
 
 
 <a name="cont"></a>
